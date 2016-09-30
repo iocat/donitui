@@ -4,7 +4,6 @@ import StatusNode from './StatusNode';
 import {greenA200} from 'material-ui/styles/colors';
 
 export default class UserAvatarWithStatus extends React.Component{
-
     styles(){
         let size = this.props.size
         let top = (this.props.size/2) * (1- Math.cos(Math.PI/4)) - this.props.radius

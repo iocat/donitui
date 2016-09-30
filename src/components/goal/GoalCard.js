@@ -1,27 +1,23 @@
 import React from 'react';
 
-import TaskItem from './TaskItem' ;
-import HabitItem from './HabitItem';
 
-import ImageFlare from 'material-ui/svg-icons/image/flare';
-import ImageTimeLapse from 'material-ui/svg-icons/image/timelapse';
-import GoalCardHeader from './GoalCardHeader'
-import Divider from 'material-ui/Divider';
+import ToDoList from './ToDoList';
+import GoalCardHeader from './GoalCardHeader';
+import GoalControlBlock from './GoalControlBlock';
 
-import {List} from 'material-ui/List';
-import {Card, CardMedia, CardTitle} from 'material-ui/Card';
-
+import {Card, CardActions} from 'material-ui/Card';
 
 export default class GoalCard extends React.Component {
     styles() {
         return {
             root: {
                 position: "relative",
-                maxWidth: "500px",
+                width: "auto",
+                minWidth: "380px",
+                maxWidth: "450px",
             }
         }
     }
-
 
     render() {
         let goal = this.props.goal
@@ -29,42 +25,8 @@ export default class GoalCard extends React.Component {
         return (
             <Card style={styles.root}>
                 <GoalCardHeader goal={goal}/>
-                <List>
-                    {
-                        goal.tasks.map(function (task, index) {
-                            let leftIcon = null
-                            if (index === 0){
-                                leftIcon = <ImageFlare/>
-                            }
-                            return (
-                                <TaskItem
-                                    leftIcon={leftIcon}
-                                    insetChildren={true}
-                                    key={task.id}
-                                    task={task}
-                                />
-                            )}
-                        )
-                    }
-                    <Divider inset={true}/>
-                    {
-                        goal.habits.map(function (habit, index) {
-                            let leftIcon = null
-                            if (index === 0){
-                                leftIcon = <ImageTimeLapse/>
-                            }
-                            return (
-                                <HabitItem
-                                    leftIcon={leftIcon}
-                                    insetChildren={true}
-                                    key={habit.id}
-                                    habit={habit}
-                                />
-                            )}
-                        )
-                    }
-
-                </List>
+                <ToDoList goal={goal}/>
+                <GoalControlBlock goal={goal}/>
             </Card>
         )
     }

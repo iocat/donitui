@@ -1,7 +1,5 @@
 import React from 'react';
 import {CardTitle, CardMedia} from 'material-ui/Card';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
 
 export default class GoalCardHeader extends React.Component{
     styles() {

@@ -17,7 +17,7 @@ export default class HabitItem extends React.Component{
             }
             insetChildren={this.props.insetChildren}
             primaryText={this.props.habit.name}
-            secondaryText={this.props.habit.description || " "}/>
+            secondaryText={this.props.habit.description || ""}/>
     }
 }
 

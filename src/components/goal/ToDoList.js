@@ -6,8 +6,6 @@ import HabitItem from './HabitItem';
 import {List} from 'material-ui/List';
 import ActionSchedule from 'material-ui/svg-icons/action/schedule';
 import ActionAutorenew from 'material-ui/svg-icons/action/autorenew';
-import IconButton from 'material-ui/IconButton';
-
 export default class ToDoList extends React.Component{
     render(){
         let goal = this.props.goal

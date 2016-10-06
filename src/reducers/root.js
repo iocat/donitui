@@ -8,12 +8,12 @@ import {
 
 import {combineReducers} from 'redux';
 import {userGoal} from './user';
-import {followersReducer} from './followers';
+import {followers} from './followers';
 
 var initRootState = {};
 
 // The global app reducer
 export var root = combineReducers({
     userGoal, 
-    followersReducer,
+    followers,
 })

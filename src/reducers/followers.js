@@ -1,5 +1,5 @@
 
 
-export function followersReducer (state, action){
+export function followers (state, action){
     
 }

@@ -2,11 +2,11 @@ import {
     CREATE_TASK_WITH_ID,
     DELETE_TASK,
     SET_TASK_STATUS,
-} from '../actions/donit';
+} from '../actions/tasks';
 
 // reducer that creates task data in terms of normalized key collection
-function tasks(state = {}, action) {
-    if (action == undefined) {
+export function tasks(state = {}, action) {
+    if (action === undefined) {
         return {};
     }
     let newTask = null;

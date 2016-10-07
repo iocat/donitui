@@ -3,26 +3,34 @@ import {
     DELETE_GOAL,
     SET_GOAL_VISIBILITY,
     SET_GOAL_STATUS,
+} from '../actions/goals';
 
+import {
     CREATE_TASK_WITH_ID,
     DELETE_TASK,
     SET_TASK_STATUS,
-} from '../actions/donit';
+} from '../actions/tasks';
 
+import {
+    handleError
+}from '../actions/error';
+
+import 'whatwg-fetch';
+import router from '../routing/router';
 import {
     tasks
 } from './tasks';
 
 // reducer that creates goal data in terms of normalized keys collection
-function goals(state = {}, action){
-    if (action == undefined){
+export function goals(state = {}, action){
+    if (action === undefined){
         return {}
     }
     let gs = null;
     switch(action.type){
     case CREATE_GOAL_WITH_ID:
         let newState = {};
-        newState[action.goal.id] = action.goal
+        newState[action.id] = action.goal
         return Object.assign({},state, newState);
 
     case DELETE_GOAL:
@@ -49,5 +57,29 @@ function goals(state = {}, action){
    
     default:
         return state;
+    }
+}
+
+// TODO
+// goalsBackEnd is a thunk to request data from the database
+export function retrieveBackEndGoals(forUser) {
+    return function(dispatch){
+        var checkStatus = (response) =>{
+            
+        }
+        var normalize  = (json) =>{
+
+        }
+        fetch(router.user(forUser).goals(null).url())
+        .then(checkStatus)
+        .then(
+            (response) =>  response.json()
+        ).then(normalize)
+        .catch()(
+            function(error){
+                dispatch(handleError(error));
+            }
+        );
+
     }
 }

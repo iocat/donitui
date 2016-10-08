@@ -3,23 +3,53 @@ import {
     DELETE_GOAL,
     SET_GOAL_VISIBILITY,
     SET_GOAL_STATUS,
+    GoalStatus,
+    GoalVisibility,
 } from '../actions/goals';
-
 import {
     CREATE_TASK_WITH_ID,
     DELETE_TASK,
     SET_TASK_STATUS,
 } from '../actions/tasks';
-
 import {
     handleError
 }from '../actions/error';
 
 import 'whatwg-fetch';
 import router from '../routing/router';
-import {
-    tasks
-} from './tasks';
+import tasks from './tasks';
+
+const initGoalData = {
+    id: "",
+    name: "",
+    description: "",
+    lastUpdated: null,
+    status: GoalStatus.NOT_DONE,
+    pictureUrl: "",
+    visibility: GoalVisibility.PRIVATE,
+    
+    tasks: {},
+}
+
+function goal(state = {}, action){
+    if (action === undefined){
+        return initGoalData;
+    }
+    switch(action.type){
+        case SET_GOAL_VISIBILITY: 
+            return Object.assign({}, state, {
+                visibility: action.visibility,
+            })
+        case SET_GOAL_STATUS:
+            return Object.assign({}, state, {
+                status: action.status,
+            })
+        case CREATE_GOAL_WITH_ID:
+            return Object.assign({}, action.goal);
+        default: 
+            return state;
+    }
+}
 
 // reducer that creates goal data in terms of normalized keys collection
 export function goals(state = {}, action){
@@ -28,24 +58,16 @@ export function goals(state = {}, action){
     }
     let gs = null;
     switch(action.type){
-    case CREATE_GOAL_WITH_ID:
-        let newState = {};
-        newState[action.id] = action.goal
-        return Object.assign({},state, newState);
-
     case DELETE_GOAL:
         gs = Object.assign({},state);
         delete gs[action.id];
         return gs;
 
+    case CREATE_GOAL_WITH_ID:
     case SET_GOAL_VISIBILITY:
-        gs = Object.assign({},state);
-        gs[action.id].visibility = action.visibility; 
-        return gs;
-
     case SET_GOAL_STATUS:
         gs = Object.assign({},state);
-        gs[action.goalid].status = action.status;
+        gs[action.id] = goal(gs[action.id],action); 
         return gs;
 
     case CREATE_TASK_WITH_ID:       // propagate the action
@@ -54,7 +76,6 @@ export function goals(state = {}, action){
         gs = Object.assign({},state);
         gs[action.goalid].tasks = tasks(gs[action.goalid].tasks, action); 
         return gs;
-   
     default:
         return state;
     }

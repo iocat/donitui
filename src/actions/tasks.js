@@ -4,7 +4,6 @@ export const CREATE_TASK_WITH_ID = "CREATE_TASK_WITH_ID";
 export const DELETE_TASK = "DELETE_TASK";
 export const SET_TASK_STATUS     = "SET_TASK_STATUS";
 
-
 export function createTask(goalid, task){
     return{
         type: CREATE_TASK,

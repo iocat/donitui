@@ -5,7 +5,7 @@ import {
 } from '../actions/tasks';
 
 // reducer that creates task data in terms of normalized key collection
-export function tasks(state = {}, action) {
+export default function tasks(state = {}, action) {
     if (action === undefined) {
         return {};
     }

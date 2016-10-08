@@ -6,6 +6,7 @@ import {
 import {
     handleError,
 } from '../actions/error';
+
 import {goals} from './goals';
 import router from '../routing/router';
 import 'whatwg-fetch';
@@ -38,7 +39,7 @@ function user(state = initUserData, action){
 export function retrieveUserData(forUser){
     return function(dispatch){
         var checkStatus = (response) =>{
-
+            
         }
         var normalize = (json) =>{
 

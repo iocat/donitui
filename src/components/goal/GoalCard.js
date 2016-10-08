@@ -29,9 +29,8 @@ export default class GoalCard extends React.Component {
         return (
             <Card style={styles.root}>
                 <GoalCardHeader goal={goal}/>
-                <ToDoList goal={goal}/>
-                {controlBlock}
-                
+                <ToDoList tasks={goal.tasks}/>
+                {controlBlock} 
             </Card>
         )
     }
@@ -44,6 +43,5 @@ GoalCard.defaultProps = {
         description: null,
         img: null,
         tasks: [],
-        habits: []
     }
 }

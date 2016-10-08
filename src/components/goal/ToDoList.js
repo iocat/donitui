@@ -7,11 +7,30 @@ import {List} from 'material-ui/List';
 import ActionSchedule from 'material-ui/svg-icons/action/schedule';
 import ActionAutorenew from 'material-ui/svg-icons/action/autorenew';
 export default class ToDoList extends React.Component{
+    habitsAndTasks(tasks){
+        let habits = []; 
+        let nortasks = []; // Normal tasks
+        tasks.forEach(function(task){
+            if(task.reminder){
+                nortasks.push(task);
+                console.log(task)
+            }else if (task.repeatedReminder){
+                habits.push(task)
+                console.log(task)
+            }
+        })
+        return {
+            habits: habits,
+            tasks: nortasks,
+        }
+    }
     render(){
-        let goal = this.props.goal
+        let sep = this.habitsAndTasks(this.props.tasks);
+        let habits = sep.habits;
+        let tasks = sep.tasks;
     return (<List>
         {
-            goal.tasks.map(function (task, index) {
+            tasks.map(function(task, index) {
                 let leftIcon = null
                 if (index === 0){
                     leftIcon = <ActionSchedule/>
@@ -28,7 +47,7 @@ export default class ToDoList extends React.Component{
         }
         <Divider inset={true}/>
         {
-            goal.habits.map(function (habit, index) {
+            habits.map(function(habit, index) {
                 let leftIcon = null
                 if (index === 0){
                     leftIcon = <ActionAutorenew/>
@@ -45,4 +64,8 @@ export default class ToDoList extends React.Component{
         }
         </List>)
     }
+}
+
+ToDoList.defaultProps = {
+    tasks:[],
 }

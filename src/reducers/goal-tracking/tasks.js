@@ -1,4 +1,6 @@
-import {CREATE_TASK_WITH_ID, DELETE_TASK, SET_TASK_STATUS, } from '../actions/tasks';
+import {
+    CREATE_TASK_WITH_ID, DELETE_TASK, SET_TASK_STATUS 
+} from '../../actions/tasks';
 
 // reducer that creates task data in terms of normalized key collection
 export default function tasks(state = {}, action) {

@@ -5,18 +5,18 @@ import {
     SET_GOAL_STATUS,
     GoalStatus,
     GoalVisibility,
-} from '../actions/goals';
+} from '../../actions/goals';
 import {
     CREATE_TASK_WITH_ID,
     DELETE_TASK,
     SET_TASK_STATUS,
-} from '../actions/tasks';
+} from '../../actions/tasks';
 import {
     handleError
-}from '../actions/error';
+}from '../../actions/error';
 
 import 'whatwg-fetch';
-import router from '../routing/router';
+import router from '../../routing/router';
 import tasks from './tasks';
 
 const initGoalData = {

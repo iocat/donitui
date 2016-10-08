@@ -4,8 +4,8 @@
 import {connect} from 'react-redux';
 import MainApp from '../app/MainApp';
 
-function filterGoals(rootState = {}){
-    let goals = rootState.userGoal.goals;
+function filterGoals(root = {}){
+    let goals = root.GoalTracking.Goals;
     return Object.keys(goals).map(
         (key) => {
             let g = Object.assign({}, goals[key]);
@@ -15,9 +15,9 @@ function filterGoals(rootState = {}){
     ); // denormalize goal
 }
 
-export function mapStateToProps(rootStore){
+export function mapStateToProps(root){
     return {
-        goals: filterGoals(rootStore),
+        goals: filterGoals(root),
         canUpdate: true,
     }
 }

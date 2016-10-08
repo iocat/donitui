@@ -1,5 +1,5 @@
 import {createStore} from 'redux';
-import { root as rootReducer } from  '../reducers/root';
+import {Root} from  '../reducers/Root';
 
 // global app store that receives every actions
-export var appStore = createStore(rootReducer);
+export var appStore = createStore(Root);

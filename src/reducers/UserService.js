@@ -1,18 +1,13 @@
-import {combineReducers} from 'redux';
 import {SET_USER_STATUS} from '../actions/user';
 import {handleError} from '../actions/error';
-import {goals} from './goals';
 import router from '../routing/router';
 import 'whatwg-fetch';
+import {combineReducers} from 'redux';
 
+// TODO: show structure
 const initUserData = {
     username: "",
 }
-
-export var userGoal = combineReducers({
-    user,   // The global user state
-    goals   // The list of goals corresponding to that user
-})
 
 // contains user's data and action on user data
 function user(state = initUserData, action) {
@@ -50,3 +45,7 @@ export function retrieveUserData(forUser) {
             )
     }
 }
+
+export var UserService = combineReducers({
+    User: user,
+});

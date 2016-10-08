@@ -1,11 +1,13 @@
 import {combineReducers} from 'redux';
-import {userGoal} from './user';
-import {followers} from './followers';
-import {notification} from './notification';
+import {GoalTracking} from './GoalTracking';
+import {followers} from './socializing/followers';
+import {NotificationSystem} from './NotificationSystem';
+import {UserService} from './UserService';
 
 // The global app reducer
-export var root = combineReducers({
-    userGoal, 
-    followers,
-    notification,
-})
+export var Root = combineReducers({
+    GoalTracking: GoalTracking, 
+    Socializing: followers,
+    NotificationSystem,
+    UserService,
+});

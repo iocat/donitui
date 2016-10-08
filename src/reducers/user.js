@@ -1,18 +1,12 @@
 import {combineReducers} from 'redux';
-import {
-    SET_USER_STATUS,
-} from '../actions/user';
-
-import {
-    handleError,
-} from '../actions/error';
-
+import {SET_USER_STATUS} from '../actions/user';
+import {handleError} from '../actions/error';
 import {goals} from './goals';
 import router from '../routing/router';
 import 'whatwg-fetch';
 
 const initUserData = {
-    username:"",
+    username: "",
 }
 
 export var userGoal = combineReducers({
@@ -21,8 +15,8 @@ export var userGoal = combineReducers({
 })
 
 // contains user's data and action on user data
-function user(state = initUserData, action){
-    if (action === undefined){
+function user(state = initUserData, action) {
+    if (action === undefined) {
         return initUserData;
     }
     switch (action.type) {
@@ -30,29 +24,29 @@ function user(state = initUserData, action){
             return Object.assign({}, state, {
                 status: action.status,
             })
-        default: 
+        default:
             return state;
     }
 }
 
 // TODO
-export function retrieveUserData(forUser){
-    return function(dispatch){
-        var checkStatus = (response) =>{
-            
+export function retrieveUserData(forUser) {
+    return function (dispatch) {
+        var checkStatus = (response) => {
+
         }
-        var normalize = (json) =>{
+        var normalize = (json) => {
 
         }
         fetch(router.user(forUser).url())
-        .then(checkStatus)
-        .then(
+            .then(checkStatus)
+            .then(
             (response) => response.json()
-        ).then(normalize)
-        .catch()(
-            function(error){
+            ).then(normalize)
+            .catch()(
+            function (error) {
                 dispatch(handleError(error));
             }
-        )
+            )
     }
 }

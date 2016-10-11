@@ -13,10 +13,8 @@ export default class ToDoList extends React.Component{
         tasks.forEach(function(task){
             if(task.reminder){
                 nortasks.push(task);
-                console.log(task)
             }else if (task.repeatedReminder){
                 habits.push(task)
-                console.log(task)
             }
         })
         return {

@@ -1,4 +1,4 @@
-import {SET_USER_STATUS} from '../actions/user';
+import {ActionTypes} from '../actions/index';
 import {handleError} from '../actions/error';
 import router from '../routing/router';
 import 'whatwg-fetch';
@@ -15,7 +15,7 @@ function user(state = initUserData, action) {
         return initUserData;
     }
     switch (action.type) {
-        case SET_USER_STATUS:
+        case ActionTypes.SET_USER_STATUS:
             return Object.assign({}, state, {
                 status: action.status,
             })

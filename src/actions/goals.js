@@ -8,7 +8,6 @@ export const DELETE_GOAL = "DELETE_GOAL";
 export const SET_GOAL_VISIBILITY = "SET_GOAL_VISIBILITY";
 export const SET_GOAL_STATUS     = "SET_GOAL_STATUS";
 
-
 export const GoalVisibility = {
     PRIVATE: "PRIVATE",
     FOR_FOLLOWERS: "FOR_FOLLOWERS",

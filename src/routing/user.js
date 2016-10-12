@@ -1,6 +1,6 @@
 import {Goal} from './goals';
 
-export class User {
+export class Users {
     constructor(prefix, username){
         this.prefix = prefix;
         if (username){

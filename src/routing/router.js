@@ -1,12 +1,12 @@
 import { DOMAIN } from '../global';
-import {User} from './user';
+import {Users} from './user';
 
 class Router {
     constructor(domain){
         this.prefix = domain;
     }
-    user(username){
-        return new User(this.url(),username);
+    users(username){
+        return new Users(this.url(),username);
     }
     url(){
         return encodeURI(this.prefix);

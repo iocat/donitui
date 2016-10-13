@@ -11,7 +11,6 @@ const initGoalData = {
     status: GoalStatus.NOT_DONE,
     pictureUrl: "",
     visibility: GoalVisibility.PRIVATE,
-
     tasks: {},
 }
 
@@ -72,7 +71,7 @@ function goal(state , action) {
 
 // reducer that creates goal data in terms of normalized keys collection
 export default function goals(state = {}, action) {
-    if (action === undefined) {
+    if (state === undefined) {
         return {}
     }
     let gs = null;

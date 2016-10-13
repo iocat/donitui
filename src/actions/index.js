@@ -3,13 +3,15 @@ import {
     CREATE_GOAL_WITH_ID,
     DELETE_GOAL,
     SET_GOAL_VISIBILITY,
-    SET_GOAL_STATUS,
+    SET_GOAL_STATUS_MANUALLY,
+    FILTER_GOAL_BY_STATUSES,
 
     createGoal,
     createGoalWithID,
     deleteGoal,
     setGoalVisibility,
-    setGoalStatus,
+    setGoalStatusManually,
+    filterGoalByStatuses,
 } from './goals';
 
 import {
@@ -42,7 +44,8 @@ export const ActionTypes = {
     CREATE_GOAL_WITH_ID: CREATE_GOAL_WITH_ID,
     DELETE_GOAL: DELETE_GOAL,
     SET_GOAL_VISIBILITY: SET_GOAL_VISIBILITY,
-    SET_GOAL_STATUS: SET_GOAL_STATUS,
+    SET_GOAL_STATUS_MANUALLY: SET_GOAL_STATUS_MANUALLY,
+    FILTER_GOAL_BY_STATUSES: FILTER_GOAL_BY_STATUSES,
 
     CREATE_TASK: CREATE_TASK,
     CREATE_TASK_WITH_ID: CREATE_TASK_WITH_ID,
@@ -56,13 +59,15 @@ export const ActionTypes = {
     NORMALIZE: "NORMALIZE",
     DENORMALIZE: "DENORMALIZE",
 }
+
 // ActionCreators callback gathers the action creator associated with one action
 export const ActionCreators = {
     CREATE_GOAL: createGoal,
     CREATE_GOAL_WITH_ID: createGoalWithID,
     DELETE_GOAL: deleteGoal,
     SET_GOAL_VISIBILITY: setGoalVisibility,
-    SET_GOAL_STATUS: setGoalStatus,
+    SET_GOAL_STATUS_MANUALLY: setGoalStatusManually,
+    FILTER_GOAL_BY_STATUSES: filterGoalByStatuses,
 
     CREATE_TASK: createTask,
     CREATE_TASK_WITH_ID: createTaskWithID,

@@ -7,6 +7,7 @@ export const CREATE_GOAL_WITH_ID = "CREATE_GOAL_WITH_ID";
 export const DELETE_GOAL = "DELETE_GOAL";
 export const SET_GOAL_VISIBILITY = "SET_GOAL_VISIBILITY";
 export const SET_GOAL_STATUS     = "SET_GOAL_STATUS";
+export const FILTER_GOAL_BY_STATUSES = "FILTER_GOAL_BY_STATUSES";
 
 export const GoalVisibility = {
     PRIVATE: "PRIVATE",
@@ -52,10 +53,9 @@ export function setGoalVisibility(goalid, visibility){
     }
 }
 
-export function setGoalStatus(goalid, status){
-    return {
-        type: SET_GOAL_STATUS,
-        id: goalid,
-        status: status,
+export function filterGoalByStatuses(statuses){
+    return{
+        type: FILTER_GOAL_BY_STATUSES,
+        statuses: statuses,
     }
 }

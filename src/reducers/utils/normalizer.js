@@ -1,4 +1,4 @@
-import {ActionTypes} from '../actions/index';
+import {ActionTypes} from '../../actions/index';
 
 // A reducer that normalize an array object and turns it into an object 
 // with id chosen by field
@@ -18,8 +18,7 @@ export function normalizer(object, action){
 }
 
 function denormalize(object, byField){
-    let arr = [];
-    Object.keys(object).map( (key) => {
+    return Object.keys(object).map( (key) => {
         let obj = Object.assign({}, object[key]);
         obj[byField] = key;
         return obj; 

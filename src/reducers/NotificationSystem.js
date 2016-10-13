@@ -1,6 +1,6 @@
 
-export function NotificationSystem(state ={}, action){
-    if (action === undefined){
+export function NotificationSystem(state, action){
+    if (state === undefined){
         return {};
     }
     switch(action.type){

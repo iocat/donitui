@@ -7,11 +7,17 @@ import {getTaskStatusColor} from '../styles/colors';
 export default class TaskItem extends React.Component {
     render() {
         let task = this.props.task
+
+        let statusCircle = null;
+        if (task.status){
+            let statusColor = getTaskStatusColor(task.status)
+            statusCircle = (<AvFiberManualRecord color={statusColor}/>)
+        }
         return <ListItem
             leftIcon={this.props.leftIcon}
             insetChildren={this.props.insetChildren}
             rightIcon={
-                <AvFiberManualRecord color={getTaskStatusColor(this.props.task.status)}/>
+                statusCircle
             }
             primaryText={task.name}
             secondaryText={task.description || "" }/>

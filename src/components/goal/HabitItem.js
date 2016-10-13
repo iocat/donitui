@@ -7,10 +7,15 @@ import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
 
 export default class HabitItem extends React.Component{
     render(){
-        let statusColor = getHabitStatusColor(this.props.habit.status)
+        let statusCircle = null;
+        if (this.props.habit.status){
+            let statusColor = getHabitStatusColor(this.props.habit.status)
+            statusCircle = (<AvFiberManualRecord color={statusColor}/>)
+        }
+        
         return <ListItem
             rightIcon={
-                <AvFiberManualRecord color={statusColor}/>
+                statusCircle
             }
             leftIcon={
                 this.props.leftIcon

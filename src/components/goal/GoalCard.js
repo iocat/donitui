@@ -11,7 +11,6 @@ export default class GoalCard extends React.Component {
     styles() {
         return {
             root: {
-                position: "relative",
                 width: "auto",
                 minWidth: "380px",
                 maxWidth: "450px",
@@ -20,16 +19,20 @@ export default class GoalCard extends React.Component {
     }
 
     render() {
-        let goal = this.props.goal
-        let styles = this.styles()
-        let controlBlock = null
+        let goal = this.props.goal;
+        let styles = this.styles();
+        let todoList = null;
+        if (goal.tasks.length > 0) {
+            todoList = (<ToDoList tasks={goal.tasks}/>)
+        }
+        let controlBlock = null;
         if (this.props.canUpdate){
             controlBlock = <GoalControlBlock goal={goal}/>
         }
         return (
             <Card style={styles.root}>
                 <GoalCardHeader goal={goal}/>
-                <ToDoList tasks={goal.tasks}/>
+                {todoList}
                 {controlBlock} 
             </Card>
         )

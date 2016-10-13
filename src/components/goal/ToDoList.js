@@ -24,8 +24,13 @@ export default class ToDoList extends React.Component{
     }
     render(){
         let sep = this.habitsAndTasks(this.props.tasks);
-        let habits = sep.habits;
         let tasks = sep.tasks;
+        let divider = null
+        if (tasks.length > 0){
+            divider = <Divider inset={true}/>
+        }
+        let habits = sep.habits;
+        
     return (<List>
         {
             tasks.map(function(task, index) {
@@ -43,7 +48,7 @@ export default class ToDoList extends React.Component{
                 )}
             )
         }
-        <Divider inset={true}/>
+        { divider }
         {
             habits.map(function(habit, index) {
                 let leftIcon = null

@@ -1,3 +1,0 @@
-/*
-    containers binds the store with the UI Components
-*/

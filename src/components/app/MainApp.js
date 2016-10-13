@@ -1,22 +1,12 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import GoalCard from '../goal/GoalCard';
+import {GoalTrackingWithStore} from '../goal/GoalTrackingWithStore';
 
 export default class MainApp extends React.Component {
     render(){
-        return (
-            <div >
-            {
-                this.props.goals.map((goal) => {
-                    return(
-                        <div  key={goal.id}>
-                            <MuiThemeProvider>
-                                <GoalCard goal={goal} />
-                            </MuiThemeProvider>
-                         <br/>
-                        </div>)
-                })
-            }
-        </div>)
+        return <GoalTrackingWithStore/>  
     }
+}
+
+MainApp.defaultProps = {
+    filterStatus: ["DONE", "NOT_DONE", "IN_PROGRESS"],
 }

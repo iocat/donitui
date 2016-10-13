@@ -12,7 +12,7 @@ export default class GoalCard extends React.Component {
         return {
             root: {
                 width: "auto",
-                minWidth: "380px",
+                minWidth: "425px",
                 maxWidth: "450px",
             }
         }
@@ -27,7 +27,9 @@ export default class GoalCard extends React.Component {
         }
         let controlBlock = null;
         if (this.props.canUpdate){
-            controlBlock = <GoalControlBlock goal={goal}/>
+            controlBlock = <GoalControlBlock 
+                delete={this.props.deleteGoal} 
+                goalName={this.props.goal.name}/>
         }
         return (
             <Card style={styles.root}>
@@ -41,6 +43,8 @@ export default class GoalCard extends React.Component {
 
 GoalCard.defaultProps = {
     canUpdate: false,
+    deleteGoal: null,   // callback to delete the goal
+    deleteTask: null,   // callback to delete the task
     goal: {
         name: null,
         description: null,

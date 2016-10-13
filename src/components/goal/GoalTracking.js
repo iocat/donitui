@@ -6,17 +6,23 @@ import {GoalStatus} from '../../actions/goals';
 
 export default class GoalTracking extends React.Component {
     render(){
+        let goals = this.props.goals;
+        let deleteGoal = this.props.deleteGoal;
+        let deleteTask = this.props.deleteTaskFromGoal;
+
         return (
             <div >
             {
-                this.props.goals.map((goal) => {
-                    return(
-                        <div key={goal.id}>
-                            <MuiThemeProvider>
-                                <GoalCard goal={goal} canUpdate={true} />
-                            </MuiThemeProvider>
-                         <br/>
-                        </div>)
+                goals.map((goal) => {
+                    return(<div key={goal.id}>
+                                <MuiThemeProvider>
+                                    <GoalCard goal={goal} 
+                                        canUpdate={true} 
+                                        deleteGoal={()=>{deleteGoal(goal.id);}}
+                                        deleteTask={(tid)=>{deleteTask(goal.id, tid)}} />
+                                </MuiThemeProvider>
+                            <br/>
+                            </div>)
                 })
             }
             </div>)
@@ -26,5 +32,7 @@ export default class GoalTracking extends React.Component {
 GoalTracking.defaultProps = {
     goals: [],
     canUpdate: true,
+    deleteGoal: null,
+    deleteTaskFromGoal: null,
     filterStatus: [GoalStatus.DONE, GoalStatus.NOT_DONE, GoalStatus.IN_PROGRESS],
 }

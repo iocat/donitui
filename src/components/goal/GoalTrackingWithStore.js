@@ -28,4 +28,15 @@ function mapStateToProps(root) {
     }
 }
 
-export const GoalTrackingWithStore = connect(mapStateToProps)(GoalTracking);
+function mapDispatchToProps(dispatchfn){
+    return{
+        deleteGoal: (id) => {
+            dispatchfn(ActionCreators.DELETE_GOAL(id));
+        },
+        deleteTaskFromGoal: (goalid, taskid) =>{
+            dispatchfn(ActionCreators.DELETE_TASK(goalid,taskid));
+        },
+    }
+}
+
+export const GoalTrackingWithStore = connect(mapStateToProps, mapDispatchToProps)(GoalTracking);

@@ -24,7 +24,6 @@ function filterGoals(goals = {}, filterStatus = {}) {
 function mapStateToProps(root) {
     return {
         goals: filterGoals(root.GoalTracking.Goals, root.GoalTracking.Filter.byStatuses),
-        canUpdate: true,
     }
 }
 

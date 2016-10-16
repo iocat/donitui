@@ -1,14 +1,14 @@
-import { GoalStatus } from '../../actions/goals';
+import { GoalStatus } from '../../data/index';
 import { ActionTypes } from '../../actions/index';
 
 export default function filter(state, action) {
     if (state === undefined) {
         let inf = {
-            byStatuses: {},
+            byStatuses: {
+                // only show what is in progress
+                [GoalStatus.IN_PROGRESS]: true,
+            },
         };
-        inf.byStatuses[GoalStatus.DONE] = true;
-        inf.byStatuses[GoalStatus.NOT_DONE] = true;
-        inf.byStatuses[GoalStatus.IN_PROGRESS] = true;
         return inf;
     }
     switch (action.type) {

@@ -1,6 +1,5 @@
 import {ActionTypes} from '../../actions/index';
-import {GoalStatus,GoalVisibility} from '../../actions/goals';
-import {TaskStatus} from '../../actions/tasks';
+import {TaskStatus, GoalStatus, GoalVisibility} from '../../data/index';
 import tasks from './tasks';
 
 const initGoalData = {

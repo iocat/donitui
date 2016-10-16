@@ -43,11 +43,11 @@ export const personalTracking= {
 export const goalTracking = {
     layouts:{
         lg:[
-            {i:"filter", x: 10, y: 0, w: 2, h: 1, static: true},
+            {i:"filter", x: 0, y: 0, w: 12, h: 1, static: true},
             {i:"goals", x: 0, y: 1, w: 12, h: 1, static: true}
         ],
         md:[
-            {i:"filter", x: 6, y: 0, w: 4, h: 1, static: true},
+            {i:"filter", x: 0, y: 0, w: 10, h: 1, static: true},
             {i:"goals", x: 0, y: 1, w: 10, h: 1, static: true}
         ],
         /*sm:[

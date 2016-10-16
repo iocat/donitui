@@ -22,10 +22,7 @@ export default class GoalCard extends React.Component {
     render() {
         let goal = this.props.goal;
         let styles = this.styles();
-        let todoList = null;
-        if (goal.tasks.length > 0) {
-            todoList = (<ToDoList tasks={goal.tasks}/>)
-        }
+        
         let controlBlock = null;
         if (this.props.canUpdate){
             controlBlock = <GoalControlBlock 
@@ -35,7 +32,7 @@ export default class GoalCard extends React.Component {
         return (
             <Card style={styles.root}>
                 <GoalCardHeader canUpdate={this.props.canUpdate} goal={goal}/>
-                {todoList}
+                <ToDoList tasks={goal.tasks}/>
                 {controlBlock} 
                 </Card>
         )

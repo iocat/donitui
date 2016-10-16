@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { normalizer } from '../../reducers/utils/normalizer';
 import { ActionCreators } from '../../actions/index';
 import {getUserGoals, getGoalFilter} from '../../reducers/Root';
-import {GoalStatus} from '../../data/index';
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
 const GoalTrackingLayout = WidthProvider(Responsive);
@@ -14,26 +12,27 @@ import GoalCard from './card/GoalCard';
 import EmptyCard from './card/EmptyCard';
 
 class _GoalTracking extends React.Component {
-    renderGoalList = (goals) => {
+    renderGoalList = (goals, gids) => {
         let deleteGoal = this.props.deleteGoal;
         let deleteTask = this.props.deleteTaskFromGoal;
-        if (goals.length === 0) {
+        if (gids.length === 0) {
             return <EmptyCard/>
         }
-        return goals.map((goal) => {
+        return gids.map((gid) => {
             return (
-                <div key={goal.id}>
-                    <GoalCard goal={goal}
+                <div key={gid}>
+                    <GoalCard goal={goals[gid]}
                         canUpdate={true}
-                        deleteGoal={() => { deleteGoal(goal.id); } }
-                        deleteTask={(tid) => { deleteTask(goal.id, tid) } } />
-                    <br />
+                        deleteGoal={() => { deleteGoal(gid); } }
+                        deleteTask={(tid) => { deleteTask(gid, tid) } } />
+                    <br/>
                 </div>
             )
         });
     }
     render() {
         let goals = this.props.goals;
+        let gids = this.props.gids;
         return (
             <GoalTrackingLayout
                 rowHeight={70}
@@ -45,7 +44,7 @@ class _GoalTracking extends React.Component {
                 </div>
                 <div key="goals" >
                     {
-                        this.renderGoalList(goals)
+                        this.renderGoalList(goals, gids)
                     }
                 </div>
             </GoalTrackingLayout>)
@@ -57,8 +56,11 @@ _GoalTracking.defaultProps = {
 }
 
 _GoalTracking.propTypes = {
-    // List of goals
-    goals: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    // Dictionary of goals
+    goals: React.PropTypes.object.isRequired,
+    // A list of id to render
+    gids: React.PropTypes.arrayOf(React.PropTypes.any).isRequired,
+
     // Whether can edit the data or not, allowed editing.
     canUpdate: React.PropTypes.bool,
     // Callbacks
@@ -66,27 +68,12 @@ _GoalTracking.propTypes = {
     deleteTaskFromGoal: React.PropTypes.func.isRequired,
 }
 
-function filterGoals(goals = {}, filterStatus = {}) {
-    let normGoals = normalizer(goals, ActionCreators.DENORMALIZE("id"));
-    normGoals.forEach((goal, i) => {
-        normGoals[i].tasks = normalizer(normGoals[i].tasks, ActionCreators.DENORMALIZE("id"))
-    })
-    
-    if (Object.keys(filterStatus).length === Object.keys(GoalStatus).length){
-        return normGoals;
-    }
-    return normGoals.filter(
-        (goal) => {
-            if (filterStatus[goal.status]){
-                return true;
-            }
-            return false;
-        })
-}
-
 function mapStateToProps(root) {
+    let goals = getUserGoals(root);
+    let filter = getGoalFilter(root);
     return {
-        goals: filterGoals(getUserGoals(root), getGoalFilter(root).byStatuses),
+        goals: goals,
+        gids: filter.gids,
     }
 }
 

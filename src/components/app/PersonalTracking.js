@@ -8,7 +8,6 @@ import {personalTracking, layouts, cols, breakpoints} from '../layout';
 
 // PersonalTracking is a division page for the app
 export default class PersonalTracking extends React.Component{
-
     render(){
         return (
             <PersonalTrackingLayout
@@ -19,6 +18,6 @@ export default class PersonalTracking extends React.Component{
                     <GoalTracking />  
                 </div>
                 </PersonalTrackingLayout>
-        )        
+        )
     }
 }

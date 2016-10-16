@@ -33,10 +33,10 @@ const FILTER_IN_PROGESS = {
 
 
 class _FilterTab extends React.Component {
-    filterByAll = () => this.props.filterBy(FILTER_ALL);
-    filterByDone = () => this.props.filterBy(FILTER_DONE);
-    filterByNotDone = () => this.props.filterBy(FILTER_NOT_DONE);
-    filterByInProgress = () => this.props.filterBy(FILTER_IN_PROGESS);
+    filterByAll = () => {this.props.filterBy(FILTER_ALL)}
+    filterByDone = () => {this.props.filterBy(FILTER_DONE)}
+    filterByNotDone = () => {this.props.filterBy(FILTER_NOT_DONE)}
+    filterByInProgress = () => {this.props.filterBy(FILTER_IN_PROGESS)}
     color = (status)=>{
         let currStat = this.props.filter.byStatuses;
         if (currStat[status]){
@@ -55,7 +55,7 @@ class _FilterTab extends React.Component {
                     </IconButton>
 
                 <IconButton 
-                    tooltip="Show active goal" 
+                    tooltip="Show active goals" 
                     onTouchTap={this.filterByInProgress}> 
                     <AvPlayArrow color={this.color(GoalStatus.IN_PROGRESS)}/>
                     </IconButton>

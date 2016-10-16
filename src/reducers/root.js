@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {GoalTracking} from './GoalTracking';
+import GoalTracking from './GoalTracking';
 import {followers} from './socializing/followers';
 import {NotificationSystem} from './NotificationSystem';
 import {UserService} from './UserService';
@@ -11,7 +11,6 @@ export var Root = combineReducers({
     NotificationSystem,
     UserService,
 });
-
 
 // getUserGoals gets all the goals tracked by the goal tracker
 export function getUserGoals(root){

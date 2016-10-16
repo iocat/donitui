@@ -5,28 +5,30 @@ import {
     grey500 as grey
 } from 'material-ui/styles/colors';
 
+import {GoalStatus, UserStatus} from '../../data/index';
+
+
 export let getTaskStatusColor = (status)=> {
     switch(status){
-        case "DONE":
+        case GoalStatus.DONE:
             return red;
-        case "NOT_DONE":
+        case GoalStatus.NOT_DONE:
             return yellow;
-        case "IN_PROGRESS":
+        case GoalStatus.IN_PROGRESS:
             return green;
         default:
             console.log("task status "+status+"not supported");
     }
 }
-
-export let getHabitStatusColor = getTaskStatusColor
+export let getGoalStatusColor = getTaskStatusColor;
 
 export let getUserStatusColor = (status) =>{
     switch(status){
-        case "OFFLINE":
+        case UserStatus.OFFLINE:
             return grey;
-        case "ONLINE":
+        case UserStatus.ONLINE:
             return green;
-        case "BUSY":
+        case UserStatus.BUSY:
             return yellow;
         default:
             console.log("task status "+status+"not supported");

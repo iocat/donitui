@@ -1,6 +1,6 @@
 import React from 'react';
 import {CardTitle, CardMedia} from 'material-ui/Card';
-import {GoalVisibility} from '../../actions/goals';
+import {GoalVisibility} from '../../../data/index';
 
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
@@ -13,7 +13,7 @@ export default class GoalCardHeader extends React.Component{
                 backgroundImage: 'url('+this.props.goal.img+')',
                 backgroundSize: "cover",
                 backgroundPosition:"center top",
-                height: "300px"
+                height: "425px"
             },
             cardTitle:{
                 textAlign:"center"
@@ -77,11 +77,10 @@ export default class GoalCardHeader extends React.Component{
 }
 
 GoalCardHeader.defaultProps = {
-    goal:{
-        img: null,
-        visibility: GoalVisibility.FOR_FOLLOWERS,
-        name: "",
-        description: null
-    },
     canUpdate: false,
+}
+
+GoalCardHeader.propTypes={
+    goal: React.PropTypes.object.isRequired,
+    canUpdate: React.PropTypes.bool,
 }

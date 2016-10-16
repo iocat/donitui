@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import ToDoList from './ToDoList';
 import GoalCardHeader from './GoalCardHeader';
 import GoalControlBlock from './GoalControlBlock';
@@ -11,9 +10,11 @@ export default class GoalCard extends React.Component {
     styles() {
         return {
             root: {
-                width: "auto",
-                minWidth: "425px",
-                maxWidth: "450px",
+                width:"100%",
+                minWidth:"300px",
+                margin:"4px 4px",
+                //minWidth: "425px",
+                //maxWidth: "450px",
             }
         }
     }
@@ -51,4 +52,10 @@ GoalCard.defaultProps = {
         img: null,
         tasks: [],
     }
-}
+};
+
+GoalCard.propTypes = {
+    canUpdate: React.PropTypes.bool.isRequired,
+    deleteGoal: React.PropTypes.func.isRequired,
+    deleteTask: React.PropTypes.func.isRequired,
+};

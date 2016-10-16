@@ -2,7 +2,7 @@ import React from 'react';
 
 import {ListItem} from 'material-ui/List';
 import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
-import {getTaskStatusColor} from '../styles/colors';
+import {getTaskStatusColor} from '../../styles/colors';
 
 export default class TaskItem extends React.Component {
     render() {

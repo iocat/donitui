@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getHabitStatusColor} from '../styles/colors';
+import {getTaskStatusColor} from '../../styles/colors';
 
 import {ListItem} from 'material-ui/List';
 import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
@@ -9,7 +9,7 @@ export default class HabitItem extends React.Component{
     render(){
         let statusCircle = null;
         if (this.props.habit.status){
-            let statusColor = getHabitStatusColor(this.props.habit.status)
+            let statusColor = getTaskStatusColor(this.props.habit.status)
             statusCircle = (<AvFiberManualRecord color={statusColor}/>)
         }
         

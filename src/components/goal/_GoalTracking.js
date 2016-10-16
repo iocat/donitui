@@ -3,7 +3,7 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 const GoalTrackingLayout = WidthProvider(Responsive);
 
 import { goalTracking, layouts, cols, breakpoints } from '../layout';
-import { FilterWithStore } from './filter/FilterWithStore';
+import { FilterTab } from './filter/FilterTab';
 import GoalCard from './card/GoalCard';
 import EmptyCard from './card/EmptyCard';
 
@@ -37,7 +37,7 @@ export default class GoalTracking extends React.Component {
                 breakpoints={breakpoints(goalTracking)}
                 cols={cols(goalTracking)}>
                 <div key="filter" style={{ textAlign: "right" }}>
-                    <FilterWithStore />
+                    <FilterTab />
                 </div>
                 <div key="goals" >
                     {

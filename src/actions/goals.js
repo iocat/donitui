@@ -9,18 +9,6 @@ export const SET_GOAL_VISIBILITY = "SET_GOAL_VISIBILITY";
 export const SET_GOAL_STATUS     = "SET_GOAL_STATUS";
 export const FILTER_GOAL_BY_STATUSES = "FILTER_GOAL_BY_STATUSES";
 
-export const GoalVisibility = {
-    PRIVATE: "PRIVATE",
-    FOR_FOLLOWERS: "FOR_FOLLOWERS",
-    PUBLIC: "PUBLIC",
-}
-
-export const GoalStatus = {
-    DONE: "DONE",
-    NOT_DONE: "NOT_DONE",
-    IN_PROGRESS :"IN_PROGRESS",
-}
-
 
 export function createGoal(goal){
     return {

@@ -1,38 +1,44 @@
-import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import GoalCard from '../goal/GoalCard';
+// TODO instead of app with store do GoalsWithStore: get rid of these
+import { connect } from 'react-redux';
+import _GoalTracking from '../goal/_GoalTracking';
+import { normalizer } from '../../reducers/utils/normalizer';
+import { ActionCreators } from '../../actions/index';
+import {getUserGoals, getGoalFilter} from '../../reducers/Root';
+import {GoalStatus} from '../../data/index';
 
-import {GoalStatus} from '../../actions/goals';
-
-export default class GoalTracking extends React.Component {
-    render(){
-        let goals = this.props.goals;
-        let deleteGoal = this.props.deleteGoal;
-        let deleteTask = this.props.deleteTaskFromGoal;
-
-        return (
-            <div >
-            {
-                goals.map((goal) => {
-                    return(<div key={goal.id}>
-                                <MuiThemeProvider>
-                                    <GoalCard goal={goal} 
-                                        canUpdate={true} 
-                                        deleteGoal={()=>{deleteGoal(goal.id);}}
-                                        deleteTask={(tid)=>{deleteTask(goal.id, tid)}} />
-                                </MuiThemeProvider>
-                            <br/>
-                            </div>)
-                })
+function filterGoals(goals = {}, filterStatus = {}) {
+    let normGoals = normalizer(goals, ActionCreators.DENORMALIZE("id"));
+    normGoals.forEach((goal, i) => {
+        normGoals[i].tasks = normalizer(normGoals[i].tasks, ActionCreators.DENORMALIZE("id"))
+    })
+    
+    if (Object.keys(filterStatus).length === Object.keys(GoalStatus).length){
+        return normGoals;
+    }
+    return normGoals.filter(
+        (goal) => {
+            if (filterStatus[goal.status]){
+                return true;
             }
-            </div>)
+            return false;
+        })
+}
+
+function mapStateToProps(root) {
+    return {
+        goals: filterGoals(getUserGoals(root), getGoalFilter(root).byStatuses),
     }
 }
 
-GoalTracking.defaultProps = {
-    goals: [],
-    canUpdate: true,
-    deleteGoal: null,
-    deleteTaskFromGoal: null,
-    filterStatus: [GoalStatus.DONE, GoalStatus.NOT_DONE, GoalStatus.IN_PROGRESS],
+function mapDispatchToProps(dispatchfn){
+    return{
+        deleteGoal: (id) => {
+            dispatchfn(ActionCreators.DELETE_GOAL(id));
+        },
+        deleteTaskFromGoal: (goalid, taskid) =>{
+            dispatchfn(ActionCreators.DELETE_TASK(goalid,taskid));
+        },
+    }
 }
+
+export const GoalTracking = connect(mapStateToProps, mapDispatchToProps)(_GoalTracking);

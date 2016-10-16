@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import {getGoalFilter} from '../../../reducers/Root';
+import {ActionCreators} from '../../../actions/index';
+
 import AvPlayArrow from 'material-ui/svg-icons/av/play-arrow';
 import AvPause from 'material-ui/svg-icons/av/pause';
 import AvStop from 'material-ui/svg-icons/av/stop';
@@ -28,7 +32,7 @@ const FILTER_IN_PROGESS = {
 };
 
 
-export default class FilterTab extends React.Component {
+class _FilterTab extends React.Component {
     filterByAll = () => this.props.filterBy(FILTER_ALL);
     filterByDone = () => this.props.filterBy(FILTER_DONE);
     filterByNotDone = () => this.props.filterBy(FILTER_NOT_DONE);
@@ -72,8 +76,8 @@ export default class FilterTab extends React.Component {
     }
 }
 
-FilterTab.defaultProps = {}
-FilterTab.propTypes = {
+_FilterTab.defaultProps = {}
+_FilterTab.propTypes = {
     // The status filter objectOf
     filter: React.PropTypes.shape(
         {
@@ -83,3 +87,20 @@ FilterTab.propTypes = {
     // The registered call back 
     filterBy: React.PropTypes.func.isRequired,
 }
+
+
+function mapStateToProps(root){
+    return{
+        filter: getGoalFilter(root),
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        filterBy: (goalStatuses)=>{
+            dispatch(ActionCreators.FILTER_GOAL_BY_STATUSES(goalStatuses));
+        },
+    }
+}
+
+export const Filter = connect(mapStateToProps, mapDispatchToProps)(_FilterTab);

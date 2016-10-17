@@ -1,5 +1,6 @@
 /* some test code! */
 import { ActionCreators } from './actions/index';
+import {StatusFilter} from './data/index';
 import { appStore } from './stores/appStore';
 export default function setupExamples() {
     let goal1 = {
@@ -7,7 +8,7 @@ export default function setupExamples() {
         name: "Have a dog",
         description: "Better be a Corgi",
         visibility: "PUBLIC",
-        img: "https://static.pexels.com/photos/177623/pexels-photo-177623.jpeg",
+        img: "https://unsplash.it/800/300/?random",
         tasks: {
             1: {
                 id: 1,
@@ -33,7 +34,7 @@ export default function setupExamples() {
         id: 2,
         name: "Software Engineer!!",
         visibility: "PRIVATE",
-        img: "https://static.pexels.com/photos/24980/pexels-photo-24980.jpg",
+        img: "https://unsplash.it/800/300/?random",
         description: "My career",
         tasks: {
             1: {
@@ -67,7 +68,7 @@ export default function setupExamples() {
         id: 3,
         name: "Get a cat",
         visibility: "FOR_FOLLOWERS",
-        img: "https://static.pexels.com/photos/195131/pexels-photo-195131.jpeg",
+        img: "https://unsplash.it/300/300/?random",
         description: "LOLCAT",
         tasks: {
             1:{
@@ -84,7 +85,7 @@ export default function setupExamples() {
         id: 5,
         name:"Get a girl friend",
         visibility: "PRIVATE",
-        img: "https://static.pexels.com/photos/165867/pexels-photo-165867.jpeg",
+        img: "https://unsplash.it/800/300/?random",
         tasks:{
             2:{
                 id:2,
@@ -104,5 +105,8 @@ export default function setupExamples() {
     appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID(3, goal3));
     appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID(4, goal4));
     appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID(5, goal5));
-    appStore.dispatch(ActionCreators.FILTER_GOAL_BY_STATUSES({"IN_PROGRESS":true}));
+    for (let i = 7 ; i < 15; i ++ ){
+        appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID(i, Object.assign({}, goal1,{id:i, name: i, img:"https://unsplash.it/400/300/?random"})));
+    }
+    appStore.dispatch(ActionCreators.FILTER_GOAL_BY_STATUSES(StatusFilter.IN_PROGESS));
 }

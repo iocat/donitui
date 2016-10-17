@@ -9,34 +9,27 @@ import AvStop from 'material-ui/svg-icons/av/stop';
 import NavigationApps from 'material-ui/svg-icons/navigation/apps';
 import IconButton from 'material-ui/IconButton';
 import {getGoalStatusColor} from '../../styles/colors';
-import {GoalStatus} from '../../../data/index';
+import {GoalStatus, StatusFilter} from '../../../data/index';
 
 import {grey500 as grey} from 'material-ui/styles/colors';
 
-const FILTER_ALL = {
-    [GoalStatus.DONE]: true,
-    [GoalStatus.NOT_DONE]: true,
-    [GoalStatus.IN_PROGRESS]: true,
-};
-
-const FILTER_DONE = {
-    [GoalStatus.DONE]: true,
-};
-
-const FILTER_NOT_DONE = {
-    [GoalStatus.NOT_DONE]: true,
-};
-
-const FILTER_IN_PROGESS = {
-    [GoalStatus.IN_PROGRESS]: true,
-};
-
-
 class _FilterTab extends React.Component {
-    filterByAll = () => {this.props.filterBy(FILTER_ALL)}
-    filterByDone = () => {this.props.filterBy(FILTER_DONE)}
-    filterByNotDone = () => {this.props.filterBy(FILTER_NOT_DONE)}
-    filterByInProgress = () => {this.props.filterBy(FILTER_IN_PROGESS)}
+    filterByAll = () => {
+        if (this.props.filter.byStatuses === StatusFilter.ALL){return;}
+        this.props.filterBy(StatusFilter.ALL);
+    }
+    filterByDone = () => {
+        if (this.props.filter.byStatuses === StatusFilter.DONE){return;}
+        this.props.filterBy(StatusFilter.DONE);
+    }
+    filterByNotDone = () => {
+        if (this.props.filter.byStatuses === StatusFilter.NOT_DONE){return;}
+        this.props.filterBy(StatusFilter.NOT_DONE);
+    }
+    filterByInProgress = () => {
+        if (this.props.filter.byStatuses === StatusFilter.IN_PROGESS){return;}
+        this.props.filterBy(StatusFilter.IN_PROGESS);
+    }
     color = (status)=>{
         let currStat = this.props.filter.byStatuses;
         if (currStat[status]){
@@ -88,11 +81,10 @@ _FilterTab.propTypes = {
     filterBy: React.PropTypes.func.isRequired,
 }
 
-
 function mapStateToProps(root){
-    return{
-        filter: getGoalFilter(root),
-    }
+    return Object.assign({},{
+            filter: getGoalFilter(root),
+        })
 }
 
 function mapDispatchToProps(dispatch){

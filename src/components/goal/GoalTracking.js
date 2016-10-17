@@ -19,17 +19,21 @@ class _GoalTracking extends React.Component {
             return <EmptyCard/>
         }
         return gids.map((gid) => {
-            return (
-                <div key={gid}>
-                    <GoalCard goal={goals[gid]}
-                        canUpdate={true}
-                        deleteGoal={() => { deleteGoal(gid); } }
-                        deleteTask={(tid) => { deleteTask(gid, tid) } } />
-                    <br/>
-                </div>
-            )
+            if (goals[gid]){ // Don't show if the goal does not exist
+                return (     
+                    <div key={gid}>
+                        <GoalCard goal={goals[gid]}
+                            canUpdate={true}
+                            deleteGoal={() => { deleteGoal(gid); } }
+                            deleteTask={(tid) => { deleteTask(gid, tid) } } />
+                        <br/>
+                    </div>
+                )
+            }
+            return null;
         });
     }
+    /* TODO: abstract the goal list into a React object*/
     render() {
         let goals = this.props.goals;
         let gids = this.props.gids;
@@ -71,10 +75,10 @@ _GoalTracking.propTypes = {
 function mapStateToProps(root) {
     let goals = getUserGoals(root);
     let filter = getGoalFilter(root);
-    return {
+    return Object.assign({},{
         goals: goals,
         gids: filter.gids,
-    }
+    })
 }
 
 function mapDispatchToProps(dispatchfn){

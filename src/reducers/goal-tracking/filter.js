@@ -1,16 +1,10 @@
-import { GoalStatus } from '../../data/index';
+import { StatusFilter} from '../../data/index';
 import { ActionTypes } from '../../actions/index';
-
 export default function filter(state, action) {
     if (state === undefined) {
         return {
             gids: [], // the gids filtered based on byStatuses
-            byStatuses: {
-                // only show what is in progress
-                [GoalStatus.IN_PROGRESS]: false,
-                [GoalStatus.DONE]: false,
-                [GoalStatus.NOT_DONE]: false,
-            },
+            byStatuses: StatusFilter.IN_PROGESS,
         };
     }
     switch (action.type) {

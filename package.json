@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
+    "flow": "^0.2.3",
+    "flow-bin": "^0.33.0",
+    "flow-typed": "^2.0.0",
     "react-scripts": "0.2.3"
   },
   "dependencies": {
@@ -13,8 +16,7 @@
     "react-grid-layout": "^0.13.9",
     "react-redux": "^4.4.5",
     "react-tap-event-plugin": "^1.0.0",
-    "redux": "^3.6.0",
-    "whatwg-fetch": "^1.0.0"
+    "redux": "^3.6.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -95,4 +95,5 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-export const Filter = connect(mapStateToProps, mapDispatchToProps)(_FilterTab);
+const Filter = connect(mapStateToProps, mapDispatchToProps)(_FilterTab);
+export default Filter;

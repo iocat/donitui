@@ -16,9 +16,7 @@ export default class TaskItem extends React.Component {
         return <ListItem
             leftIcon={this.props.leftIcon}
             insetChildren={this.props.insetChildren}
-            rightIcon={
-                statusCircle
-            }
+            rightIcon={statusCircle}
             primaryText={task.name}
             secondaryText={task.description || "" }/>
     }

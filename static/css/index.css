@@ -1,0 +1,64 @@
+/* Global setup */
+body {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	
+}
+
+*{
+	box-sizing: border-box;
+}
+
+.goal-card{
+	width:"100%";
+    min-width: 300px;
+	margin:4px 4px;
+}
+
+.goal-card .card-header{
+	position: relative;
+}
+
+.goal-card .card-header .header-img{
+	background-size: cover;
+    background-position: center top;
+   	height: 425px;
+}
+
+.goal-card .card-title{
+	text-align: center;
+}
+
+.goal-card .card-header .visibility-checkbox {
+	position: absolute;
+	top: 16px;
+	right: 0px;
+}
+
+.goal-card .goal-actions{
+	text-align: right ;
+}
+
+.goal-card .goal-actions .goal-control-action.btn,
+.goal-card .goal-actions .goal-control-action.btn{
+	 width: 10%;
+     display: inline-block;
+     margin: auto 1%;
+}
+
+.empty-card {
+	height: 200px; 
+	line-height: 200px;
+	display: flex;
+	justify-content: center; 
+	align-items: center;            
+}
+
+.user-avatar {
+	position: relative;
+}
+
+.user-avatar .status-node{
+	position: absolute;
+}

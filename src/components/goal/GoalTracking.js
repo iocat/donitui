@@ -7,56 +7,45 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 const GoalTrackingLayout = WidthProvider(Responsive);
 
 import { goalTracking, layouts, cols, breakpoints } from '../layout';
-import { Filter } from './filter/Filter';
-import GoalCard from './card/GoalCard';
-import EmptyCard from './card/EmptyCard';
+import Filter from './filter/Filter';
+import GoalCardList from './card/GoalCardList';
+import GoalCreator from './creator/GoalCreator';
+
+
+import RaisedButton from 'material-ui/RaisedButton';
+
+class GoalTrackingController extends React.Component{
+    render(){
+        return (
+            <div style={{textAlign:"right"}}> 
+                <Filter  />
+            </div>
+        )
+    }
+}
 
 class _GoalTracking extends React.Component {
-    renderGoalList = (goals, gids) => {
-        let deleteGoal = this.props.deleteGoal;
-        let deleteTask = this.props.deleteTaskFromGoal;
-        if (gids.length === 0) {
-            return <EmptyCard/>
-        }
-        return gids.map((gid) => {
-            if (goals[gid]){ // Don't show if the goal does not exist
-                return (     
-                    <div key={gid}>
-                        <GoalCard goal={goals[gid]}
-                            canUpdate={true}
-                            deleteGoal={() => { deleteGoal(gid); } }
-                            deleteTask={(tid) => { deleteTask(gid, tid) } } />
-                        <br/>
-                    </div>
-                )
-            }
-            return null;
-        });
-    }
-    /* TODO: abstract the goal list into a React object*/
     render() {
         let goals = this.props.goals;
         let gids = this.props.gids;
+        let canUpdate = this.props.canUpdate;
+        let deleteGoal = this.props.deleteGoal;
+        let deleteTask = this.props.deleteTaskFromGoal;
         return (
             <GoalTrackingLayout
                 rowHeight={70}
                 layouts={layouts(goalTracking)}
                 breakpoints={breakpoints(goalTracking)}
                 cols={cols(goalTracking)}>
-                <div key="filter" style={{ textAlign: "right" }}>
-                    <Filter />
-                </div>
+                <div key="filter" >
+                    <GoalTrackingController/>
+                    </div>
                 <div key="goals" >
-                    {
-                        this.renderGoalList(goals, gids)
-                    }
-                </div>
-            </GoalTrackingLayout>)
+                    <GoalCardList goals={goals} gids={gids} deleteGoal={ deleteGoal }
+                        deleteTask={ deleteTask } canUpdate={canUpdate}/>
+                    </div>
+                </GoalTrackingLayout>)
     }
-}
-
-_GoalTracking.defaultProps = {
-    canUpdate: false,
 }
 
 _GoalTracking.propTypes = {
@@ -66,10 +55,10 @@ _GoalTracking.propTypes = {
     gids: React.PropTypes.arrayOf(React.PropTypes.any).isRequired,
 
     // Whether can edit the data or not, allowed editing.
-    canUpdate: React.PropTypes.bool,
+    canUpdate: React.PropTypes.bool.isRequired,
     // Callbacks
-    deleteGoal: React.PropTypes.func.isRequired,
-    deleteTaskFromGoal: React.PropTypes.func.isRequired,
+    deleteGoal: React.PropTypes.func,
+    deleteTaskFromGoal: React.PropTypes.func,
 }
 
 function mapStateToProps(root) {
@@ -92,4 +81,5 @@ function mapDispatchToProps(dispatchfn){
     }
 }
 
-export const GoalTracking = connect(mapStateToProps, mapDispatchToProps)(_GoalTracking);
+let GoalTracking = connect(mapStateToProps, mapDispatchToProps)(_GoalTracking);
+export default GoalTracking;

@@ -9,27 +9,26 @@ export default class UserAvatarWithStatus extends React.Component{
         let top = (this.props.size/2) * (1- Math.cos(Math.PI/4)) - this.props.radius
         return {
             root: {
-                position:"relative",
-                width: size,
-                height: size
+                width: size;
+                height: size;
             },
             status: {
-                position: "absolute",
                 top: top,
                 right: top
             }
         }
     }
     render(){
+        let styles = this.styles();
         return (
-        <div style={this.styles().root}>
+        <div className="user-avatar" style={styles.root}>
             <UserAvatar 
                 avatar={this.props.avatar} 
                 size={this.props.size}  />
-            <StatusNode 
+            <StatusNode className="status-node"
                 status={this.props.status} 
                 radius={this.props.radius}
-                style={this.styles().status}
+                style={styles.status}
                 color={this.props.color} />
         </div>
     )}

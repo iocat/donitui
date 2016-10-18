@@ -14,12 +14,8 @@ export default class HabitItem extends React.Component{
         }
         
         return <ListItem
-            rightIcon={
-                statusCircle
-            }
-            leftIcon={
-                this.props.leftIcon
-            }
+            rightIcon={statusCircle}
+            leftIcon={this.props.leftIcon}
             insetChildren={this.props.insetChildren}
             primaryText={this.props.habit.name}
             secondaryText={this.props.habit.description || ""}/>

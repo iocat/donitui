@@ -35,29 +35,23 @@ export default class GoalControlBlock extends React.Component {
             />
         ]
         return (
-            <CardActions style={{ textAlign: "right" }}>
-                <FlatButton onTouchTap={this.handleOpen} label="Delete" secondary={true}
-                    style={
-                        {
-                            width: "10%",
-                            display: "inline-block",
-                            margin: "auto 1%"
-                        }
-                    }/>
+            <CardActions className="goal-actions">
+                <FlatButton 
+                    onTouchTap={this.handleOpen} 
+                    label="Delete" 
+                    secondary={true}
+                    className="goal-control-action btn"
+                    />
                 <Dialog 
                     actions={dialogActions}
                     modal={false}
                     open={this.state.open}
                     onRequestClose={this.handleClose}
                 > Are you sure you want to delete "{this.props.goalName}"? </Dialog>
-                <FlatButton label="Edit" primary={true}
-                    style={
-                        {
-                            width: "10%",
-                            display: "inline-block",
-                            margin: "auto 1%"
-                        }
-                    } />
+                <FlatButton 
+                    label="Edit" 
+                    primary={true} 
+                    className="goal-control-action btn"/>
             </CardActions>
         )
     }

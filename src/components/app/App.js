@@ -6,7 +6,7 @@ import PersonalTracking from './PersonalTracking';
 
 class _App extends React.Component {
     render(){
-        return <PersonalTracking style={{maxWidth:"1024px"}}/> 
+        return <PersonalTracking/> 
     }
 }
 

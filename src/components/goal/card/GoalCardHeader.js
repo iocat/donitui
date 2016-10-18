@@ -7,34 +7,6 @@ import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 
 export default class GoalCardHeader extends React.Component{
-    styles() {
-        return {
-            headerImg:{
-                backgroundImage: 'url('+this.props.goal.img+')',
-                backgroundSize: "cover",
-                backgroundPosition:"center top",
-                height: "425px"
-            },
-            cardTitle:{
-                textAlign:"center"
-            },
-            mediaContainer:{
-                position: "relative",
-            },
-            visibilityCheckBox:{
-                position: "absolute",
-                top: "14px",
-                right: "25px",
-                width:"10px",
-                height: "10px",
-            },
-            visibilityIcon:{
-                height: "21px", 
-                width: "21px",
-                margin: "auto auto",
-            },
-        }
-    }
     isVisible = () => {
         return this.props.goal.visibility === GoalVisibility.PRIVATE;
     }
@@ -45,28 +17,32 @@ export default class GoalCardHeader extends React.Component{
     render(){
         let goal = this.props.goal;
         let header = null;
-        let styles = this.styles()
         let cardTitle = (<CardTitle
                     title={goal.name }
                     subtitle={goal.description || ""}
-                    style={styles.cardTitle}></CardTitle>)
+                    className="card-title"></CardTitle>)
         let visibilityCheckbox = null;
         if (this.props.canUpdate){
             visibilityCheckbox = (
-                <Checkbox 
-                    checked={this.isVisible()}
-                    style={styles.visibilityCheckBox}
-                    checkedIcon={<VisibilityOff style={styles.visibilityIcon}/>} 
-                    uncheckedIcon={<Visibility style={styles.visibilityIcon}/>}
-                    />)
+                <div className="visibility-checkbox">
+                    <Checkbox 
+                        checked={this.isVisible()}
+                        checkedIcon={<VisibilityOff/>} 
+                        uncheckedIcon={<Visibility/>}
+                        />
+                    </div>)
         }
         
         if (goal.img){
             header = (
                 <CardMedia 
-                    style={styles.mediaContainer} 
+                    className="card-header"
                     overlay={cardTitle}>
-                    <div style={styles.headerImg}>{visibilityCheckbox}</div>
+                    <div 
+                        style={{backgroundImage: 'url('+goal.img+')'}} 
+                        className="header-img">
+                        {visibilityCheckbox}
+                        </div>
                     </CardMedia>
             )
         }else{

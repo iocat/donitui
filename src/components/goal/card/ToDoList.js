@@ -44,10 +44,8 @@ export default class ToDoList extends React.Component {
                     }
                     return (
                         <TaskItem
-                            leftIcon={leftIcon}
-                            insetChildren={true}
-                            key={task.id}
-                            task={task}
+                            leftIcon={leftIcon} insetChildren={true}
+                            key={task.id} task={task}
                             />
                     )
                 }
@@ -62,10 +60,8 @@ export default class ToDoList extends React.Component {
                     }
                     return (
                         <HabitItem
-                            leftIcon={leftIcon}
-                            insetChildren={true}
-                            key={habit.id}
-                            habit={habit}
+                            leftIcon={leftIcon} insetChildren={true}
+                            key={habit.id} habit={habit}
                             />
                     )
                 }

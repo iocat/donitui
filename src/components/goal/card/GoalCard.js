@@ -7,21 +7,8 @@ import GoalControlBlock from './GoalControlBlock';
 import {Card} from 'material-ui/Card';
 
 export default class GoalCard extends React.Component {
-    styles() {
-        return {
-            root: {
-                width:"100%",
-                minWidth:"300px",
-                margin:"4px 4px",
-                //minWidth: "425px",
-                //maxWidth: "450px",
-            }
-        }
-    }
-
     render() {
         let goal = this.props.goal;
-        let styles = this.styles();
         
         let controlBlock = null;
         if (this.props.canUpdate){
@@ -30,7 +17,7 @@ export default class GoalCard extends React.Component {
                 goalName={this.props.goal.name}/>
         }
         return (
-            <Card style={styles.root}>
+            <Card className="goal-card">
                 <GoalCardHeader canUpdate={this.props.canUpdate} goal={goal}/>
                 <ToDoList tasks={goal.tasks}/>
                 {controlBlock} 

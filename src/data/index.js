@@ -1,4 +1,3 @@
-
 export const GoalStatus = {
     DONE: "DONE",
     NOT_DONE: "NOT_DONE",

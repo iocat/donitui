@@ -1,14 +1,48 @@
 import React from 'react';
 
 import GoalCard from './GoalCard';
-
 import Paper from 'material-ui/Paper';
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 class EmptyCard extends React.Component{
+    constructor(){
+        super();
+        let getRandomQuote = ()=>{
+            let quoteList = [
+                "You have no goal. Add one!",
+                "No goal? Enjoy a cup of tea!",
+                "Nothing to see here...",
+                
+            ]
+            return quoteList[getRandomInt(0, quoteList.length)];
+        }
+        this.quote = getRandomQuote();
+        this.state = {
+            depth: 1,
+        };
+    }
+
+    
+
+    addDepth = ()=>{
+        this.setState({depth: 3});
+    }
+
+    removeDepth = ()=>{
+        this.setState({depth: 1});
+    }
     render(){
         return (
-            <Paper className="empty-card goal-card" zDepth={1}>
-                <p>You have no goal</p>
+            <Paper className="empty-card goal-card"
+                onMouseOver={this.addDepth}
+                onMouseOut={this.removeDepth}
+                zDepth={this.state.depth}>
+                <p>{this.quote}</p>
                 </Paper>
         )
     }

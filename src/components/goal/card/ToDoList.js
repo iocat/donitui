@@ -6,21 +6,33 @@ import HabitItem from './HabitItem';
 import { List } from 'material-ui/List';
 import ActionSchedule from 'material-ui/svg-icons/action/schedule';
 import ActionAutorenew from 'material-ui/svg-icons/action/autorenew';
+
 export default class ToDoList extends React.Component {
+    // tasks is a dictionary of tasks or an array
     habitsAndTasks(tasks) {
         let habits = [];
         let nortasks = []; // Normal tasks
-        let tks = Object.keys(tasks);
-        tks.forEach(
-            (tk) => {
-                let task = tasks[tk];
-                if (task.reminder) {
+        if (tasks instanceof Object){
+            let tks = Object.keys(tasks);
+            tks.forEach(
+                (tk) => {
+                    let task = tasks[tk];
+                    if (task.reminder) {
+                        nortasks.push(task);
+                    } else if (task.repeatedReminder) {
+                        habits.push(task);
+                    }
+                }
+            )
+        }else if (tasks instanceof Array){
+            tasks.forEach((task)=>{
+                if (task.reminder){
                     nortasks.push(task);
-                } else if (task.repeatedReminder) {
+                }else if (task.repeatedReminder){
                     habits.push(task);
                 }
-            }
-        )
+            })
+        }
         return {
             habits: habits,
             tasks: nortasks,
@@ -67,11 +79,12 @@ export default class ToDoList extends React.Component {
                 }
                 )
             }
+            {this.props.children}
         </List>)
     }
 }
 
 ToDoList.propTypes = {
     // A dictionary of task
-    tasks: React.PropTypes.object.isRequired,
+    tasks: React.PropTypes.any.isRequired,
 }

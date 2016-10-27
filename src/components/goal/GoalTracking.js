@@ -9,10 +9,7 @@ const GoalTrackingLayout = WidthProvider(Responsive);
 import { goalTracking, layouts, cols, breakpoints } from '../layout';
 import Filter from './filter/Filter';
 import GoalCardList from './card/GoalCardList';
-import GoalCreator from './creator/GoalCreator';
-
-
-import RaisedButton from 'material-ui/RaisedButton';
+import GoalCreatorCard from './creator/GoalCreatorCard';
 
 class GoalTrackingController extends React.Component{
     render(){
@@ -41,6 +38,8 @@ class _GoalTracking extends React.Component {
                     <GoalTrackingController/>
                     </div>
                 <div key="goals" >
+                    <GoalCreatorCard initiallyExpanded={true}/>
+                    <br />
                     <GoalCardList goals={goals} gids={gids} deleteGoal={ deleteGoal }
                         deleteTask={ deleteTask } canUpdate={canUpdate}/>
                     </div>

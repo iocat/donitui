@@ -3,7 +3,7 @@ import { ActionCreators } from './actions/index';
 import {StatusFilter} from './data/index';
 import { appStore } from './stores/appStore';
 export default function setupExamples() {
-    let placeholder = "https://isardasorensen.files.wordpress.com/2016/01/tp-beautiful-sunset-twilight-nyc-1-27-16.jpg";
+    let placeholder = "http://onehdwallpaper.com/wp-content/uploads/2016/07/Beautiful-HD-Landscape-Images.jpg";
     let goal1 = {
         id: 1,
         name: "Have a dog",
@@ -37,19 +37,19 @@ export default function setupExamples() {
             "1": {
                 id: "1",
                 name: "Do whatever I want to do",
-                status: "DONE",
+                status: "NOT_DONE",
                 reminder: {},
             },
             "3": {
                 id: "3",
                 name: "Read a lot",
-                status: "DONE",
+                status: "NOT_DONE",
                 repeatedReminder: {},
             },
             "2": {
                 id: "2",
                 name: "On the internet, nobody knows you are a dog",
-                status: "DONE",
+                status: "NOT_DONE",
                 repeatedReminder: {},
             }
         }
@@ -72,7 +72,7 @@ export default function setupExamples() {
     }
     let goal5 = {
         id: "5",
-        name:"Get a girl friend",
+        name:"Be busy",
         visibility: "PRIVATE",
         img: placeholder,
         tasks:{
@@ -92,8 +92,5 @@ export default function setupExamples() {
     appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("3", goal3));
     appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("4", goal4));
     appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("5", goal5));
-    for (let i = 7 ; i < 10; i ++ ){
-        appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID(i, Object.assign({}, goal1,{id:(i+""), name: i, img:placeholder})));
-    }
     appStore.dispatch(ActionCreators.FILTER_GOAL_BY_STATUSES(StatusFilter.IN_PROGESS));
 }

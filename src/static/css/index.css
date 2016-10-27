@@ -47,6 +47,10 @@ body {
      margin: auto 1%;
 }
 
+.goal-card.goal-changer .task-creator .task-add-action.btn{
+	text-align: center;
+}
+
 .empty-card {
 	height: 200px; 
 	line-height: 200px;

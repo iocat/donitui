@@ -1,5 +1,4 @@
 import {ActionTypes} from '../actions/index';
-import 'whatwg-fetch';
 import {combineReducers} from 'redux';
 
 // TODO: show structure

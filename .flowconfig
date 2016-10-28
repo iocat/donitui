@@ -1,3 +1,10 @@
 [ignore]
-<PROJECT_ROOT>/node_modules
-<PROJECT_ROOT>/build
+.*/node_modules/.*
+
+[include]
+
+[libs]
+node_modules/flux/flow/include
+
+[options]
+esproposal.class_instance_fields=enable

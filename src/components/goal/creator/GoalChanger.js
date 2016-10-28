@@ -171,15 +171,14 @@ export class GoalChanger extends React.Component{
                             primaryText="Followers"/>
                         <MenuItem 
                             value={GoalVisibility.PUBLIC} 
-                            label="Public"
+                            label="Everyone"
                             primaryText="Everyone"/>
                         <MenuItem 
                             value={GoalVisibility.PRIVATE}
-                            label="Private"
+                            label="Only You"
                             primaryText="You"/>
                         </SelectField>
                     </CardText>
-                
                 <Divider/>      
                 <CardMedia expandable={true}>
                     <TaskCreator tasks={this.state.goal.tasks} addTask={this.addTask}/>

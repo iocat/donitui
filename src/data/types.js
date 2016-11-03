@@ -12,12 +12,35 @@ export type GoalVisibilityEnum =
     | "PUBLIC"
     | "FOR_FOLLOWERS";
 
-export type Reminder = {
+export type ReminderCycleEnum =
+    | "EVERY_DAY"
+    | "EVERY_WEEK"
+    | "EVERY_MONTH";
 
+export type DaysInWeekEnum =
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7;
+
+export type UserStatusEnum =
+    | "ONLINE"
+    | "OFFLINE"
+    | "BUSY";
+
+export type Reminder = {
+    remindAt: Date,
+    duration: number,
 }
 
 export type RepeatedReminder = {
-
+    cycle: ReminderCycleEnum,
+    remindAt: Date,
+    days: {[id:number]:boolean},
+    duration: number,
 }
 
 export type Goal = {

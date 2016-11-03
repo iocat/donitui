@@ -51,6 +51,16 @@ body {
 	text-align: center;
 }
 
+.time-picker-group{
+	display: flex;
+	justify-content: space-around;
+}
+
+.time-picker-group .date-picker,
+.time-picker-group .time-picker{
+	width: 47%;
+}
+
 .empty-card {
 	height: 200px; 
 	line-height: 200px;

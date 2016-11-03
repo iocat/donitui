@@ -2,17 +2,8 @@
 const React = require("react");
 import {TextField, RaisedButton} from 'material-ui';
 import {TaskStatus} from '../../../data/index';
-import DateTimePicker from '../../utils/DateTimePicker';
-import type {Task} from '../../../data/types';
-
-export type ReminderStateEnum =
-    | 1
-    | 2;
-
-export const ReminderState: {[id:string]:ReminderStateEnum} = {
-    NON_REPEATED: 1,
-    REPEATED: 2,
-}
+import ReminderCreator from './ReminderCreator';
+import type {Task, Reminder, RepeatedReminder} from '../../../data/types';
 
 export type TaskEditorStateEnum =
     | 1
@@ -25,83 +16,50 @@ export const TaskEditorState: {[id:string]:TaskEditorStateEnum}= {
     PREVIEW: 3,
 }
 
+type State = {
+    currState: TaskEditorStateEnum,
+    task: Task,
+}
+
 type Props = {
     initTask: Task,
     initState: TaskEditorStateEnum,
     addTask: (task: Task) => void,
 }
-
-const getEndDateLimitFunc = function(startDate:Date):(date: Date)=>boolean{
-    if (startDate ){
-        return function(date: Date): boolean{
-            if (date.getFullYear() < startDate.getFullYear()) {
-                return true
-            }else if (date.getFullYear() == startDate.getFullYear()){
-                if (date.getMonth() < startDate.getMonth()){
-                    return true
-                }else if (date.getMonth() == startDate.getMonth()){
-                    return date.getDate() < startDate.getDate()
-                }
-            }
-            return false;
-        }
-    }
-    return (date:Date):boolean => false
+const emptyTask:Task= {
+    name:"",
+    description:"",
+    status: TaskStatus.NOT_DONE,
+    reminder:{
+        remindAt: new Date(),
+        duration: 0,
+    },
 }
 
+// SingleTaskEditor represents a single task editor which
+// has 3 states CREATE_BUTTON, EDITING and PREVIEW
 export class SingleTaskEditor extends React.Component{
     static defaultProps: {
         initState: TaskEditorStateEnum,
-    }
-    state:{
-        currState: TaskEditorStateEnum,
-        reminderState: ReminderStateEnum,
-        task: Task,
-    }
+    };
+    state: State;
 
     constructor(props: Props) {
         super(props);
+        let task: Task;
+        if (props.initTask == null){
+            task = emptyTask;
+        }else{
+            task = props.initTask;
+        }
         this.state = {
             currState: props.initState,
-            task: props.initTask,
-            reminderState: ReminderState.NON_REPEATED,
+            task: task,
         }
     }
 
     onCreate = () =>{
         this.setState({currState: TaskEditorState.EDITING});
-    }
-
-    onSwitchReminderState = (state: ReminderStateEnum)=>{
-        this.setState({
-            reminderState: state,
-        })
-    }
-
-    onStartDateTimeChange = (newDt: Date) => {
-
-    }
-
-    onEndDateTimeChange = (newDt: Date) =>{
-
-    }
-
-    getReminderCreator = (reminderState: number) =>{
-        switch(reminderState){
-            case ReminderState.NON_REPEATED:
-                return (
-                    <div>
-                        <DateTimePicker onChange={this.onStartDateTimeChange}
-                            dateLabel="Start Date" timeLabel="Start Time"/>
-                        <DateTimePicker onChange={this.onEndDateTimeChange}
-                            dateLabel="End Date" timeLabel="End Time"/>
-                    </div>
-                );
-            case ReminderState.REPEATED:
-                return (<div>Repeat plz</div>);
-            default:
-                console.log("panic: expect a proper ReminderState");
-        }
     }
 
     getCreateButtonUI = ()=>{
@@ -112,6 +70,17 @@ export class SingleTaskEditor extends React.Component{
                 style={{textAlign:"center"}}
                 label="Add A Task Reminder"/>
         );
+    }
+    onCreateReminder = (reminder:Reminder )=>{
+        let newTask:Task= Object.assign({},this.state.task, {reminder: reminder});
+        delete newTask["repeatedReminder"];
+        this.setState({task: newTask});
+        console.log(newTask);
+    }
+    onCreateRepeatedReminder = (reReminder: RepeatedReminder)=>{
+        let newTask:Task= Object.assign({},this.state.task, {repeatedReminder: reReminder});
+        delete newTask["reminder"];
+        this.setState({task: newTask});
     }
     getEditingBoxUI = ()=>{
         return (
@@ -128,7 +97,12 @@ export class SingleTaskEditor extends React.Component{
                     floatingLabelFixed={true}
                     multiLine={true}/>
                 <br/>
-                {this.getReminderCreator(this.state.reminderState)}
+                <ReminderCreator
+                    repeated={true}
+                    reminder={this.state.task.reminder}
+                    repeatedReminder={this.state.task.repeatedReminder}
+                    onSetReminder={this.onCreateReminder}
+                    onSetRepeatedReminder={this.onCreateRepeatedReminder}/>
             </div>
         );
     }

@@ -26,13 +26,15 @@ export default class DateTimePicker extends React.Component {
 
     onDateChange =  (_:Event, date:Date) => {
         let copied:Date = new Date(this.props.dateTime);
-        copied.setDate(date);
+        copied.setDate(date.getDate())
+        copied.setMonth(date.getMonth());
+        copied.setFullYear(date.getFullYear());
         this.props.onChange(copied);
     }
 
     onTimeChange = (_:Event, time:Date) => {
         let copied: Date = new Date(this.props.dateTime);
-        copied.setTime(time);
+        copied.setHours(time.getHours(), time.getMinutes(), time.getSeconds());
         this.props.onChange(copied);
     }
 
@@ -45,16 +47,16 @@ export default class DateTimePicker extends React.Component {
                         floatingLabelText={this.props.dateLabel}
                         floatingLabelFixed={true} mode="landscape"
                         textFieldStyle={{ width: '100%' }} container="inline"
-                        formatDate={formatDate} onChange={this.onDateChange}
-                        value={this.props.dateTime} />
+                        formatDate={formatDate} value={this.props.dateTime}
+                        onChange={this.onDateChange}/>
                 </div>
                 <div className="time-picker">
                     <TimePicker
-                        onChange={this.onTimeChange}
                         format='ampm' floatingLabelText={this.props.timeLabel}
-                        container="inline" floatingLabelFixed={true}
+                        floatingLabelFixed={true}
                         pedantic={true} textFieldStyle={{ width: '100%' }}
-                        value={this.props.dateTime} />
+                        value={this.props.dateTime}
+                        onChange={this.onTimeChange}/>
                 </div>
             </div>)
     }

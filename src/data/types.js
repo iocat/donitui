@@ -36,10 +36,12 @@ export type Reminder = {
     duration: number,
 }
 
+export type HabitDays = {[id:number]:boolean}
+
 export type RepeatedReminder = {
     cycle: ReminderCycleEnum,
     remindAt: Date,
-    days: {[id:number]:boolean},
+    days: HabitDays,
     duration: number,
 }
 

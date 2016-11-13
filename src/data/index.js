@@ -1,7 +1,7 @@
 // @flow
 
 import type {GoalStatusEnum, GoalVisibilityEnum,
-    TaskStatusEnum, UserStatusEnum} from './types';
+    TaskStatusEnum, UserStatusEnum, ReminderCycleEnum} from './types';
 
 export const GoalStatus :{[id:string]:GoalStatusEnum} = {
     DONE: "DONE",

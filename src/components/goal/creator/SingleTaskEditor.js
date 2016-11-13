@@ -2,7 +2,7 @@
 const React = require("react");
 import {TextField, RaisedButton} from 'material-ui';
 import {TaskStatus} from '../../../data/index';
-import ReminderCreator from './ReminderCreator';
+import ReminderCreator from './reminder/ReminderCreator';
 import type {Task, Reminder, RepeatedReminder} from '../../../data/types';
 
 export type TaskEditorStateEnum =
@@ -26,6 +26,7 @@ type Props = {
     initState: TaskEditorStateEnum,
     addTask: (task: Task) => void,
 }
+
 const emptyTask:Task= {
     name:"",
     description:"",
@@ -38,12 +39,13 @@ const emptyTask:Task= {
 
 // SingleTaskEditor represents a single task editor which
 // has 3 states CREATE_BUTTON, EDITING and PREVIEW
+// TODO: change this to stateless (the only state it should has is
+// the UI state, data should be props!)
 export class SingleTaskEditor extends React.Component{
     static defaultProps: {
         initState: TaskEditorStateEnum,
     };
     state: State;
-
     constructor(props: Props) {
         super(props);
         let task: Task;
@@ -62,6 +64,18 @@ export class SingleTaskEditor extends React.Component{
         this.setState({currState: TaskEditorState.EDITING});
     }
 
+    onCreateReminder = (reminder:Reminder )=>{
+        let newTask:Task= Object.assign({},this.state.task, {reminder: reminder});
+        delete newTask["repeatedReminder"];
+        this.setState({task: newTask});
+    }
+
+    onCreateRepeatedReminder = (reReminder: RepeatedReminder)=>{
+        let newTask:Task= Object.assign({},this.state.task, {repeatedReminder: reReminder});
+        delete newTask["reminder"];
+        this.setState({task: newTask});
+    }
+
     getCreateButtonUI = ()=>{
         return (
             <RaisedButton
@@ -70,17 +84,6 @@ export class SingleTaskEditor extends React.Component{
                 style={{textAlign:"center"}}
                 label="Add A Task Reminder"/>
         );
-    }
-    onCreateReminder = (reminder:Reminder )=>{
-        let newTask:Task= Object.assign({},this.state.task, {reminder: reminder});
-        delete newTask["repeatedReminder"];
-        this.setState({task: newTask});
-        console.log(newTask);
-    }
-    onCreateRepeatedReminder = (reReminder: RepeatedReminder)=>{
-        let newTask:Task= Object.assign({},this.state.task, {repeatedReminder: reReminder});
-        delete newTask["reminder"];
-        this.setState({task: newTask});
     }
     getEditingBoxUI = ()=>{
         return (
@@ -103,12 +106,13 @@ export class SingleTaskEditor extends React.Component{
                     repeatedReminder={this.state.task.repeatedReminder}
                     onSetReminder={this.onCreateReminder}
                     onSetRepeatedReminder={this.onCreateRepeatedReminder}/>
-            </div>
+                </div>
         );
     }
     getPreviewUI = () => {
         return (<p> NOT YET IMPLEMENTED </p>);
     }
+
     render(){
         switch(this.state.currState){
         case TaskEditorState.CREATE_BUTTON:

@@ -1,28 +1,8 @@
 // @flow weak
 const React = require("react");
-import DateTimePicker from '../../utils/DateTimePicker';
-import {SelectField, MenuItem} from 'material-ui';
-import {ReminderCycle} from '../../../data/index';
-import type {Reminder, RepeatedReminder,
-    ReminderCycleEnum } from '../../../data/types';
-
-const getEndDateLimitFunc = function(startDate:Date):(date: Date)=>boolean{
-    if (startDate ){
-        return function(date: Date): boolean{
-            if (date.getFullYear() < startDate.getFullYear()) {
-                return true
-            }else if (date.getFullYear() === startDate.getFullYear()){
-                if (date.getMonth() < startDate.getMonth()){
-                    return true
-                }else if (date.getMonth() === startDate.getMonth()){
-                    return date.getDate() < startDate.getDate()
-                }
-            }
-            return false;
-        }
-    }
-    return (date:Date):boolean => false
-}
+import DateTimePicker from '../../../utils/DateTimePicker';
+import RepeatedReminderCreator from './RepeatedReminderCreator';
+import type { Reminder, RepeatedReminder, ReminderCycleEnum, HabitDays} from '../../../../data/types';
 
 const getStartDate = (reminder:Reminder):Date => {
     return reminder.remindAt;
@@ -57,21 +37,6 @@ const renderReminder = (reminder: Reminder,
     );
 }
 
-const renderRepeatedReminder = (rReminder: RepeatedReminder,
-    changeCycle: (c: ReminderCycleEnum)=>void) => {
-    return(
-        <div>
-            <SelectField floatingLabelText="Cycle"
-                value={rReminder.cycle}
-                onChange={changeCycle}>
-                <MenuItem value={ReminderCycle.EVERY_DAY} primaryText="Every day"/>
-                <MenuItem value={ReminderCycle.EVERY_WEEK} primaryText="Every week"/>
-                <MenuItem value={ReminderCycle.EVERY_MONTH} primaryText="Every month"/>
-            </SelectField>
-        </div>
-    )
-}
-
 export default class ReminderCreator extends React.Component{
     static defaultProps: {
         repeated: boolean,
@@ -91,19 +56,28 @@ export default class ReminderCreator extends React.Component{
         this.props.onSetReminder(reminder);
     }
 
-    onCycleChange = (event:Object,k:number , cycle: ReminderCycleEnum) =>{
+    onCycleChange = (event:Object, k:number , cycle: ReminderCycleEnum) =>{
         let rr = Object.assign({}, this.props.repeatedReminder, {
             cycle: cycle,
         });
         this.props.onSetRepeatedReminder(rr);
     }
 
+    onDaysChange = (days: HabitDays) => {
+        let rr = Object.assign({}, this.props.repeatedReminder, {
+            days: days,
+        })
+        this.props.onSetRepeatedReminder(rr);
+    }
     render(){
         if (!this.props.repeated){
             return renderReminder(this.props.reminder,
                 this.onStartDateTimeChange, this.onEndDateTimeChange);
         }
-        return renderRepeatedReminder(this.props.repeatedReminder, this.onCycleChange );
+        return <RepeatedReminderCreator
+            repeatedReminder={this.props.repeatedReminder}
+            onCycleChange={this.onCycleChange}
+            onDaysChange={this.onDaysChange}/>;
     }
 }
 

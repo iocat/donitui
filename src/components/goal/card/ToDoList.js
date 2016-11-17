@@ -4,8 +4,7 @@ import Divider from 'material-ui/Divider';
 import TaskItem from './TaskItem';
 import HabitItem from './HabitItem';
 import { List } from 'material-ui/List';
-import ActionSchedule from 'material-ui/svg-icons/action/schedule';
-import ActionAutorenew from 'material-ui/svg-icons/action/autorenew';
+import {taskIcon, habitIcon} from '../icons';
 
 export default class ToDoList extends React.Component {
     // tasks is a dictionary of tasks or an array
@@ -52,7 +51,7 @@ export default class ToDoList extends React.Component {
                 tasks.map(function (task, index) {
                     let leftIcon = null
                     if (index === 0) {
-                        leftIcon = <ActionSchedule />
+                        leftIcon = taskIcon
                     }
                     return (
                         <TaskItem
@@ -68,7 +67,7 @@ export default class ToDoList extends React.Component {
                 habits.map(function (habit, index) {
                     let leftIcon = null
                     if (index === 0) {
-                        leftIcon = <ActionAutorenew />
+                        leftIcon = habitIcon
                     }
                     return (
                         <HabitItem

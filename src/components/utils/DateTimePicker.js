@@ -4,8 +4,14 @@ import React from 'react';
 import {DatePicker, TimePicker} from 'material-ui';
 import moment from 'moment';
 
+const thisYear = (new Date()).getFullYear();
+
 const formatDate = (date: Date):string => {
-    return moment(date).format("dddd, MMM Do YYYY");
+    if (date.getFullYear() === thisYear){
+        return moment(date).format("dddd, MM/DD");
+    }else{
+        return moment(date).format("dddd, MM/DD/YYYY");
+    }
 }
 
 // DateTimePicker allows user to pick a date and time and extract date and time which is in RFC 3339

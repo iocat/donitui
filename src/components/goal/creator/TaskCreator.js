@@ -1,11 +1,12 @@
 import React from 'react';
 import {SingleTaskEditor} from './SingleTaskEditor';
-import {CardText} from 'material-ui/Card';
+import {CardText, Divider} from 'material-ui';
 
 export default class TaskCreator extends React.Component{
     render(){
         return (
             <div>
+                <Divider/>
                 <CardText className="task-creator">
                     <SingleTaskEditor addTask={this.props.addTask} />
                     </CardText>

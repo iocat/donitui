@@ -1,12 +1,7 @@
 import React from 'react';
 
-import FlatButton from 'material-ui/FlatButton';
-import { Card, CardHeader, CardText, CardActions, CardMedia } from 'material-ui/Card';
 import {GoalVisibility} from '../../../data/index';
-import TextField from 'material-ui/TextField';
-import Divider from 'material-ui/Divider';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { TextField, Divider,SelectField,MenuItem,Card, CardHeader, CardText, CardActions, CardMedia, FlatButton} from 'material-ui';
 import TaskCreator from './TaskCreator';
 
 export const Mode = {
@@ -60,7 +55,7 @@ export class GoalChanger extends React.Component{
             expanded: true,
         })
     }
-    // handleExpandChange opens and closes the GoalCreator 
+    // handleExpandChange opens and closes the GoalCreator
     handleExpandChange = (expanded) => {
         this.setState({
             expanded: expanded,
@@ -122,7 +117,7 @@ export class GoalChanger extends React.Component{
                                 disabled={this.discardable()}
                                 label="Discard"/>,
                             <FlatButton key="create-btn"
-                                className="goal-control-action btn" 
+                                className="goal-control-action btn"
                                 disabled={!this.canCreate()}
                                 primary={true} label="Create"/>
                             ];
@@ -130,7 +125,7 @@ export class GoalChanger extends React.Component{
                 return [<FlatButton key="update-btn"
                             className="goal-control-action btn"
                             primary={true}  label="Update" />,
-                         <FlatButton key="discard-btn" 
+                         <FlatButton key="discard-btn"
                             className="goal-control-action btn"
                             secondary={true} label="Discard"/>];
             default:
@@ -142,21 +137,21 @@ export class GoalChanger extends React.Component{
         let goal = this.state.goal;
         let buttons = this.getButtonsForMode(mode);
         return (
-            <Card expanded={this.state.expanded} 
-                className="goal-card goal-changer" 
+            <Card expanded={this.state.expanded}
+                className="goal-card goal-changer"
                 onExpandChange={this.handleExpandChange}>
-                <CardHeader actAsExpander={true} 
+                <CardHeader actAsExpander={true}
                     showExpandableButton={true}
                     subtitle="Got something cool to do today?"/>
                 <Divider/>
                 <CardText expandable={true}>
                     <TextField
                         hintText="What do you want to do?"
-                        floatingLabelText="Objective" floatingLabelFixed={true}
+                        floatingLabelText="Objective"
                         fullWidth={true} value={goal.name}
                         onChange={this.changeFieldVal("name")}/>
                     <TextField
-                        hintText="Add some more details?" floatingLabelFixed={true}
+                        hintText="Add some more details?"
                         floatingLabelText="Description" fullWidth={true}
                         multiLine={true} value={goal.description}
                         onChange={this.changeFieldVal("description")}/>
@@ -165,25 +160,23 @@ export class GoalChanger extends React.Component{
                         floatingLabelText="Who can see it?"
                         value={goal.visibility}
                         onChange={this.changeVisibility}>
-                        <MenuItem 
-                            value={GoalVisibility.FOR_FOLLOWERS} 
+                        <MenuItem
+                            value={GoalVisibility.FOR_FOLLOWERS}
                             label="Followers"
                             primaryText="Followers"/>
-                        <MenuItem 
-                            value={GoalVisibility.PUBLIC} 
+                        <MenuItem
+                            value={GoalVisibility.PUBLIC}
                             label="Everyone"
                             primaryText="Everyone"/>
-                        <MenuItem 
+                        <MenuItem
                             value={GoalVisibility.PRIVATE}
                             label="Only You"
                             primaryText="You"/>
                         </SelectField>
                     </CardText>
-                <Divider/>      
                 <CardMedia expandable={true}>
                     <TaskCreator tasks={this.state.goal.tasks} addTask={this.addTask}/>
                     </CardMedia>
-
                 <CardActions className="goal-actions" expandable={true}>
                     {buttons}
                     </CardActions>

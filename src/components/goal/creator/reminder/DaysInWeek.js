@@ -13,7 +13,7 @@ const mapDayToNumber = {
     "Sunday": 7,
 }
 
-const displayDays = ["Monday", "Tuesday","Wednesday","Thursday", "Friday", "Saturday", "Sunday"];
+const displayDays = ["Sunday","Monday", "Tuesday","Wednesday","Thursday", "Friday", "Saturday"];
 
 export default class DaysInWeek extends React.Component{
 

@@ -1,9 +1,10 @@
 // @flow
 const React = require("react");
-import {TextField, RaisedButton} from 'material-ui';
+import { RaisedButton } from 'material-ui';
 import {TaskStatus} from '../../../data/index';
-import ReminderCreator from './reminder/ReminderCreator';
 import type {Task, Reminder, RepeatedReminder} from '../../../data/types';
+
+import EditModeTaskEditor from './EditModeTaskEditor';
 
 export type TaskEditorStateEnum =
     | 1
@@ -26,6 +27,7 @@ type Props = {
     initState: TaskEditorStateEnum,
     addTask: (task: Task) => void,
 }
+
 
 const emptyTask:Task= {
     name:"",
@@ -60,8 +62,10 @@ export class SingleTaskEditor extends React.Component{
         }
     }
 
-    onCreate = () =>{
-        this.setState({currState: TaskEditorState.EDITING});
+    switchMode = (mode: TaskEditorStateEnum)=>{
+        return ()=>{
+            this.setState({currState: mode});
+        }
     }
 
     onCreateReminder = (reminder:Reminder )=>{
@@ -76,49 +80,57 @@ export class SingleTaskEditor extends React.Component{
         this.setState({task: newTask});
     }
 
-    getCreateButtonUI = ()=>{
-        return (
-            <RaisedButton
-                fullWidth={true}
-                onTouchTap={this.onCreate}
-                style={{textAlign:"center"}}
-                label="Add A Task Reminder"/>
-        );
+    onSetName = (name: string)=>{
+        let newTask:Task = Object.assign({},this.state.task,{name:name});
+        this.setState({task:newTask});
     }
-    getEditingBoxUI = ()=>{
-        return (
-            <div>
-                <TextField
-                    hintText="Do this and complete your goal!"
-                    floatingLabelText="Task"
-                    floatingLabelFixed={true}
-                    multiLine={false} autoFocus/>
-                <br/>
-                <TextField
-                    hintText="Some details please!"
-                    floatingLabelText="Description"
-                    floatingLabelFixed={true}
-                    multiLine={true}/>
-                <br/>
-                <ReminderCreator
-                    repeated={true}
-                    reminder={this.state.task.reminder}
-                    repeatedReminder={this.state.task.repeatedReminder}
-                    onSetReminder={this.onCreateReminder}
-                    onSetRepeatedReminder={this.onCreateRepeatedReminder}/>
-                </div>
-        );
+
+    onSetDescription = (desc: string)=>{
+        let nt:Task = Object.assign({},this.state.task,{description: desc});
+        this.setState({task:nt});
     }
+
     getPreviewUI = () => {
         return (<p> NOT YET IMPLEMENTED </p>);
     }
 
+    // callback to accept the task state
+    acceptTask = ()=>{
+        // TODO
+        console.log("Task accepted: ");
+        console.log(this.state.task);
+    }
     render(){
+        let task: Task = this.state.task;
+
         switch(this.state.currState){
         case TaskEditorState.CREATE_BUTTON:
-            return this.getCreateButtonUI();
+            return (
+                <RaisedButton
+                    fullWidth={true}
+                    onTouchTap={this.switchMode(TaskEditorState.EDITING)}
+                    style={{textAlign:"center"}}
+                    label="Set A Task Reminder"/>
+            );
+
         case TaskEditorState.EDITING:
-            return this.getEditingBoxUI();
+            let initHabit :boolean = false;
+            if (task.repeatedReminder){
+                initHabit = true;
+            }
+
+            return <EditModeTaskEditor
+                    task={task}
+                    initHabit={initHabit}
+                    initReminder={task.reminder}
+                    initRReminder={task.repeatedReminder}
+                    onSetName={this.onSetName}
+                    onSetDescription={this.onSetDescription}
+                    onSetReminder={this.onCreateReminder}
+                    onSetRepeatedReminder={this.onCreateRepeatedReminder}
+                    onCreate={this.acceptTask}
+                    />;
+
         case TaskEditorState.PREVIEW:
             return this.getPreviewUI();
         default:

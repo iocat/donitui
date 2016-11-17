@@ -3,7 +3,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: sans-serif;
-	
+
 }
 
 *{
@@ -51,6 +51,16 @@ body {
 	text-align: center;
 }
 
+.task-creator{
+	position: relative;
+}
+
+.task-creator .confirm-btn.btn{
+	position: absolute;
+	top:20px;
+	right: 20px;
+}
+
 .time-picker-group{
 	display: flex;
 	justify-content: space-around;
@@ -58,15 +68,15 @@ body {
 
 .time-picker-group .date-picker,
 .time-picker-group .time-picker{
-	width: 47%;
+	width: 200px;
 }
 
 .empty-card {
-	height: 200px; 
+	height: 200px;
 	line-height: 200px;
 	display: flex;
-	justify-content: center; 
-	align-items: center;            
+	justify-content: center;
+	align-items: center;
 }
 
 .user-avatar {

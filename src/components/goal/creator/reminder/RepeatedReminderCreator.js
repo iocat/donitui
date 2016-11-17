@@ -6,10 +6,31 @@ import {ReminderCycle} from '../../../../data/index';
 import type{HabitDays, RepeatedReminder} from '../../../../data/types';
 
 export default class RepeatedReminderCreator extends React.Component{
+    onCycleChange = (event:Object, k:number , cycle: ReminderCycleEnum) =>{
+        let rr = Object.assign({}, this.props.repeatedReminder, {
+            cycle: cycle,
+        });
+        this.props.onSet(rr);
+    }
+
+    onDaysChange = (days: HabitDays) => {
+        let rr = Object.assign({}, this.props.repeatedReminder, {
+            days: days,
+        })
+        this.props.onSet(rr);
+    }
+
+    // TODO
+    onTimeChange = (_:Event, date:Date) =>{
+        console.log(date);
+    }
+    // TODO
+    onDurationChange = (_:Event, date:Date)=>{
+        console.log(date);
+    }
+
     render(){
         let rReminder: RepeatedReminder = this.props.repeatedReminder;
-        let onDaysChange = this.props.onDaysChange;
-        let onCycleChange = this.props.onCycleChange;
         let daysPicker = null;
         switch(rReminder.cycle){
         case ReminderCycle.EVERY_WEEK:
@@ -18,13 +39,13 @@ export default class RepeatedReminderCreator extends React.Component{
                 addDay={(day: number)=>{
                         let days: HabitDays = Object.assign({}, rReminder.days);
                         days[day] = true;
-                        onDaysChange(days);
+                        this.onDaysChange(days);
                     }
                 }
                 rmDay={(day: number) => {
                         let days: HabitDays = Object.assign({}, rReminder.days);
                         delete days[day];
-                        onDaysChange(days);
+                        this.onDaysChange(days);
                     }
                 }/>;
             break;
@@ -40,7 +61,7 @@ export default class RepeatedReminderCreator extends React.Component{
             <div>
                 <SelectField floatingLabelText="Cycle"
                     value={rReminder.cycle}
-                    onChange={onCycleChange}>
+                    onChange={this.onCycleChange}>
                     <MenuItem value={ReminderCycle.EVERY_DAY} primaryText="Every day"/>
                     <MenuItem value={ReminderCycle.EVERY_WEEK} primaryText="Every week"/>
                     {/* NOTE: not supported
@@ -51,14 +72,19 @@ export default class RepeatedReminderCreator extends React.Component{
                 {daysPicker}
                 <div className="time-picker-group">
                     <TimePicker format="ampm" className="time-picker"
-                        fullWidth={true}
+                        fullWidth={true} onChange={this.onTimeChange}
                         floatingLabelText="Remind At" floatingLabelFixed={true}/>
                     <TimePicker format="24hr" className="time-picker"
-                        fullWidth={true}
+                        fullWidth={true} onChange={this.onDurationChange}
                         hintText="in hour:minute"
                         floatingLabelText="Duration" floatingLabelFixed={true} />
                     </div>
                 </div>
         )
     }
+}
+
+RepeatedReminderCreator.propTypes = {
+    repeatedReminder: React.PropTypes.object.isRequired,
+    onSet: React.PropTypes.func.isRequired,
 }

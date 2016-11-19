@@ -42,11 +42,13 @@ export default class ReminderCreator extends React.Component{
                     dateTime={getStartDate(reminder)}
                     onChange={startTimeChange}
                     dateLabel="Start Date" timeLabel="Start Time"/>
-                <DurationPicker
-                    fullWidth={true}
-                    onChange={this.onDurationChange}
-                    duration={reminder.duration}/>
-            </div>
+                <div className="time-picker-group">
+                    <div className="time-picker">
+                        <DurationPicker onChange={this.onDurationChange}
+                            duration={reminder.duration}/>
+                        </div>
+                    <div className="time-picker"/> </div>
+                    </div>
         );
     }
 }

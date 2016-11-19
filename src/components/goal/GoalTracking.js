@@ -14,7 +14,7 @@ import GoalCreatorCard from './creator/GoalCreatorCard';
 class GoalTrackingController extends React.Component{
     render(){
         return (
-            <div style={{textAlign:"right"}}> 
+            <div style={{textAlign:"right"}}>
                 <Filter  />
             </div>
         )
@@ -38,7 +38,7 @@ class _GoalTracking extends React.Component {
                     <GoalTrackingController/>
                     </div>
                 <div key="goals" >
-                    <GoalCreatorCard initiallyExpanded={true}/>
+                    <GoalCreatorCard/>
                     <br />
                     <GoalCardList goals={goals} gids={gids} deleteGoal={ deleteGoal }
                         deleteTask={ deleteTask } canUpdate={canUpdate}/>

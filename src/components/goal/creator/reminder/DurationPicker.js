@@ -29,7 +29,7 @@ export default class DurationPicker extends React.Component{
             errorTxt = "Duration must not be 0"
         }
         return (
-            <TimePicker format="24hr" className="time-picker"
+            <TimePicker format="24hr"
                 onChange={this.onDurationChange} fullWidth={this.props.fullWidth}
                 value={durationToDate(duration)}
                 hintText="in hour:minute" autoOk={true}

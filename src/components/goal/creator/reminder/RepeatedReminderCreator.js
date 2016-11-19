@@ -80,10 +80,10 @@ export default class RepeatedReminderCreator extends React.Component{
                 {daysPicker}
                 <div className="time-picker-group">
                     <TimePicker format="ampm" className="time-picker"
-                        value={rReminder.remindAt}
+                        value={rReminder.remindAt} autoOk={true}
                         fullWidth={true} onChange={this.onTimeChange}
                         floatingLabelText="Remind At" floatingLabelFixed={true}/>
-                    <DurationPicker
+                    <DurationPicker className="time-picker"
                         onChange={this.onDurationChange}
                         duration={rReminder.duration}/>
                     </div>

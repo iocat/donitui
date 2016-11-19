@@ -27,9 +27,9 @@ export default class HabitItem extends React.Component{
             switch (reminder.cycle){
                 case ReminderCycle.EVERY_DAY:
                     cycleString = "Daily";
-                    return <p>
+                    return <div>
                         {cycleString} at {formatTime(reminder.remindAt)}
-                    </p>
+                    </div>
                 case ReminderCycle.EVERY_WEEK:
                     cycleString = "Weekly";
                     let days: string[]= [];
@@ -41,9 +41,17 @@ export default class HabitItem extends React.Component{
                             }
                         })
                     }
-                    return <p>
-                        {cycleString} at {formatTime(reminder.remindAt)} on {days.join(", ")}
-                    </p>
+                    let join2 = function(oarr: string[], all, last):string {
+                        let arr = oarr.slice();
+                        let lastItem = arr.splice(-1);
+                        arr = arr.length ? [arr.join(all)] : [];
+                        arr.push(lastItem);
+                        return arr.join(last);
+                    }
+
+                    return <div>
+                        {cycleString} at {formatTime(reminder.remindAt)} on {join2(days, ", ", " and ")}
+                    </div>
                 default:
                     console.log("unexpected: description not returned in HabitItem");
             }

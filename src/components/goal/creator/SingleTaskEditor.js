@@ -1,48 +1,33 @@
 // @flow
 const React = require("react");
-import { RaisedButton } from 'material-ui';
-import {TaskStatus} from '../../../data/index';
+import { CardText } from 'material-ui';
 import type {Task, Reminder, RepeatedReminder} from '../../../data/types';
-
+import HabitItem from '../card/HabitItem';
+import TaskItem from '../card/TaskItem';
 import EditModeTaskEditor from './EditModeTaskEditor';
-
+import {habitIcon, taskIcon} from '../icons';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 export type TaskEditorStateEnum =
     | 1
-    | 2
-    | 3;
+    | 2;
 
 export const TaskEditorState: {[id:string]:TaskEditorStateEnum}= {
-    CREATE_BUTTON: 1,
-    EDITING: 2,
-    PREVIEW: 3,
+    EDITING: 1,
+    PREVIEW: 2,
 }
 
 type State = {
     currState: TaskEditorStateEnum,
-    task: Task,
 }
 
 type Props = {
     initTask: Task,
     initState: TaskEditorStateEnum,
-    addTask: (task: Task) => void,
-}
-
-
-const emptyTask:Task= {
-    name:"",
-    description:"",
-    status: TaskStatus.NOT_DONE,
-    reminder:{
-        remindAt: new Date(),
-        duration: 0,
-    },
+    acceptTask: (task: Task) => void,
 }
 
 // SingleTaskEditor represents a single task editor which
 // has 3 states CREATE_BUTTON, EDITING and PREVIEW
-// TODO: change this to stateless (the only state it should has is
-// the UI state, data should be props!)
 export class SingleTaskEditor extends React.Component{
     static defaultProps: {
         initState: TaskEditorStateEnum,
@@ -50,15 +35,8 @@ export class SingleTaskEditor extends React.Component{
     state: State;
     constructor(props: Props) {
         super(props);
-        let task: Task;
-        if (props.initTask == null){
-            task = emptyTask;
-        }else{
-            task = props.initTask;
-        }
         this.state = {
             currState: props.initState,
-            task: task,
         }
     }
 
@@ -69,89 +47,84 @@ export class SingleTaskEditor extends React.Component{
     }
 
     onCreateReminder = (reminder:Reminder )=>{
-        let newTask:Task= Object.assign({},this.state.task, {reminder: reminder});
+        let newTask:Task= Object.assign({},this.props.task, {reminder: reminder});
         delete newTask["repeatedReminder"];
-        this.setState({task: newTask});
+        this.props.stageTask(newTask);
     }
 
     onCreateRepeatedReminder = (reReminder: RepeatedReminder)=>{
-        let newTask:Task= Object.assign({},this.state.task, {repeatedReminder: reReminder});
+        let newTask:Task= Object.assign({},this.props.task, {repeatedReminder: reReminder});
         delete newTask["reminder"];
-        this.setState({task: newTask});
+        this.props.stageTask(newTask);
     }
 
     onSetName = (name: string)=>{
-        let newTask:Task = Object.assign({},this.state.task,{name:name});
-        this.setState({task:newTask});
-    }
-
-    onSetDescription = (desc: string)=>{
-        let nt:Task = Object.assign({},this.state.task,{description: desc});
-        this.setState({task:nt});
-    }
-
-    getPreviewUI = () => {
-        return (<p> NOT YET IMPLEMENTED </p>);
+        let newTask:Task = Object.assign({},this.props.task,{name:name});
+        this.props.stageTask(newTask);
     }
 
     // callback to accept the task state
     acceptTask = ()=>{
-        // TODO
-        console.log("Task accepted: ");
-        console.log(this.state.task);
+        this.setState({currState: TaskEditorState.PREVIEW});
+        this.props.acceptTask();
     }
+
     render(){
-        let task: Task = this.state.task;
-
+        let task: Task = this.props.task;
         switch(this.state.currState){
-        case TaskEditorState.CREATE_BUTTON:
-            return (
-                <RaisedButton
-                    fullWidth={true}
-                    onTouchTap={this.switchMode(TaskEditorState.EDITING)}
-                    style={{textAlign:"center"}}
-                    label="Set A Task Reminder"/>
-            );
-
         case TaskEditorState.EDITING:
             let initHabit :boolean = false;
             if (task.repeatedReminder){
                 initHabit = true;
             }
+            return (
+                <CardText>
+                    <EditModeTaskEditor
+                        task={task} initHabit={initHabit}
+                        initReminder={task.reminder} onSetName={this.onSetName}
+                        initRReminder={task.repeatedReminder}
+                        onSetReminder={this.onCreateReminder}
+                        onSetRepeatedReminder={this.onCreateRepeatedReminder}
+                        onCreate={this.acceptTask}
 
-            return <EditModeTaskEditor
-                    task={task}
-                    initHabit={initHabit}
-                    initReminder={task.reminder}
-                    initRReminder={task.repeatedReminder}
-                    onSetName={this.onSetName}
-                    onSetDescription={this.onSetDescription}
-                    onSetReminder={this.onCreateReminder}
-                    onSetRepeatedReminder={this.onCreateRepeatedReminder}
-                    onCreate={this.acceptTask}
-                    />;
-
+                        onCreateBtn={this.props.acceptBtn}
+                        />
+                    </CardText>
+            )
         case TaskEditorState.PREVIEW:
-            return this.getPreviewUI();
+            if (task.reminder){
+                return <TaskItem
+                    leftIcon={taskIcon}
+                    onTouchTap={this.switchMode(TaskEditorState.EDITING)}
+                    task={task}/>
+            }else if(task.repeatedReminder) {
+                return <HabitItem
+                    leftIcon={habitIcon}
+                    onTouchTap={this.switchMode(TaskEditorState.EDITING)}
+                    habit={task}/>
+            }
+            console.log("unexpected reminder");
+            return null;
         default:
-            console.log("panic")
+            console.error("unexpected state for TaskEditor")
         }
     }
 }
 
 SingleTaskEditor.defaultProps={
     initState: TaskEditorState.CREATE_BUTTON,
+    isCreating: false,
+    acceptBtn: <ContentAdd/>,
 }
 
 SingleTaskEditor.propTypes={
-    initTask: React.PropTypes.shape({
-        name: React.PropTypes.string.isRequired,
-        description: React.PropTypes.string.isRequired,
-        status: React.PropTypes.oneOf([TaskStatus.DONE,TaskStatus.IN_PROGRESS, TaskStatus.NOT_DONE]),
-        reminder: React.PropTypes.object,
-        repeatedReminder: React.PropTypes.object,
-    }),
-    addTask: React.PropTypes.func.isRequired,
-    initState: React.PropTypes.oneOf([TaskEditorState.CREATE_BUTTON,
-        TaskEditorState.EDITING, TaskEditorState.PREVIEW]),
+    task: React.PropTypes.object.isRequired,
+
+    // stageTask: allows the task to be saved when a change occurs
+    stageTask: React.PropTypes.func.isRequired,
+    // acceptTask is a callback to allow the task to be completed
+    acceptTask: React.PropTypes.func.isRequired,
+    initState: React.PropTypes.oneOf([TaskEditorState.EDITING, TaskEditorState.PREVIEW]),
+
+    acceptBtn: React.PropTypes.object,
 }

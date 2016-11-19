@@ -55,7 +55,6 @@ export type Goal = {
 
 export type Task = {
     name: string,
-    description: string,
     status: TaskStatusEnum,
     reminder?: Reminder,
     repeatedReminder?: RepeatedReminder,

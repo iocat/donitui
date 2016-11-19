@@ -1,10 +1,23 @@
+// @flow
 import React from 'react';
 
-import {ListItem} from 'material-ui/List';
+import {ListItem} from 'material-ui';
 import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
 import {getTaskStatusColor} from '../../styles/colors';
+import type {Task, Reminder} from '../../../data/types';
+import {formatDateAndTime} from '../../../timeutils';
 
 export default class TaskItem extends React.Component {
+    getTaskDescription = ()=>{
+        let task: Task = this.props.task;
+        let reminder :?Reminder = task.reminder;
+        if(reminder != null){
+            return <p>
+                {formatDateAndTime(reminder.remindAt)}
+            </p>
+        }
+        return "";
+    }
     render() {
         let task = this.props.task
 
@@ -14,20 +27,27 @@ export default class TaskItem extends React.Component {
             statusCircle = (<AvFiberManualRecord color={statusColor}/>)
         }
         return <ListItem
+            onTouchTap={this.props.onTouchTap}
             leftIcon={this.props.leftIcon}
             insetChildren={this.props.insetChildren}
             rightIcon={statusCircle}
             primaryText={task.name}
-            secondaryText={task.description || "" }/>
+            secondaryText={this.getTaskDescription()}/>
+    }
+    static defaultProps: {
+        leftIcon: any,
+        insetChildren: boolean,
     }
 }
 
 TaskItem.defaultProps = {
     leftIcon: null,
     insetChildren: false,
-    task: {
-        name: null,
-        description: null,
-        status:null
-    }
+}
+
+TaskItem.propTypes = {
+    onTouchTap: React.PropTypes.func,
+    task: React.PropTypes.object.isRequired,
+    leftIcon: React.PropTypes.object,
+    insetChildren: React.PropTypes.bool,
 }

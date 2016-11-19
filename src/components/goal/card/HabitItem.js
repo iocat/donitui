@@ -1,24 +1,68 @@
+// @flow
 import React from 'react';
 
 import {getTaskStatusColor} from '../../styles/colors';
-
-import {ListItem} from 'material-ui/List';
+import {ListItem} from 'material-ui';
 import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
+import type {Task, RepeatedReminder} from '../../../data/types';
+import {ReminderCycle} from '../../../data/index';
+import {formatTime} from '../../../timeutils';
+
+const mapNumberToDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export default class HabitItem extends React.Component{
+    static defaultProps: {
+        insetChildren: boolean,
+    }
+
+    getHabitName = ():string => {
+        let habit: Task = this.props.habit;
+        return habit.name;
+    }
+
+    getDescription = () =>{
+        let reminder: ?RepeatedReminder = this.props.habit.repeatedReminder;
+        let cycleString: string = "";
+        if (reminder != null){
+            switch (reminder.cycle){
+                case ReminderCycle.EVERY_DAY:
+                    cycleString = "Daily";
+                    return <p>
+                        {cycleString} at {formatTime(reminder.remindAt)}
+                    </p>
+                case ReminderCycle.EVERY_WEEK:
+                    cycleString = "Weekly";
+                    let days: string[]= [];
+                    let habitDays: any= reminder.days;
+                    if (habitDays != null){
+                        Object.keys(habitDays).forEach((key: number)=>{
+                            if (habitDays[key] === true){
+                                days.push(mapNumberToDay[key-1]);
+                            }
+                        })
+                    }
+                    return <p>
+                        {cycleString} at {formatTime(reminder.remindAt)} on {days.join(", ")}
+                    </p>
+                default:
+                    console.log("unexpected: description not returned in HabitItem");
+            }
+        }
+        return "";
+    }
     render(){
         let statusCircle = null;
-        if (this.props.habit.status){
+        let habit: Task = this.props.habit;
+        if (habit.status){
             let statusColor = getTaskStatusColor(this.props.habit.status)
             statusCircle = (<AvFiberManualRecord color={statusColor}/>)
         }
-        
         return <ListItem
-            rightIcon={statusCircle}
-            leftIcon={this.props.leftIcon}
+            onTouchTap={this.props.onTouchTap}
+            rightIcon={statusCircle} leftIcon={this.props.leftIcon}
             insetChildren={this.props.insetChildren}
-            primaryText={this.props.habit.name}
-            secondaryText={this.props.habit.description || ""}/>
+            primaryText={this.getHabitName()}
+            secondaryText={this.getDescription()}/>
     }
 }
 
@@ -26,9 +70,11 @@ export default class HabitItem extends React.Component{
 HabitItem.defaultProps ={
     leftIcon: null,
     insetChildren: false,
-    habit: {
-        name: null,
-        description: null,
-        status:null
-    }
+}
+
+HabitItem.propTypes = {
+    onTouchTap: React.PropTypes.func,
+    leftIcon: React.PropTypes.object,
+    insetChildren: React.PropTypes.bool,
+    habit: React.PropTypes.object.isRequired,
 }

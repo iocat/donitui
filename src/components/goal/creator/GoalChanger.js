@@ -1,7 +1,8 @@
 import React from 'react';
 
-import {GoalVisibility} from '../../../data/index';
-import { TextField, Divider,SelectField,MenuItem,Card, CardHeader, CardText, CardActions, CardMedia, FlatButton} from 'material-ui';
+import { GoalVisibility } from '../../../data/index';
+import { TextField, Divider, Card,
+    CardHeader, CardText, CardActions, CardMedia, FlatButton} from 'material-ui';
 import TaskCreator from './TaskCreator';
 
 export const Mode = {
@@ -14,17 +15,7 @@ const EMPTY_GOAL = {
     description:"",
     img:"",
     visibility: GoalVisibility.PRIVATE,
-    tasks: [{
-        id: 1,
-        name:"Demo task: remove later",
-        description:"Import thing needs to be done",
-        repeatedReminder:{},
-    },{
-        id: 2,
-        name:"Task 2",
-        description: "Nothinggggg",
-        reminder:{},
-    }],
+    tasks: [],
 }
 
 export class GoalChanger extends React.Component{
@@ -70,62 +61,43 @@ export class GoalChanger extends React.Component{
             })
         }
     }
+
     changeVisibility = (event, index ,val)=>{
         this.setState({
             goal: Object.assign({}, this.state.goal, {visibility: val}),
         });
     }
-    // check if this goal is discardable or not
-    discardable = ()=>{
-        if (this.state.goal === EMPTY_GOAL){
-            return true;
-        }
-        return false;
-    }
-    // check for valid name
-    validName = ()=>{
-        return this.state.goal.name !== "";
-    }
-    // check for valid goal descriptions
-    validDesc = () =>{
-        return this.state.goal.description !== "";
-    }
-    // check if this goal is a valid goal or not
-    canCreate = ()=>{
-        if (this.props.mode === Mode.CREATE && this.state.goal === EMPTY_GOAL){
-            return false;
-        }
-        if(!this.validName() || !this.validDesc() ){
-            return false;
-        }
-        return true;
-    }
 
-    addTask = (task)=>{
+    replaceTask = (index, task)=>{
         let tasks = this.state.goal.tasks.slice();
-        tasks.push(task);
+        if (index < tasks.length) {
+            tasks[index] = task;
+        }else if (index === tasks.length){
+            tasks.push(task)
+        }else if (index > tasks.length){
+            console.log("error: index "+ index + "is out of bound");
+        }
         this.setState({
-            goal: Object.assign({}, this.state.goal,{tasks:tasks}),
+            goal: Object.assign({}, this.state.goal, {tasks:tasks}),
         })
     }
+
     getButtonsForMode = (mode) =>{
         switch(mode){
             case Mode.CREATE:
-                return [ <FlatButton key="discard-btn"
+                return [<FlatButton key="discard-btn"
                                 className="goal-control-action btn"
                                 onTouchTap={this.onDiscard}
-                                disabled={this.discardable()}
                                 label="Discard"/>,
-                            <FlatButton key="create-btn"
-                                className="goal-control-action btn"
-                                disabled={!this.canCreate()}
-                                primary={true} label="Create"/>
-                            ];
+                        <FlatButton key="create-btn"
+                            className="goal-control-action btn"
+                            primary={true} label="Create"/>
+                        ];
             case Mode.UPDATE:
                 return [<FlatButton key="update-btn"
                             className="goal-control-action btn"
                             primary={true}  label="Update" />,
-                         <FlatButton key="discard-btn"
+                        <FlatButton key="discard-btn"
                             className="goal-control-action btn"
                             secondary={true} label="Discard"/>];
             default:
@@ -147,15 +119,15 @@ export class GoalChanger extends React.Component{
                 <CardText expandable={true}>
                     <TextField
                         hintText="What do you want to do?"
-                        floatingLabelText="Objective"
+                        floatingLabelText="Objective" floatingLabelFixed={true}
                         fullWidth={true} value={goal.name}
                         onChange={this.changeFieldVal("name")}/>
                     <TextField
-                        hintText="Add some more details?"
+                        hintText="Add some more details?" floatingLabelFixed={true}
                         floatingLabelText="Description" fullWidth={true}
                         multiLine={true} value={goal.description}
                         onChange={this.changeFieldVal("description")}/>
-                    <SelectField
+                    {/*<SelectField
                         autoWidth={true}
                         floatingLabelText="Who can see it?"
                         value={goal.visibility}
@@ -172,10 +144,12 @@ export class GoalChanger extends React.Component{
                             value={GoalVisibility.PRIVATE}
                             label="Only You"
                             primaryText="You"/>
-                        </SelectField>
+                    </SelectField>*/}
                     </CardText>
                 <CardMedia expandable={true}>
-                    <TaskCreator tasks={this.state.goal.tasks} addTask={this.addTask}/>
+                    <TaskCreator tasks={this.state.goal.tasks}
+                        replaceTask={this.replaceTask}
+                        initTask={this.initTask}/>
                     </CardMedia>
                 <CardActions className="goal-actions" expandable={true}>
                     {buttons}

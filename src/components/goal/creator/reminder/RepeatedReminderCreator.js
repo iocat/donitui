@@ -1,9 +1,10 @@
 // @flow
 var React = require("react");
+import DurationPicker from './DurationPicker';
 import {TimePicker, MenuItem, SelectField} from 'material-ui';
 import DaysInWeek from './DaysInWeek';
 import {ReminderCycle} from '../../../../data/index';
-import type{HabitDays, RepeatedReminder} from '../../../../data/types';
+import type{HabitDays, RepeatedReminder, ReminderCycleEnum} from '../../../../data/types';
 
 export default class RepeatedReminderCreator extends React.Component{
     onCycleChange = (event:Object, k:number , cycle: ReminderCycleEnum) =>{
@@ -20,13 +21,20 @@ export default class RepeatedReminderCreator extends React.Component{
         this.props.onSet(rr);
     }
 
-    // TODO
+    // when the timer is changed
     onTimeChange = (_:Event, date:Date) =>{
-        console.log(date);
+        let rr = Object.assign({}, this.props.repeatedReminder, {
+            remindAt: date,
+        })
+        this.props.onSet(rr);
     }
-    // TODO
-    onDurationChange = (_:Event, date:Date)=>{
-        console.log(date);
+
+    // when the duration is changed
+    onDurationChange = (duration:number)=>{
+        let rr = Object.assign({}, this.props.repeatedReminder,{
+            duration:   duration,
+        });
+        this.props.onSet(rr);
     }
 
     render(){
@@ -72,15 +80,27 @@ export default class RepeatedReminderCreator extends React.Component{
                 {daysPicker}
                 <div className="time-picker-group">
                     <TimePicker format="ampm" className="time-picker"
+                        value={rReminder.remindAt}
                         fullWidth={true} onChange={this.onTimeChange}
                         floatingLabelText="Remind At" floatingLabelFixed={true}/>
-                    <TimePicker format="24hr" className="time-picker"
-                        fullWidth={true} onChange={this.onDurationChange}
-                        hintText="in hour:minute"
-                        floatingLabelText="Duration" floatingLabelFixed={true} />
+                    <DurationPicker
+                        onChange={this.onDurationChange}
+                        duration={rReminder.duration}/>
                     </div>
                 </div>
         )
+    }
+    static defaultProps: {
+        repeatedReminder: RepeatedReminder,
+    }
+}
+
+RepeatedReminderCreator.defaultProps = {
+    repeatedReminder: {
+        cycle: ReminderCycle.EVERY_DAY,
+        days: {},
+        duration: 0,
+        remindAt: new Date(),
     }
 }
 

@@ -1,6 +1,6 @@
+// @flow
 import React from 'react';
 
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import {TextField, Checkbox} from 'material-ui';
 import {ActivatableButton} from '../../utils/Button';
 import ReminderCreator from './reminder/ReminderCreator';
@@ -12,7 +12,7 @@ import type {Task, Reminder, RepeatedReminder} from '../../../data/types';
 
 
 // TODO: check valid range of value
-const validReminder = (r: Remidner)=>{
+const validReminder = (r: Reminder)=>{
     if (!r.remindAt || !r.duration) {
         return false;
     }
@@ -30,18 +30,31 @@ const validName = (name: string)=>{
     return name.length !== 0;
 }
 
-const validDesc = (desc: string) =>{
-    return true;
+type Props = {
+    initReminder: Reminder,
+    initRReminder: RepeatedReminder,
+    initHabit: boolean,
 }
 
-
 export default class EditModeTaskEditor extends React.Component{
-    constructor(props){
+    state: {
+        reminder: Reminder,
+        rReminder: RepeatedReminder,
+        isHabit: boolean,
+        changeName: boolean,
+    }
+    static defaultProps:{
+        initHabit: boolean,
+        initReminder: Reminder,
+        initRReminder: RepeatedReminder,
+    }
+    constructor(props: Props){
         super(props);
         this.state = {
             reminder: props.initReminder,
             rReminder: props.initRReminder,
             isHabit: props.initHabit,
+            changeName: false,
         }
     }
 
@@ -49,23 +62,17 @@ export default class EditModeTaskEditor extends React.Component{
     isTaskCreatable = () => {
         let task:Task = this.props.task;
         let vr: boolean = false;
-        console.log(this.state.rReminder);
         if (this.state.isHabit){
             vr = validRReminder(this.state.rReminder);
         }else {
             vr = validReminder(this.state.reminder);
         }
-        return vr && validName(task.name) && validDesc(task.description);
+        return vr && validName(task.name) ;
     }
 
-    onSetName = (e: Event)=>{
-        let setName: (name:string)=>void = this.props.onSetName;
-        setName(e.target.value);
-    }
-
-    onSetDescription = (e:Event)=>{
-        let setDescription: (desc: string)=>void = this.props.onSetDescription;
-        setDescription(e.target.value);
+    onSetName = (e: any)=>{
+        this.setState({changeName: true});
+        this.props.onSetName(e.target.value);
     }
 
     onSwitchReminder = (e: Event, checked: boolean) =>{
@@ -87,9 +94,17 @@ export default class EditModeTaskEditor extends React.Component{
         this.props.onSetRepeatedReminder(rR);
     }
 
+    getNameErrorMessage = (): string =>{
+        if(this.state.changeName && !validName(this.props.task.name)){
+            return "Task's name is invalid";
+        }
+        return "";
+    }
+
     render() {
         let taskType: string
         let reminderCreator: any
+        let task: Task = this.props.task;
         if (this.state.isHabit){
             taskType = "Repeatable"
             reminderCreator = <RepeatedReminderCreator
@@ -101,31 +116,28 @@ export default class EditModeTaskEditor extends React.Component{
                 reminder={this.state.reminder}
                 onSet={this.onSetReminder}/>
         }
+        let nameError: string = this.getNameErrorMessage();
         return (
             <div>
                 <TextField
-                    onBlur={this.onSetName}
+                    onChange={this.onSetName}
+                    defaultValue={task.name}
+                    errorText={nameError}
                     hintText="Do this and complete your goal!"
                     floatingLabelText="Task" floatingLabelFixed={true}
                     multiLine={false} autoFocus/>
-                <br/>
-                <TextField
-                    onBlur={this.onSetDescription}
-                    floatingLabelText="Description" multiLine={true}/>
-                <br/>
-                <br/>
+                <br/><br/>
                 <Checkbox label={taskType}
                     checkedIcon={habitIcon}
                     uncheckedIcon={taskIcon}
                     checked={this.state.isHabit}
                     onCheck={this.onSwitchReminder}/>
-                <br/>
                 {reminderCreator}
                 <div className="confirm-btn btn">
                     <ActivatableButton
                         active={this.isTaskCreatable()}
                         func={this.props.onCreate}>
-                        <ContentAdd/>
+                        {this.props.onCreateBtn}
                         </ActivatableButton>
                     </div>
                 </div>
@@ -155,9 +167,11 @@ EditModeTaskEditor.propTypes = {
 
     task: React.PropTypes.object,
     onSetName: React.PropTypes.func.isRequired,
-    onSetDescription: React.PropTypes.func.isRequired,
     onSetReminder: React.PropTypes.func,
     onSetRepeatedReminder: React.PropTypes.func,
 
     onCreate: React.PropTypes.func.isRequired,
+
+    // the button that show up to accept this task
+    onCreateBtn: React.PropTypes.object.isRequired,
 }

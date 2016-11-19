@@ -2,17 +2,7 @@
 
 import React from 'react';
 import {DatePicker, TimePicker} from 'material-ui';
-import moment from 'moment';
-
-const thisYear = (new Date()).getFullYear();
-
-const formatDate = (date: Date):string => {
-    if (date.getFullYear() === thisYear){
-        return moment(date).format("dddd, MM/DD");
-    }else{
-        return moment(date).format("dddd, MM/DD/YYYY");
-    }
-}
+import {formatDate} from '../../timeutils';
 
 // DateTimePicker allows user to pick a date and time and extract date and time which is in RFC 3339
 export default class DateTimePicker extends React.Component {
@@ -59,7 +49,7 @@ export default class DateTimePicker extends React.Component {
                 <div className="time-picker">
                     <TimePicker
                         format='ampm' floatingLabelText={this.props.timeLabel}
-                        floatingLabelFixed={true}
+                        floatingLabelFixed={true} autoOk={true}
                         pedantic={true} textFieldStyle={{ width: '100%' }}
                         value={this.props.dateTime}
                         onChange={this.onTimeChange}/>

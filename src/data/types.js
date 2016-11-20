@@ -46,11 +46,13 @@ export type RepeatedReminder = {
 }
 
 export type Goal = {
+    id: string,
+    visibility: GoalVisibilityEnum,
     status: GoalStatusEnum,
     name: string,
     description: string,
     img: string,
-    tasks: {[id:string]:Task},
+    tasks: Task[],
 }
 
 export type Task = {

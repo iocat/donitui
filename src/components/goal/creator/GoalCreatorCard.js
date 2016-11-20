@@ -2,7 +2,7 @@
 
 import {GoalChanger, Mode} from './GoalChanger';
 import {connect} from 'react-redux';
-import {ActionCreators} from '../../../actions/index';
+import {ActionCreators} from '../../../actions';
 import type {Goal} from '../../../data/types';
 
 function mapStateToProps(rootReducer){
@@ -16,7 +16,7 @@ function mapDispatchToProps(dispatch){
         onCreateGoal: (goal:Goal)=> {
             // TODO: change this to a callback to the network
             // a promise.
-            dispatch(ActionCreators.CREATE_GOAL_WITH_ID(10,goal));
+            dispatch(ActionCreators.CREATE_GOAL_WITH_ID("10",goal));
         },
     };
 }

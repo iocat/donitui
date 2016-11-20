@@ -1,29 +1,21 @@
-import {ActionTypes} from '../../actions/index';
+import {
+    ActionTypes
+} from '../../actions';
+import type {
+    Task
+} from '../../data/types';
 
 // reducer that creates task data in terms of normalized key collection
-export default function tasks(state , action) {
+export default function tasks(state: Task[], action: any): Task[] {
     if (state === undefined) {
-        return {};
+        return [];
     }
-    let newTask = null;
     switch (action.type) {
+        case ActionTypes.EVALUATE_GOAL_STATUS:
 
-        case ActionTypes.CREATE_TASK_WITH_ID:
-            newTask[action.task.id] = action.task;
-            return Object.assign({}, state, newTask);
-
-        case ActionTypes.DELETE_TASK:
-            newTask = Object.assign({}, state);
-            delete newTask[action.id];
-            return newTask;
-
-        case ActionTypes.SET_TASK_STATUS:
-            newTask = Object.assign({}, state);
-            newTask[action.id].status = action.status;
-            return newTask;
-
+            // TODO
+            return []
         default:
             return state;
     }
 }
-

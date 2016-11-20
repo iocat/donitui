@@ -21,25 +21,37 @@ const EMPTY_GOAL = {
 export class GoalChanger extends React.Component{
     constructor(props){
         super(props);
-        if (props.mode === Mode.CREATE) {
-            this.state = {
-                goal: EMPTY_GOAL,
-                expanded: props.initiallyExpanded,
-            }
-        }else if (props.mode === Mode.UPDATE){
-            this.state = {
-                goal: props.originalGoal,
-                expanded: props.initiallyExpanded,
-            }
+        let initGoal: Goal = EMPTY_GOAL;
+        switch(props.mode){
+            case Mode.CREATE:
+                initGoal = EMPTY_GOAL;
+                break;
+            case Mode.UPDATE:
+                initGoal = props.originalGoal
+                break;
+            default:
+                console.error("unhandled case for GoalChanger constructor");
+        }
+        this.state = {
+            goal: initGoal,
+            expanded: props.initiallyExpanded,
+            changedName: false,
+            changedDesc: false,
+            modifiedTasks: false,
         }
     }
+
     // onDiscard closes the GoalCreator tab
     onDiscard = ()=>{
         this.setState({
             goal: EMPTY_GOAL,
             expanded: false,
+            changedName: false,
+            changedDesc: false,
+            modifiedTasks: false,
         })
     }
+
     // onExpand opens the GoalCreator tab
     onExpand = () => {
         this.setState({
@@ -52,14 +64,21 @@ export class GoalChanger extends React.Component{
             expanded: expanded,
         })
     }
-    // changeFieldVal returns the function that changes a field name
-    changeFieldVal(fieldName) {
-        return (event)=>{
-            let val = event.target.value;
-            this.setState({
-                goal: Object.assign({},this.state.goal, {[fieldName]: val}),
-            })
-        }
+
+    onChangeDesc = (event: Event) =>{
+        let val = event.target.value;
+        this.setState({
+            goal: Object.assign({}, this.state.goal, {description: val}),
+            changedDesc: true,
+        })
+    }
+
+    onChangeName = (event: Event) => {
+        let val = event.target.value;
+        this.setState({
+            goal: Object.assign({}, this.state.goal, {name: val}),
+            changedName: true,
+        })
     }
 
     changeVisibility = (event, index ,val)=>{
@@ -78,27 +97,75 @@ export class GoalChanger extends React.Component{
             console.log("error: index "+ index + "is out of bound");
         }
         this.setState({
+            modifiedTasks: true,
             goal: Object.assign({}, this.state.goal, {tasks:tasks}),
         })
     }
 
+    validName = ():boolean =>{
+        let name: string = this.state.goal.name;
+        return name.length > 0 && name.length <= 60;
+    }
+
+    validDesc = ():boolean => {
+        let desc: string = this.state.goal.description;
+        return desc.length <= 200;
+    }
+
+    getNameError = () =>{
+        if (this.state.changedName && !this.validName()){
+            return "The objective must be between 1 and 60 characters";
+        }
+        return "";
+    }
+
+    getDescError = () =>{
+        if(this.state.changedDesc && !this.validDesc()){
+            return "The description must be less than 200 characters";
+        }
+        return "";
+    }
+
+    onCreateGoal = ()=>{
+        this.setState({
+            goal: EMPTY_GOAL,
+            expanded: this.props.initiallyExpanded,
+            changedName: false,
+            changedDesc: false,
+            modifiedTasks: false,
+        });
+        this.props.onCreateGoal(this.state.goal);
+    }
+
     getButtonsForMode = (mode) =>{
+        let isCreateDisable = () =>{
+            return !this.validName() || !this.validDesc();
+        }
+        let discardable = ()=>{
+            return this.state.modifiedTasks || this.state.changedName || this.state.changedDesc;
+        }
         switch(mode){
             case Mode.CREATE:
                 return [<FlatButton key="discard-btn"
                                 className="goal-control-action btn"
                                 onTouchTap={this.onDiscard}
+                                disabled={!discardable()}
                                 label="Discard"/>,
                         <FlatButton key="create-btn"
                             className="goal-control-action btn"
+                            onTouchTap={this.onCreateGoal}
+                            disabled={isCreateDisable()}
                             primary={true} label="Create"/>
                         ];
             case Mode.UPDATE:
+                // TODO add callbacks
                 return [<FlatButton key="update-btn"
                             className="goal-control-action btn"
                             primary={true}  label="Update" />,
                         <FlatButton key="discard-btn"
                             className="goal-control-action btn"
+                            onTouchTap={this.onDiscard}
+                            disabled={!this.discardable()}
                             secondary={true} label="Discard"/>];
             default:
                 console.log("ERROR: unexpected Mode, got " + mode);
@@ -121,12 +188,14 @@ export class GoalChanger extends React.Component{
                         hintText="What do you want to do?"
                         floatingLabelText="Objective" floatingLabelFixed={true}
                         fullWidth={true} value={goal.name}
-                        onChange={this.changeFieldVal("name")}/>
+                        errorText={this.getNameError()}
+                        onChange={this.onChangeName}/>
                     <TextField
                         hintText="Add some more details?" floatingLabelFixed={true}
                         floatingLabelText="Description" fullWidth={true}
+                        errorText={this.getDescError()}
                         multiLine={true} value={goal.description}
-                        onChange={this.changeFieldVal("description")}/>
+                        onChange={this.onChangeDesc}/>
                     {/*<SelectField
                         autoWidth={true}
                         floatingLabelText="Who can see it?"

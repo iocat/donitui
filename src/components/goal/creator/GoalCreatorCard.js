@@ -16,7 +16,8 @@ function mapDispatchToProps(dispatch){
         onCreateGoal: (goal:Goal)=> {
             // TODO: change this to a callback to the network
             // a promise.
-            dispatch(ActionCreators.CREATE_GOAL_WITH_ID("10",goal));
+            let g = Object.assign({}, goal, {id: 10});
+            dispatch(ActionCreators.LOAD_GOAL(g, new Date()));
         },
     };
 }

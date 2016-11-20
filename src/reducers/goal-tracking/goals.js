@@ -9,7 +9,7 @@ import type {
 
 
 // reducer that creates goal data in terms of normalized keys collection
-export default function goals(state: ? {
+export default function goals(state: ?{
     [id: string]: Goal
 }, action : any): {
     [id: string]: Goal
@@ -23,10 +23,10 @@ export default function goals(state: ? {
             gs = Object.assign({}, state);
             delete gs[action.id];
             return gs;
-
-        case ActionTypes.CREATE_GOAL_WITH_ID:
+        // load the goal and categorize its current status
+        case ActionTypes.LOAD_GOAL:
             gs = Object.assign({}, state);
-            gs[action.id] = goal(action.goal, action);
+            gs[action.goal.id] = goal(action.goal, action);
             return gs;
         default:
             if (state != null) {

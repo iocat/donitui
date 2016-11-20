@@ -1,6 +1,7 @@
 // @flow
 import {
-    ActionTypes
+    ActionTypes,
+    ActionCreators,
 } from '../actions';
 import {
     GoalStatus,
@@ -15,6 +16,67 @@ import type {
     Goal
 } from '../data/types';
 
+
+
+function pushToCorrespondingGids(goal: Goal,
+    gids: string[], done: string[],
+    notDone: string[], inProgress: string[]){
+    if (goal.id != null) {
+        gids.push(goal.id);
+        switch (goal.status) {
+            case GoalStatus.DONE:
+                done.push(goal.id);
+                break;
+            case GoalStatus.NOT_DONE:
+                notDone.push(goal.id);
+                break;
+            case GoalStatus.IN_PROGRESS:
+                inProgress.push(goal.id);
+                break;
+            default:
+                console.log("unhandled case  " + goal.status);
+        }
+    }
+}
+
+function loadGoals(state: $GoalTracking, action: any): $GoalTracking{
+    let gs: Goal[] = action.goals,
+        done = state.Done.slice(),
+        notDone = state.NotDone.slice(),
+        inProgress = state.InProgress.slice(),
+        gids = state.Gids.slice(),
+        newGSet = Object.assign({}, state.Goals);
+    for (let goal of gs){
+        // load individual goal
+        newGSet = goals(newGSet, ActionCreators.LOAD_GOAL(goal, action.now));
+        pushToCorrespondingGids(newGSet[goal.id], gids,done,notDone, inProgress);
+    }
+    return Object.assign({}, state, {
+        Gids: gids,
+        Done: done,
+        NotDone: notDone,
+        InProgress: inProgress,
+        Goals: newGSet,
+    });
+}
+
+
+function loadGoal(state: $GoalTracking, action: any): $GoalTracking{
+    let newGSet: {[id:string]:Goal} = goals(state.Goals, action),
+        done = state.Done.slice(),
+        notDone = state.NotDone.slice(),
+        inProgress = state.InProgress.slice(),
+        gids = state.Gids.slice();
+    pushToCorrespondingGids(newGSet[action.goal.id], gids, done, notDone, inProgress);
+    return Object.assign({}, state, {
+        Gids: gids,
+        Done: done,
+        NotDone: notDone,
+        InProgress: inProgress,
+        Goals: newGSet,
+    });
+}
+
 export default function GoalTracking(state: $GoalTracking, action: any): $GoalTracking {
     if (state === undefined) {
         return {
@@ -27,50 +89,14 @@ export default function GoalTracking(state: $GoalTracking, action: any): $GoalTr
         };
     }
     switch (action.type) {
-        // TODO: reevaluate goal status upon loading
-        //
         // take in a list of goals and APPEND them to the
-        // corresponding categories
+        // corresponding categories, auto reorganize
         case ActionTypes.LOAD_GOALS:
-            let gs: Goal[] = action.goals,
-                i = 0,
-                done = state.Done.slice(),
-                notDone = state.NotDone.slice(),
-                inProgress = state.InProgress.slice(),
-                gids = state.Gids.slice(),
-                newGSet = Object.assign({}, state.Goals);
-            while (i < goals.length) {
-                let goal: Goal = gs[i];
-                if (goal.id != null) {
-                    gids.push(goal.id);
-                    newGSet[goal.id] = goal;
-                    switch (goal.status) {
-                        case GoalStatus.DONE:
-                            done.push(goal.id);
-                            break;
-                        case GoalStatus.NOT_DONE:
-                            notDone.push(goal.id);
-                            break;
-                        case GoalStatus.IN_PROGRESS:
-                            inProgress.push(goal.id);
-                            break;
-                        default:
-                            i++;
-                            continue;
-                    }
-                }
-                i++;
-            }
-            return Object.assign({}, state, {
-                Gids: gids,
-                Done: done,
-                NotDone: notDone,
-                InProgress: inProgress,
-                Goals: newGSet,
-            });
+            return loadGoals(state, action);
+        case ActionTypes.LOAD_GOAL:
+            return loadGoal(state, action);
         case ActionTypes.DELETE_GOAL:
-        case ActionTypes.CREATE_GOAL_WITH_ID:
-            // TODO: filter and add to the cached list
+            // TODO edit this
             return Object.assign({}, state, {
                 Goals: goals(state.Goals, action),
             });

@@ -54,11 +54,10 @@ export default function goal(state: Goal, action: any): Goal {
                 tasks: ts,
                 status: status,
             });
-        case ActionTypes.CREATE_GOAL_WITH_ID:
-            return Object.assign({}, action.goal, {
+        case ActionTypes.LOAD_GOAL:
+            return Object.assign({}, state, action.goal, {
                 status: goalStatusFromTasks(action.goal.tasks),
             });
-
         case ActionTypes.SET_GOAL_STATUS_MANUALLY:
             return Object.assign({}, state, {
                 status: action.status,

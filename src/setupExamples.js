@@ -53,7 +53,7 @@ export default function setupExamples() {
                 duration: 200,
             },
         }, {
-            id: "3",
+            id: 3,
             name: "Read a lot",
             status: "NOT_DONE",
             repeatedReminder: {
@@ -66,7 +66,7 @@ export default function setupExamples() {
                 }
             },
         }, {
-            id: "2",
+            id: 2,
             name: "Read The Algorithms Design Manual",
             status: "NOT_DONE",
             repeatedReminder: {
@@ -82,7 +82,7 @@ export default function setupExamples() {
     }
 
     let goal3 = {
-        id: "3",
+        id: 3,
         name: "Get a cat",
         visibility: "FOR_FOLLOWERS",
         // img: placeholder,
@@ -98,7 +98,7 @@ export default function setupExamples() {
         }],
     }
     let goal5 = {
-        id: "5",
+        id: 5,
         name: "Be busy",
         visibility: "PRIVATE",
         img: placeholder,
@@ -118,19 +118,20 @@ export default function setupExamples() {
     }
 
     let goal4 = Object.assign({}, goal1, {
-        id: "4",
+        id: 4,
         name: "Kill a dog",
         description: "Illegal stuffs",
         img: placeholder
     });
+
+    let goals = [goal1,goal2,goal3,goal4,goal5];
+
+
+
     /* ignore return val*/
     appStore.subscribe(() => {
         console.log(appStore.getState())
     })
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("1", goal1));
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("2", goal2));
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("3", goal3));
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("4", goal4));
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("5", goal5));
+    appStore.dispatch(ActionCreators.LOAD_GOALS(goals, new Date()));
     appStore.dispatch(ActionCreators.FILTER_GOAL_BY_STATUSES(StatusFilter.IN_PROGESS));
 }

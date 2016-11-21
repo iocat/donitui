@@ -4,15 +4,11 @@ import type {
     GoalStatusEnum
 } from './data/types';
 
-// generic action
-type Action = {
-    // the action type
-    type: number,
-    // the payload
-    [id: string]: any,
-}
+import type {
+    $Action
+} from './data/reducers';
 
-type ActionCreator = (...x:any)=>Action;
+type ActionCreator = (...x:any)=>$Action;
 
 // The registry of actions
 export const ActionTypes: {

@@ -21,19 +21,17 @@ export default function setupExamples() {
             id: "1",
             name: "Adopt one",
             reminder: {
-                remindAt: new Date(),
+                remindAt: new Date((new Date().getTime() + 10000000)),
                 duration: 10,
             },
-            status: "DONE",
         }, {
             id: "3",
             name: "sdfasdfasdf",
             repeatedReminder: {
                 cycle: "EVERY_DAY",
-                remindAt: new Date(),
+                remindAt:  new Date((new Date().getTime() + 98000000)),
                 duration: 100,
             },
-            status: "DONE",
         }],
 
     }
@@ -47,17 +45,15 @@ export default function setupExamples() {
         tasks: [{
             id: "1",
             name: "Code",
-            status: "NOT_DONE",
             reminder: {
-                remindAt: new Date(),
+                remindAt: new Date((new Date().getTime() - 103920)),
                 duration: 200,
             },
         }, {
             id: 3,
             name: "Read a lot",
-            status: "NOT_DONE",
             repeatedReminder: {
-                remindAt: new Date(),
+                remindAt: new Date((new Date().getTime() + 121300000)),
                 duration: 100,
                 cycle: "EVERY_WEEK",
                 days: {
@@ -68,7 +64,6 @@ export default function setupExamples() {
         }, {
             id: 2,
             name: "Read The Algorithms Design Manual",
-            status: "NOT_DONE",
             repeatedReminder: {
                 cycle: "EVERY_DAY",
                 remindAt: new Date(),
@@ -90,9 +85,8 @@ export default function setupExamples() {
         tasks: [{
             id: 1,
             name: "Go to the vet",
-            status: "IN_PROGRESS",
             reminder: {
-                remindAt: new Date(),
+                remindAt: new Date((new Date().getTime() - 23823000)),
                 duration: 1000,
             }
         }],
@@ -105,7 +99,6 @@ export default function setupExamples() {
         tasks: [{
             id: "2",
             name: "Be yourself",
-            status: "IN_PROGRESS",
             repeatedReminder: {
                 cycle: "EVERY_WEEK",
                 days: {

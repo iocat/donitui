@@ -5,7 +5,7 @@ import {
 import {
     TaskStatus,
     GoalStatus,
-    GoalVisibility
+    GoalVisibility,
 } from '../../data/index';
 import type {
     Goal,
@@ -55,13 +55,12 @@ export default function goal(state: Goal, action: any): Goal {
                 status: status,
             });
         case ActionTypes.LOAD_GOAL:
+            // evaluate tasks' statuses
+            let reeval = tasks(state.tasks, action);
             return Object.assign({}, state, action.goal, {
-                status: goalStatusFromTasks(action.goal.tasks),
+                tasks: reeval,
+                status: goalStatusFromTasks(reeval),
             });
-        case ActionTypes.SET_GOAL_STATUS_MANUALLY:
-            return Object.assign({}, state, {
-                status: action.status,
-            })
         default:
             if (state != null) {
                 return state;

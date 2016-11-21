@@ -15,7 +15,7 @@ export default function goals(state: ?{
     [id: string]: Goal
 } {
     if (state === undefined) {
-        return {}
+        return {};
     }
     let gs = null;
     switch (action.type) {

@@ -9,8 +9,10 @@ import {
 } from '../data/index';
 import goals from './goal-tracking/goals';
 import filter from './goal-tracking/filter';
+import scheduler from './goal-tracking/scheduler';
 import type {
-    $GoalTracking
+    $GoalTracking,
+    $Action
 } from '../data/reducers';
 import type {
     Goal
@@ -20,7 +22,7 @@ import type {
 
 function pushToCorrespondingGids(goal: Goal,
     gids: string[], done: string[],
-    notDone: string[], inProgress: string[]){
+    notDone: string[], inProgress: string[]) {
     if (goal.id != null) {
         gids.push(goal.id);
         switch (goal.status) {
@@ -39,17 +41,17 @@ function pushToCorrespondingGids(goal: Goal,
     }
 }
 
-function loadGoals(state: $GoalTracking, action: any): $GoalTracking{
+function loadGoals(state: $GoalTracking, action: $Action): $GoalTracking {
     let gs: Goal[] = action.goals,
         done = state.Done.slice(),
         notDone = state.NotDone.slice(),
         inProgress = state.InProgress.slice(),
         gids = state.Gids.slice(),
         newGSet = Object.assign({}, state.Goals);
-    for (let goal of gs){
+    for (let goal of gs) {
         // load individual goal
         newGSet = goals(newGSet, ActionCreators.LOAD_GOAL(goal, action.now));
-        pushToCorrespondingGids(newGSet[goal.id], gids,done,notDone, inProgress);
+        pushToCorrespondingGids(newGSet[goal.id], gids, done, notDone, inProgress);
     }
     return Object.assign({}, state, {
         Gids: gids,
@@ -61,8 +63,10 @@ function loadGoals(state: $GoalTracking, action: any): $GoalTracking{
 }
 
 
-function loadGoal(state: $GoalTracking, action: any): $GoalTracking{
-    let newGSet: {[id:string]:Goal} = goals(state.Goals, action),
+function loadGoal(state: $GoalTracking, action: $Action): $GoalTracking {
+    let newGSet: {
+            [id: string]: Goal
+        } = goals(state.Goals, action),
         done = state.Done.slice(),
         notDone = state.NotDone.slice(),
         inProgress = state.InProgress.slice(),
@@ -77,11 +81,50 @@ function loadGoal(state: $GoalTracking, action: any): $GoalTracking{
     });
 }
 
-export default function GoalTracking(state: $GoalTracking, action: any): $GoalTracking {
+function deleteGoal(state: $GoalTracking, action: $Action ): $GoalTracking {
+    let gs: {
+            [id: string]: Goal
+        } = goals(state.Goals, action),
+        delG: ? Goal = state.Goals[action.id],
+        gids : string[] = state.Gids.slice(),
+        done: string[] = state.Done.slice(),
+        notDone: string[] = state.NotDone.slice(),
+        inProgress: string[] = state.InProgress.slice();
+    gids.splice(gids.indexOf(action.id), 1);
+    if (delG != null) {
+        switch (delG.status) {
+            case GoalStatus.DONE:
+                done.splice(done.indexOf(action.id), 1);
+                break;
+            case GoalStatus.NOT_DONE:
+                notDone.splice(notDone.indexOf(action.id), 1);
+                break;
+            case GoalStatus.IN_PROGRESS:
+                inProgress.splice(inProgress.indexOf(action.id), 1);
+                break;
+            default:
+                console.log("unhanlded case");
+        }
+    }
+
+    let editedGT: $GoalTracking = Object.assign({}, state, {
+        Goals: gs,
+        Gids: gids,
+        Done: done,
+        NotDone: notDone,
+        inProgress: inProgress,
+    });
+    // refilter goals
+    return GoalTracking(editedGT, ActionCreators.FILTER_GOAL_BY_STATUSES(editedGT.Filter.byStatuses));
+
+}
+
+export default function GoalTracking(state: $GoalTracking, action: $Action): $GoalTracking {
     if (state === undefined) {
         return {
             Goals: goals(undefined, action),
             Filter: filter(undefined, action),
+            Scheduler: scheduler(undefined, action),
             Gids: [],
             Done: [],
             NotDone: [],
@@ -96,10 +139,7 @@ export default function GoalTracking(state: $GoalTracking, action: any): $GoalTr
         case ActionTypes.LOAD_GOAL:
             return loadGoal(state, action);
         case ActionTypes.DELETE_GOAL:
-            // TODO edit this
-            return Object.assign({}, state, {
-                Goals: goals(state.Goals, action),
-            });
+            return deleteGoal(state, action);
         case ActionTypes.FILTER_GOAL_BY_STATUSES:
             let filtered: string[] = [];
             switch (action.statuses) {

@@ -43,22 +43,22 @@ function pushToCorrespondingGids(goal: Goal,
 
 function loadGoals(state: $GoalTracking, action: $Action): $GoalTracking {
     let gs: Goal[] = action.goals,
-        done = state.Done.slice(),
-        notDone = state.NotDone.slice(),
-        inProgress = state.InProgress.slice(),
-        gids = state.Gids.slice(),
-        newGSet = Object.assign({}, state.Goals);
+        done = state.done.slice(),
+        notDone = state.notDone.slice(),
+        inProgress = state.inProgress.slice(),
+        gids = state.gids.slice(),
+        newGSet = Object.assign({}, state.goals);
     for (let goal of gs) {
         // load individual goal
         newGSet = goals(newGSet, ActionCreators.LOAD_GOAL(goal, action.now));
         pushToCorrespondingGids(newGSet[goal.id], gids, done, notDone, inProgress);
     }
     return Object.assign({}, state, {
-        Gids: gids,
-        Done: done,
-        NotDone: notDone,
-        InProgress: inProgress,
-        Goals: newGSet,
+        gids: gids,
+        done: done,
+        notDone: notDone,
+        inProgress: inProgress,
+        goals: newGSet,
     });
 }
 
@@ -66,30 +66,30 @@ function loadGoals(state: $GoalTracking, action: $Action): $GoalTracking {
 function loadGoal(state: $GoalTracking, action: $Action): $GoalTracking {
     let newGSet: {
             [id: string]: Goal
-        } = goals(state.Goals, action),
-        done = state.Done.slice(),
-        notDone = state.NotDone.slice(),
-        inProgress = state.InProgress.slice(),
-        gids = state.Gids.slice();
+        } = goals(state.goals, action),
+        done = state.done.slice(),
+        notDone = state.notDone.slice(),
+        inProgress = state.inProgress.slice(),
+        gids = state.gids.slice();
     pushToCorrespondingGids(newGSet[action.goal.id], gids, done, notDone, inProgress);
     return Object.assign({}, state, {
-        Gids: gids,
-        Done: done,
-        NotDone: notDone,
-        InProgress: inProgress,
-        Goals: newGSet,
+        gids: gids,
+        done: done,
+        notDone: notDone,
+        inProgress: inProgress,
+        goals: newGSet,
     });
 }
 
 function deleteGoal(state: $GoalTracking, action: $Action ): $GoalTracking {
     let gs: {
             [id: string]: Goal
-        } = goals(state.Goals, action),
-        delG: ? Goal = state.Goals[action.id],
-        gids : string[] = state.Gids.slice(),
-        done: string[] = state.Done.slice(),
-        notDone: string[] = state.NotDone.slice(),
-        inProgress: string[] = state.InProgress.slice();
+        } = goals(state.goals, action),
+        delG: ? Goal = state.goals[action.id],
+        gids : string[] = state.gids.slice(),
+        done: string[] = state.done.slice(),
+        notDone: string[] = state.notDone.slice(),
+        inProgress: string[] = state.inProgress.slice();
     gids.splice(gids.indexOf(action.id), 1);
     if (delG != null) {
         switch (delG.status) {
@@ -108,27 +108,27 @@ function deleteGoal(state: $GoalTracking, action: $Action ): $GoalTracking {
     }
 
     let editedGT: $GoalTracking = Object.assign({}, state, {
-        Goals: gs,
-        Gids: gids,
-        Done: done,
-        NotDone: notDone,
+        goals: gs,
+        gids: gids,
+        done: done,
+        notDone: notDone,
         inProgress: inProgress,
     });
     // refilter goals
-    return GoalTracking(editedGT, ActionCreators.FILTER_GOAL_BY_STATUSES(editedGT.Filter.byStatuses));
+    return goalTracking(editedGT, ActionCreators.FILTER_GOAL_BY_STATUSES(editedGT.filter.byStatuses));
 
 }
 
-export default function GoalTracking(state: $GoalTracking, action: $Action): $GoalTracking {
+export default function goalTracking(state: $GoalTracking, action: $Action): $GoalTracking {
     if (state === undefined) {
         return {
-            Goals: goals(undefined, action),
-            Filter: filter(undefined, action),
-            Scheduler: scheduler(undefined, action),
-            Gids: [],
-            Done: [],
-            NotDone: [],
-            InProgress: [],
+            goals: goals(undefined, action),
+            filter: filter(undefined, action),
+            scheduler: scheduler(undefined, action),
+            gids: [],
+            done: [],
+            notDone: [],
+            inProgress: [],
         };
     }
     switch (action.type) {
@@ -145,35 +145,35 @@ export default function GoalTracking(state: $GoalTracking, action: $Action): $Go
             switch (action.statuses) {
                 // cached filter
                 case StatusFilter.ALL:
-                    filtered = state.Gids;
+                    filtered = state.gids;
                     break;
                 case StatusFilter.DONE:
-                    filtered = state.Done;
+                    filtered = state.done;
                     break;
                 case StatusFilter.NOT_DONE:
-                    filtered = state.NotDone;
+                    filtered = state.notDone;
                     break;
                 case StatusFilter.IN_PROGRESS:
-                    filtered = state.InProgress;
+                    filtered = state.inProgress;
                     break;
                 default:
                     // manually filter
-                    let keys = state.Gids;
+                    let keys = state.gids;
                     if (Object.keys(action.statuses).length === Object.keys(GoalStatus).length) {
                         filtered = keys;
                     } else {
                         keys.forEach(function(key) {
-                            if (action.statuses[state.Goals[key].status] === true) { // goal's status' matches the filter
+                            if (action.statuses[state.goals[key].status] === true) { // goal's status' matches the filter
                                 filtered.push(key);
                             }
                         })
                     }
             }
-            let newFilter = Object.assign({}, filter(state.Filter, action), {
-                gids: filtered
+            let newFilter = Object.assign({}, filter(state.filter, action), {
+                gids: filtered,
             });
             return Object.assign({}, state, {
-                Filter: newFilter
+                filter: newFilter,
             });
         default:
             return state;

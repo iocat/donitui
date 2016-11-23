@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {getGoalFilter} from '../../../reducers/Root';
+import {getGoalFilter} from '../../../data/reducers';
 import {ActionCreators} from '../../../actions';
 
 import AvPlayArrow from 'material-ui/svg-icons/av/play-arrow';

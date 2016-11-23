@@ -1,6 +1,6 @@
 // @flow
 import {createStore} from 'redux';
-import {Root} from  '../reducers/Root';
+import {root} from  '../reducers/root';
 
 // global app store that receives every actions
-export var appStore = createStore(Root);
+export var appStore = createStore(root);

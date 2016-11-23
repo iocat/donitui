@@ -16,7 +16,7 @@ export type $User = {
 }
 
 export type $UserService = {
-    User: $User,
+    user: $User,
 }
 
 // generic action
@@ -32,29 +32,58 @@ export type $Filter = {
     gids: number[],
 }
 
-export type $Scheduler = {
 
+export type $ScheduledTaskEvent = {
+    // the time to trigger the event
+    at: number,
+    // false, if this task is ending
+    // true, if this task is starting
+    toStart: boolean,
+    // the index of the goal in the goal dictionary
+    goalIndex: string,
+    // the index the task belongs to in the goal
+    taskIndex: number,
+}
+
+export type $Scheduler = {
+    // the list of event coming up next
+    upNext: $ScheduledTaskEvent[],
+    // the time the scheduler is first booted up and tasks are loaded to the
+    // upNext event
+    preprocessTime: number,
 }
 
 export type $GoalTracking = {
-    Scheduler: $Scheduler,
+    scheduler: $Scheduler,
     // the original goal list which is sorted by created time
-    Gids: string[],
+    gids: string[],
     // The list of goals which are done
-    Done: string[],
+    done: string[],
     // The list of goals which are not done (but are not in progress)
-    NotDone: string[],
+    notDone: string[],
     // The list of goals which are in progress
-    InProgress: string[],
+    inProgress: string[],
 
     // A dictionary of goals with unique goals' id
-    Goals: {[id:string]:Goal},
-    Filter: $Filter,
+    goals: {[id:string]:Goal},
+    filter: $Filter,
 }
 
 export type $RootReducer = {
-    GoalTracking: $GoalTracking,
-    UserService: $UserService,
-    Socializing: $Socializing,
-    NotificationSystem: $NotificationSystem,
+    goalTracking: $GoalTracking,
+    userService: $UserService,
+    socializing: $Socializing,
+    notificationSystem: $NotificationSystem,
+}
+
+// HELPER FUNCTION TO RETRIEVE THE CHILDREN REDUCERS' DATA
+
+// getUserGoals gets all the goals tracked by the goal tracker
+export function getUserGoals(root: $RootReducer){
+    return root.goalTracking.goals;
+}
+
+// getGoalFilter gets the filter from the goal tracker
+export function getGoalFilter(root: $RootReducer){
+    return root.goalTracking.filter
 }

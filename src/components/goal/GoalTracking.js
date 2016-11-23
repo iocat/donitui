@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {ActionCreators} from '../../actions';
-import {getUserGoals, getGoalFilter} from '../../reducers/Root';
+import {getUserGoals, getGoalFilter} from '../../data/reducers';
 
 import {Responsive, WidthProvider} from 'react-grid-layout';
 const GoalTrackingLayout = WidthProvider(Responsive);

@@ -9,10 +9,11 @@ import {
     ActionCreators,
 } from '../../actions';
 
-export default function scheduler(state: ?$Scheduler, action : $Action): $Scheduler {
+export default function scheduler(state: ?$Scheduler, action : $Action):$Scheduler {
     if (state === undefined) {
         return {
-
+            upNext: [],
+            preprocessTime: 0,
         }
     }
     switch(action.type) {
@@ -20,6 +21,6 @@ export default function scheduler(state: ?$Scheduler, action : $Action): $Schedu
             if (state != null){
                 return state;
             }
-            return {};
+            return scheduler(undefined, action);
     }
 }

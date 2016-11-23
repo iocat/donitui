@@ -41,7 +41,7 @@ export default class DateTimePicker extends React.Component {
                     <DatePicker
                         shouldDisableDate={this.props.disableDate}
                         floatingLabelText={this.props.dateLabel}
-                        floatingLabelFixed={true} mode="landscape"
+                        floatingLabelFixed={true} 
                         textFieldStyle={{ width: '100%' }} container="inline"
                         formatDate={formatDate} value={this.props.dateTime}
                         onChange={this.onDateChange}/>

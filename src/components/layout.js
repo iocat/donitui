@@ -12,29 +12,29 @@ export function breakpoints(component){
 }
 
 const commonBreakpts = {
-        lg: 1200, 
-        md: 996, 
+        lg: 1200,
+        md: 996,
 }
 
 export const personalTracking= {
     layouts: {
         lg: [
-            {i:"goalTracking", x: 5, y: 0, w: 6, h:1, static:true}
-        ], 
+            {i:"goalTracking", x: 6, y: 0, w: 5, h:1, static:true}
+        ],
         md: [
-            {i:"goalTracking", x: 3, y: 0, w: 6, h:1, static:true}
-        ], 
+            {i:"goalTracking", x: 4, y: 0, w: 5, h:1, static:true}
+        ],
         /*sm: [
             {i:"goalTracking", x: 3, y: 0, w: 2, h:1, static:true}
-        ], 
+        ],
         xs: [
             {i:"goalTracking", x: 2, y: 0, w: 2, h:1, static:true}
         ], */
     },
     cols:{
-        lg: 12, 
-        md: 10, 
-        /*sm: 6, 
+        lg: 12,
+        md: 10,
+        /*sm: 6,
         xs: 5, */
     },
     breakpoints: commonBreakpts,
@@ -60,8 +60,8 @@ export const goalTracking = {
         ],*/
     },
     cols:{
-        lg: 12, 
-        md: 10, 
+        lg: 12,
+        md: 10,
     },
     breakpoints: commonBreakpts,
 }

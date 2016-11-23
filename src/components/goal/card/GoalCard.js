@@ -9,18 +9,17 @@ import {Card} from 'material-ui/Card';
 export default class GoalCard extends React.Component {
     render() {
         let goal = this.props.goal;
-        
         let controlBlock = null;
         if (this.props.canUpdate){
-            controlBlock = <GoalControlBlock 
-                delete={this.props.deleteGoal} 
+            controlBlock = <GoalControlBlock
+                delete={this.props.deleteGoal}
                 goalName={this.props.goal.name}/>
         }
         return (
             <Card className="goal-card">
                 <GoalCardHeader canUpdate={this.props.canUpdate} goal={goal}/>
                 <ToDoList tasks={goal.tasks}/>
-                {controlBlock} 
+                {controlBlock}
                 </Card>
         )
     }

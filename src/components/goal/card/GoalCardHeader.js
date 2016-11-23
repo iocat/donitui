@@ -11,44 +11,43 @@ export default class GoalCardHeader extends React.Component{
         return this.props.goal.visibility === GoalVisibility.PRIVATE;
     }
 
+    getVisibilityCheckbox = () =>{
+        if (this.props.canUpdate){
+            return(
+                <div className="visibility-checkbox">
+                    <Checkbox
+                        checked={this.isVisible()}
+                        checkedIcon={<Visibility/>}
+                        uncheckedIcon={<VisibilityOff/>}
+                        />
+                    </div>)
+        }
+        return null;
+    }
     /* TODO: set the states of visibility
         create a drop down list for buttons
         Decouple Checkbox button!*/
     render(){
         let goal = this.props.goal;
-        let header = null;
+        let visibilityCheckbox = this.getVisibilityCheckbox();
         let cardTitle = (<CardTitle
                     title={goal.name }
                     subtitle={goal.description || ""}
                     className="card-title"></CardTitle>)
-        let visibilityCheckbox = null;
-        if (this.props.canUpdate){
-            visibilityCheckbox = (
-                <div className="visibility-checkbox">
-                    <Checkbox 
-                        checked={this.isVisible()}
-                        checkedIcon={<VisibilityOff/>} 
-                        uncheckedIcon={<Visibility/>}
-                        />
-                    </div>)
-        }
-        
         if (goal.img){
-            header = (
-                <CardMedia 
+            return (
+                <CardMedia
                     className="card-header"
                     overlay={cardTitle}>
-                    <div 
-                        style={{backgroundImage: 'url('+goal.img+')'}} 
+                    <div
+                        style={{backgroundImage: 'url('+goal.img+')'}}
                         className="header-img">
                         {visibilityCheckbox}
                         </div>
                     </CardMedia>
             )
-        }else{
-            header = (cardTitle)
         }
-        return header
+        return <div className="card-header">{cardTitle}{visibilityCheckbox}</div>;
     }
 }
 

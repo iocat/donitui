@@ -9,5 +9,5 @@ and do the things that matter.
 Not yet. UNDER CONSIDERATIONS THO.
 
 ### What front-end technology stack?
-React and Redux framework
-Languages include dominant JS, HTML and CSS.
+- React and Redux Library.
+- Languages include dominant JS, HTML and CSS.

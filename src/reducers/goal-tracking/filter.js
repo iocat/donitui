@@ -1,5 +1,10 @@
-import { StatusFilter} from '../../data/index';
-import { ActionTypes } from '../../actions/index';
+import {
+    StatusFilter
+} from '../../data/index';
+import {
+    ActionTypes
+} from '../../actions';
+
 export default function filter(state, action) {
     if (state === undefined) {
         return {

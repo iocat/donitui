@@ -1,30 +1,39 @@
 /* some test code! */
-import { ActionCreators } from './actions/index';
-import {StatusFilter} from './data/index';
-import { appStore } from './stores/appStore';
+import {
+    ActionCreators
+} from './actions';
+import {
+    StatusFilter
+} from './data/index';
+import {
+    appStore
+} from './stores/appStore';
+
 export default function setupExamples() {
-    let placeholder = "http://onehdwallpaper.com/wp-content/uploads/2016/07/Beautiful-HD-Landscape-Images.jpg";
+    let placeholder = "https://unsplash.it/300/300/?random";
     let goal1 = {
         id: 1,
         name: "Have a dog",
         description: "Better be a Corgi",
         visibility: "PUBLIC",
         //img: placeholder,
-        tasks: {
-            "1": {
-                id: "1",
-                name: "Adopt one",
-                reminder: {},
-                status: "DONE",
+        tasks: [{
+            id: "1",
+            name: "Adopt one",
+            reminder: {
+                remindAt: new Date((new Date().getTime() + 10000000)),
+                duration: 10,
             },
-            "3": {
-                id: "3",
-                name: "sdfasdfasdf",
-                repeatedReminder: {},
-                description: "ADSSAD",
-                status: "DONE",
-            }
-        }
+        }, {
+            id: "3",
+            name: "sdfasdfasdf",
+            repeatedReminder: {
+                cycle: "EVERY_DAY",
+                remindAt:  new Date((new Date().getTime() + 98000000)),
+                duration: 100,
+            },
+        }],
+
     }
 
     let goal2 = {
@@ -33,64 +42,89 @@ export default function setupExamples() {
         visibility: "PRIVATE",
         img: placeholder,
         description: "My career",
-        tasks: {
-            "1": {
-                id: "1",
-                name: "Do whatever I want to do",
-                status: "NOT_DONE",
-                reminder: {},
+        tasks: [{
+            id: "1",
+            name: "Code",
+            reminder: {
+                remindAt: new Date((new Date().getTime() - 103920)),
+                duration: 200,
             },
-            "3": {
-                id: "3",
-                name: "Read a lot",
-                status: "NOT_DONE",
-                repeatedReminder: {},
+        }, {
+            id: 3,
+            name: "Read a lot",
+            repeatedReminder: {
+                remindAt: new Date((new Date().getTime() + 121300000)),
+                duration: 100,
+                cycle: "EVERY_WEEK",
+                days: {
+                    1: true,
+                    3: true,
+                }
             },
-            "2": {
-                id: "2",
-                name: "On the internet, nobody knows you are a dog",
-                status: "NOT_DONE",
-                repeatedReminder: {},
-            }
-        }
+        }, {
+            id: 2,
+            name: "Read The Algorithms Design Manual",
+            repeatedReminder: {
+                cycle: "EVERY_DAY",
+                remindAt: new Date(),
+                duration: 350,
+                days: {
+                    1: true,
+                    2: true
+                },
+            },
+        }],
     }
 
     let goal3 = {
-        id: "3",
+        id: 3,
         name: "Get a cat",
         visibility: "FOR_FOLLOWERS",
-        img: placeholder,
+        // img: placeholder,
         description: "LOLCAT",
-        tasks: {
-            "1":{
-                id: 1,
-                name:"Cat is awesome",
-                status:"IN_PROGRESS",
-                reminder:{}
+        tasks: [{
+            id: 1,
+            name: "Go to the vet",
+            reminder: {
+                remindAt: new Date((new Date().getTime() - 23823000)),
+                duration: 1000,
             }
-        },
+        }],
     }
     let goal5 = {
-        id: "5",
-        name:"Be busy",
+        id: 5,
+        name: "Be busy",
         visibility: "PRIVATE",
         img: placeholder,
-        tasks:{
-            "2":{
-                id:"2",
-                name:"Be yourself",
-                status:"IN_PROGRESS",
-                repeatedReminder:{}
+        tasks: [{
+            id: "2",
+            name: "Be yourself",
+            repeatedReminder: {
+                cycle: "EVERY_WEEK",
+                days: {
+                    6: true
+                },
+                remindAt: new Date(),
+                duration: 100,
             }
-        }
+        }],
     }
 
-    let goal4 = Object.assign({}, goal1, { id: "4", name: "Kill a dog", description: "Illegal stuffs", img: placeholder });
-    /* ignore return val*/ appStore.subscribe(() => { console.log(appStore.getState()) })
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("1", goal1));
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("2", goal2));
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("3", goal3));
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("4", goal4));
-    appStore.dispatch(ActionCreators.CREATE_GOAL_WITH_ID("5", goal5));
+    let goal4 = Object.assign({}, goal1, {
+        id: 4,
+        name: "Kill a dog",
+        description: "Illegal stuffs",
+        img: placeholder
+    });
+
+    let goals = [goal1,goal2,goal3,goal4,goal5];
+
+
+
+    /* ignore return val*/
+    appStore.subscribe(() => {
+        console.log(appStore.getState())
+    })
+    appStore.dispatch(ActionCreators.LOAD_GOALS(goals, new Date()));
     appStore.dispatch(ActionCreators.FILTER_GOAL_BY_STATUSES(StatusFilter.IN_PROGESS));
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {getGoalFilter} from '../../../reducers/Root';
-import {ActionCreators} from '../../../actions/index';
+import {ActionCreators} from '../../../actions';
 
 import AvPlayArrow from 'material-ui/svg-icons/av/play-arrow';
 import AvPause from 'material-ui/svg-icons/av/pause';
@@ -41,26 +41,26 @@ class _FilterTab extends React.Component {
     render() {
         return (
             <div>
-                <IconButton 
-                    tooltip="Show active goals" 
-                    onTouchTap={this.filterByInProgress}> 
+                <IconButton
+                    tooltip="Show active goals"
+                    onTouchTap={this.filterByInProgress}>
                     <AvPlayArrow color={this.color(GoalStatus.IN_PROGRESS)}/>
                     </IconButton>
 
-                <IconButton 
+                <IconButton
                     tooltip="Show on-going goals"
-                    onTouchTap={this.filterByNotDone}> 
+                    onTouchTap={this.filterByNotDone}>
                     <AvPause color={this.color(GoalStatus.NOT_DONE)}/>
                     </IconButton>
 
-                <IconButton 
+                <IconButton
                     tooltip="Show achieved goals"
-                    onTouchTap={this.filterByDone}> 
+                    onTouchTap={this.filterByDone}>
                     <AvStop color={this.color(GoalStatus.DONE)}/>
                     </IconButton>
-                <IconButton 
+                <IconButton
                     tooltip="Show all goals"
-                    onTouchTap={this.filterByAll}> 
+                    onTouchTap={this.filterByAll}>
                     <NavigationApps/>
                     </IconButton>
             </div>
@@ -76,7 +76,7 @@ _FilterTab.propTypes = {
             byStatuses: React.PropTypes.objectOf(React.PropTypes.bool).isRequired,
         }
     ).isRequired,
-    // The registered call back 
+    // The registered call back
     filterBy: React.PropTypes.func.isRequired,
 }
 

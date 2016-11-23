@@ -1,4 +1,4 @@
-import {ActionTypes} from '../actions/index';
+import {ActionTypes} from '../actions';
 import {combineReducers} from 'redux';
 
 // TODO: show structure

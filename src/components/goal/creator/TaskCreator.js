@@ -5,6 +5,7 @@ import {Divider} from 'material-ui';
 import {TaskStatus} from '../../../data/index';
 import type {Task} from '../../../data/types';
 import ActionDone from 'material-ui/svg-icons/action/done';
+
 const emptyTask= ():Task=> {
     return {
         name:"",

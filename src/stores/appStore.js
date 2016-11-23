@@ -1,3 +1,4 @@
+// @flow
 import {createStore} from 'redux';
 import {Root} from  '../reducers/Root';
 

@@ -18,8 +18,6 @@ import type {
     Goal
 } from '../data/types';
 
-
-
 function pushToCorrespondingGids(goal: Goal,
     gids: string[], done: string[],
     notDone: string[], inProgress: string[]) {
@@ -81,7 +79,7 @@ function loadGoal(state: $GoalTracking, action: $Action): $GoalTracking {
     });
 }
 
-function deleteGoal(state: $GoalTracking, action: $Action ): $GoalTracking {
+function deleteGoal(state: $GoalTracking, action: $Action): $GoalTracking {
     let gs: {
             [id: string]: Goal
         } = goals(state.goals, action),
@@ -119,8 +117,8 @@ function deleteGoal(state: $GoalTracking, action: $Action ): $GoalTracking {
 
 }
 
-export default function goalTracking(state: $GoalTracking, action: $Action): $GoalTracking {
-    if (state === undefined) {
+export default function goalTracking(state: ? $GoalTracking, action : $Action): $GoalTracking {
+    if (state === undefined || state === null) {
         return {
             goals: goals(undefined, action),
             filter: filter(undefined, action),
@@ -140,6 +138,12 @@ export default function goalTracking(state: $GoalTracking, action: $Action): $Go
             return loadGoal(state, action);
         case ActionTypes.DELETE_GOAL:
             return deleteGoal(state, action);
+        case ActionTypes.PREPROCESS_SCHEDULER:
+            return Object.assign({}, state, {
+                scheduler: scheduler(state.scheduler,
+                    ActionCreators._PREPROCESS_SCHEDULER(action.preprocessTime,
+                        state.inProgress, state.notDone, state.goals)),
+            })
         case ActionTypes.FILTER_GOAL_BY_STATUSES:
             let filtered: string[] = [];
             switch (action.statuses) {
@@ -163,7 +167,7 @@ export default function goalTracking(state: $GoalTracking, action: $Action): $Go
                         filtered = keys;
                     } else {
                         keys.forEach(function(key) {
-                            if (action.statuses[state.goals[key].status] === true) { // goal's status' matches the filter
+                            if (state != null && action.statuses[state.goals[key].status] === true) { // goal's status' matches the filter
                                 filtered.push(key);
                             }
                         })

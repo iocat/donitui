@@ -14,7 +14,7 @@ export default function goals(state: ?{
 }, action : any): {
     [id: string]: Goal
 } {
-    if (state === undefined) {
+    if (state === undefined || state === null) {
         return {};
     }
     let gs = null;
@@ -29,9 +29,6 @@ export default function goals(state: ?{
             gs[action.goal.id] = goal(action.goal, action);
             return gs;
         default:
-            if (state != null) {
-                return state;
-            }
-            return {};
+            return state;
     }
 }

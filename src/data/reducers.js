@@ -1,7 +1,10 @@
 // @flow
 // This file contains structure of the reducer
 
-import type { Goal, GoalStatusEnum } from './types';
+import type {
+    Goal,
+    GoalStatusEnum
+} from './types';
 
 export type $NotificationSystem = {
 
@@ -28,7 +31,9 @@ export type $Action = {
 }
 
 export type $Filter = {
-    byStatuses: {[id:GoalStatusEnum]:boolean},
+    byStatuses: {
+        [id: GoalStatusEnum]: boolean
+    },
     gids: number[],
 }
 
@@ -47,7 +52,7 @@ export type $ScheduledTaskEvent = {
 
 export type $Scheduler = {
     // the list of event coming up next
-    upNext: $ScheduledTaskEvent[],
+    eventHeap: $ScheduledTaskEvent[],
     // the time the scheduler is first booted up and tasks are loaded to the
     // upNext event
     preprocessTime: number,
@@ -65,7 +70,9 @@ export type $GoalTracking = {
     inProgress: string[],
 
     // A dictionary of goals with unique goals' id
-    goals: {[id:string]:Goal},
+    goals: {
+        [id: string]: Goal
+    },
     filter: $Filter,
 }
 
@@ -79,11 +86,11 @@ export type $RootReducer = {
 // HELPER FUNCTION TO RETRIEVE THE CHILDREN REDUCERS' DATA
 
 // getUserGoals gets all the goals tracked by the goal tracker
-export function getUserGoals(root: $RootReducer){
+export function getUserGoals(root: $RootReducer) {
     return root.goalTracking.goals;
 }
 
 // getGoalFilter gets the filter from the goal tracker
-export function getGoalFilter(root: $RootReducer){
+export function getGoalFilter(root: $RootReducer) {
     return root.goalTracking.filter
 }

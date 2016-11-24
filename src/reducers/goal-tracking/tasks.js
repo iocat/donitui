@@ -30,7 +30,7 @@ function evaluateTaskStatus(task: Task, now: Date):TaskStatusEnum{
     if (task.reminder != null){
         let reminder: Reminder = task.reminder,
             taskStartEpch: number = reminder.remindAt.getTime(),
-            taskEndEpch: number = taskStartEpch + (reminder.duration*1000);
+            taskEndEpch: number = taskStartEpch + reminder.duration*60000;
         return toStatus(taskStartEpch, taskEndEpch, nowEpch);
     }else if (task.repeatedReminder != null) {
         let rReminder: RepeatedReminder = task.repeatedReminder;
@@ -40,7 +40,7 @@ function evaluateTaskStatus(task: Task, now: Date):TaskStatusEnum{
         cloneNow.setMinutes(rReminder.remindAt.getMinutes());
         cloneNow.setMilliseconds(0);
         let startTimeEpch = cloneNow.getTime(),
-            endTimeEpch = startTimeEpch + rReminder.duration*1000;
+            endTimeEpch = startTimeEpch + rReminder.duration*60000;
         switch(rReminder.cycle) {
             case ReminderCycle.EVERY_DAY:
                 return toStatus(startTimeEpch, endTimeEpch, nowEpch);

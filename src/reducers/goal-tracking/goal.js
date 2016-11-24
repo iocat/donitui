@@ -34,7 +34,7 @@ const goalStatusFromTasks = (tasks: Task[]): GoalStatusEnum => {
 
 
 export default function goal(state: Goal, action: any): Goal {
-    if (state === undefined) {
+    if (state === undefined || state == null) {
         return {
             id: "",
             name: "",
@@ -62,17 +62,7 @@ export default function goal(state: Goal, action: any): Goal {
                 status: goalStatusFromTasks(reeval),
             });
         default:
-            if (state != null) {
-                return state;
-            }
-            return {
-                id: "",
-                name: "",
-                description: "",
-                status: GoalStatus.NOT_DONE,
-                img: "",
-                visibility: GoalVisibility.PRIVATE,
-                tasks: [],
-            }
+            return state;
+
     }
 }

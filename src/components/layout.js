@@ -19,7 +19,7 @@ const commonBreakpts = {
 export const personalTracking= {
     layouts: {
         lg: [
-            {i:"goalTracking", x: 6, y: 0, w: 5, h:1, static:true}
+            {i:"goalTracking", x: 6, y: 0, w: 4, h:1, static:true}
         ],
         md: [
             {i:"goalTracking", x: 4, y: 0, w: 5, h:1, static:true}

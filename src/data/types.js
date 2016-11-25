@@ -33,6 +33,7 @@ export type UserStatusEnum =
 
 export type Reminder = {
     remindAt: Date,
+    // duration in minutes
     duration: number,
 }
 
@@ -42,6 +43,7 @@ export type RepeatedReminder = {
     cycle: ReminderCycleEnum,
     remindAt: Date,
     days: HabitDays,
+    // duration in minutes
     duration: number,
 }
 

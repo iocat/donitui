@@ -40,6 +40,7 @@ export type $Filter = {
 
 export type $ScheduledTaskEvent = {
     // the time to trigger the event
+    // in milliseconds in Epoch
     at: number,
     // false, if this task is ending
     // true, if this task is starting
@@ -68,7 +69,6 @@ export type $GoalTracking = {
     notDone: string[],
     // The list of goals which are in progress
     inProgress: string[],
-
     // A dictionary of goals with unique goals' id
     goals: {
         [id: string]: Goal

@@ -8,7 +8,7 @@ import type {Task, RepeatedReminder} from '../../../data/types';
 import {ReminderCycle} from '../../../data/index';
 import {formatTime} from '../../../timeutils';
 
-const mapNumberToDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const mapNumberToDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default class HabitItem extends React.Component{
     static defaultProps: {
@@ -37,7 +37,7 @@ export default class HabitItem extends React.Component{
                     if (habitDays != null){
                         Object.keys(habitDays).forEach((key: number)=>{
                             if (habitDays[key] === true){
-                                days.push(mapNumberToDay[key-1]);
+                                days.push(mapNumberToDay[key]);
                             }
                         })
                     }

@@ -16,8 +16,6 @@ class EmptyCard extends React.Component{
             let quoteList = [
                 "You have no goal. Add one!",
                 "No goal? Enjoy a cup of tea!",
-                "Nothing to see here...",
-                
             ]
             return quoteList[getRandomInt(0, quoteList.length)];
         }
@@ -26,8 +24,6 @@ class EmptyCard extends React.Component{
             depth: 1,
         };
     }
-
-    
 
     addDepth = ()=>{
         this.setState({depth: 3});
@@ -62,7 +58,7 @@ export default class GoalCardList extends React.Component{
         <div>
             {gids.map((gid) => {
                 if (goals[gid]){ // Don't show if the goal does not exist
-                    return (     
+                    return (
                     <div key={gid}>
                         <GoalCard goal={goals[gid]}
                             canUpdate={canUpdate}

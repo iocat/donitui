@@ -19,10 +19,11 @@ export const ActionTypes: {
     FILTER_GOAL_BY_STATUSES: 3,
     LOAD_GOALS: 4,
     EVALUATE_GOAL_STATUS: 5,
-    LOAD_GOAL: 6,
+    LOAD_GOAL: 6, // push a goal to the end of the goal lists
+    CREATE_GOAL: 7, // create a goals and prepend to the front of the goal lists
 
     PREPROCESS_SCHEDULER: 10, // goalTracking + scheduler
-
+    SET_CURRENT_TIME: 11,
 
     // error handler
     HANDLE_ERROR: 20,
@@ -96,6 +97,17 @@ export const ActionCreators: {
             now: loadAt,
         };
     },
+    CREATE_GOAL: (goal: Goal, createAt: Date):{
+        type: number,
+        goal: Goal,
+        now: Date,
+    }=>{
+        return {
+            type: ActionTypes.CREATE_GOAL,
+            goal: goal,
+            now: createAt,
+        }
+    },
 
     EVALUATE_GOAL_STATUS: (time: Date): {
         type: number,
@@ -131,6 +143,13 @@ export const ActionCreators: {
             inProgress: inProgress,
             notDone: notDone,
             goals: goals,
+        };
+    },
+
+    SET_CURRENT_TIME: (time: Date):{type: number, time: number} =>{
+        return {
+            type: ActionTypes.SET_CURRENT_TIME,
+            time: time.getTime(),
         };
     },
 

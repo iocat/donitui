@@ -31,18 +31,22 @@ export type UserStatusEnum =
     | "OFFLINE"
     | "BUSY";
 
+// Duration in minutes!
+export type Duration = number;
+
 export type Reminder = {
     remindAt: Date,
-    duration: number,
+    duration: Duration,
 }
 
 export type HabitDays = {[id:number]:boolean}
+
 
 export type RepeatedReminder = {
     cycle: ReminderCycleEnum,
     remindAt: Date,
     days: HabitDays,
-    duration: number,
+    duration: Duration,
 }
 
 export type Goal = {

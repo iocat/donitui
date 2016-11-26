@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { GoalVisibility } from '../../../data/index';
-import { TextField, Divider, Card,
+import { TextField, Divider,
     CardHeader, CardText, CardActions, CardMedia, FlatButton} from 'material-ui';
 import TaskCreator from './TaskCreator';
+import FloatingCard from '../../utils/FloatingCard';
 
 export const Mode = {
     CREATE: "CREATE",
@@ -176,12 +177,12 @@ export class GoalChanger extends React.Component{
         let goal = this.state.goal;
         let buttons = this.getButtonsForMode(mode);
         return (
-            <Card expanded={this.state.expanded}
-                className="goal-card goal-changer"
+            <div className="goal-card goal-changer">
+            <FloatingCard expanded={this.state.expanded}
                 onExpandChange={this.handleExpandChange}>
                 <CardHeader actAsExpander={true}
                     showExpandableButton={true}
-                    subtitle="Got something cool to do today?"/>
+                    subtitle="Ready to be awesome? Create a goal..."/>
                 <Divider/>
                 <CardText expandable={true}>
                     <TextField
@@ -189,7 +190,7 @@ export class GoalChanger extends React.Component{
                         floatingLabelText="Objective" floatingLabelFixed={true}
                         fullWidth={true} value={goal.name}
                         errorText={this.getNameError()}
-                        onChange={this.onChangeName}/>
+                        onChange={this.onChangeName} autoFocus/>
                     <TextField
                         hintText="Add some more details?" floatingLabelFixed={true}
                         floatingLabelText="Description" fullWidth={true}
@@ -223,7 +224,8 @@ export class GoalChanger extends React.Component{
                 <CardActions className="goal-actions" expandable={true}>
                     {buttons}
                     </CardActions>
-                </Card>
+                </FloatingCard>
+            </div>
         )
     }
 }

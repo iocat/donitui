@@ -5,28 +5,25 @@ injectTapEventPlugin();
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider as ReduxStoreProvider } from 'react-redux';
-
+import {Provider as ReduxStoreProvider} from 'react-redux';
 // Material UI Themes
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 //import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import mainTheme from './mainTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
-import { appStore } from './stores/appStore';
-import { App } from './components/app/App';
-
+import {appStore} from './stores/appStore';
+import {App} from './components/app/App';
+import bootstrap from './bootstrap';
+import setupExamples from './setupExamples'; // Start some examples for debugging
 import "./static/css/index.css";
-//import "react-grid-layout/css/styles.css"; // this is too laggyyyyyy!
-//import "react-resizable/css/styles.css";	// this too.
-ReactDOM.render(
-	<MuiThemeProvider muiTheme={getMuiTheme(mainTheme)}>
-		<ReduxStoreProvider store={appStore}>
-			<App />
-		</ReduxStoreProvider>
-	</MuiThemeProvider>,
-	document.getElementById('root')
-);
-
-import setupExamples from './setupExamples';  // Start some examples for debugging
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 setupExamples();
+bootstrap();
+
+ReactDOM.render(
+    <MuiThemeProvider muiTheme={getMuiTheme(mainTheme)}>
+    <ReduxStoreProvider store={appStore}>
+        <App/>
+    </ReduxStoreProvider>
+</MuiThemeProvider>, document.getElementById('root'));

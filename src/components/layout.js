@@ -1,29 +1,52 @@
-
-export function layouts(component){
+export function layouts(component) {
     return component.layouts;
 }
 
-export function cols(component){
+export function cols(component) {
     return component.cols;
 }
 
-export function breakpoints(component){
+export function breakpoints(component) {
     return component.breakpoints;
 }
 
 const commonBreakpts = {
-        lg: 1200,
-        md: 996,
+    lg: 1200,
+    md: 996,
 }
 
-export const personalTracking= {
+export const personalTracking = {
     layouts: {
-        lg: [
-            {i:"goalTracking", x: 6, y: 0, w: 5, h:1, static:true}
-        ],
-        md: [
-            {i:"goalTracking", x: 4, y: 0, w: 5, h:1, static:true}
-        ],
+        lg: [{
+            i: "goalFilter",
+            x: 6,
+            y: 0,
+            w: 5,
+            h: 1,
+            static: true
+        }, {
+            i: "scheduler",
+            x: 1,
+            y: 1,
+            w: 4,
+            h: 1,
+            static: true
+        }, ],
+        md: [{
+            i: "goalFilter",
+            x: 5,
+            y: 0,
+            w: 5,
+            h: 1,
+            static: true
+        }, {
+            i: "scheduler",
+            x: 1,
+            y: 1,
+            w: 4,
+            h: 1,
+            static: true
+        }, ],
         /*sm: [
             {i:"goalTracking", x: 3, y: 0, w: 2, h:1, static:true}
         ],
@@ -31,7 +54,7 @@ export const personalTracking= {
             {i:"goalTracking", x: 2, y: 0, w: 2, h:1, static:true}
         ], */
     },
-    cols:{
+    cols: {
         lg: 12,
         md: 10,
         /*sm: 6,
@@ -41,15 +64,37 @@ export const personalTracking= {
 }
 
 export const goalTracking = {
-    layouts:{
-        lg:[
-            {i:"filter", x: 0, y: 0, w: 12, h: 1, static: true},
-            {i:"goals", x: 0, y: 1, w: 12, h: 1, static: true}
-        ],
-        md:[
-            {i:"filter", x: 0, y: 0, w: 10, h: 1, static: true},
-            {i:"goals", x: 0, y: 1, w: 10, h: 1, static: true}
-        ],
+    layouts: {
+        lg: [{
+            i: "filter",
+            x: 0,
+            y: 0,
+            w: 12,
+            h: 1,
+            static: true
+        }, {
+            i: "goals",
+            x: 0,
+            y: 1,
+            w: 12,
+            h: 1,
+            static: true
+        }, ],
+        md: [{
+            i: "filter",
+            x: 0,
+            y: 0,
+            w: 10,
+            h: 1,
+            static: true
+        }, {
+            i: "goals",
+            x: 0,
+            y: 1,
+            w: 10,
+            h: 1,
+            static: true
+        }],
         /*sm:[
             {i:"filter", x: 3, y: 0, w: 3, h: 1, static: true},
             {i:"goals", x: 0, y: 1, w: 6, h: 1, static: true}
@@ -59,7 +104,7 @@ export const goalTracking = {
             {i:"goals", x: 0, y: 1, w: 5, h: 1,  static: true}
         ],*/
     },
-    cols:{
+    cols: {
         lg: 12,
         md: 10,
     },

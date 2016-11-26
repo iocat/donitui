@@ -3,14 +3,11 @@ import {
     ActionCreators
 } from './actions';
 import {
-    StatusFilter
-} from './data/index';
-import {
     appStore
 } from './stores/appStore';
 
 export default function setupExamples() {
-    let placeholder = "https://static1.squarespace.com/static/566f43ac2399a3b449f5e5ee/t/5681a442e0327cf04eb4fe4c/1450164188853/placeholder.jpg?format=1500w";
+    let placeholder = "https://unsplash.it/200/300/?blur";
     let goal1 = {
         id: 1,
         name: "Have a dog",
@@ -20,15 +17,15 @@ export default function setupExamples() {
         tasks: [{
             name: "Adopt one",
             reminder: {
-                remindAt: new Date((new Date().getTime() + 10000000)),
-                duration: 10,
+                remindAt: new Date((new Date().getTime() + 10*60000)),
+                duration: 5,
             },
         }, {
             name: "sdfasdfasdf",
             repeatedReminder: {
                 cycle: "EVERY_DAY",
-                remindAt:  new Date((new Date().getTime() + 98000000)),
-                duration: 100,
+                remindAt:  new Date((new Date().getTime() + 10*60000)),
+                duration: 5,
             },
         }],
 
@@ -43,14 +40,14 @@ export default function setupExamples() {
         tasks: [{
             name: "Code",
             reminder: {
-                remindAt: new Date((new Date().getTime() - 103920)),
-                duration: 200,
+                remindAt: new Date((new Date().getTime())),
+                duration: 2,
             },
         }, {
             name: "Read a lot",
             repeatedReminder: {
-                remindAt: new Date((new Date().getTime() + 121300000)),
-                duration: 100,
+                remindAt: new Date((new Date().getTime() + 100000000)),
+                duration: 10,
                 cycle: "EVERY_WEEK",
                 days: {
                     1: true,
@@ -62,7 +59,7 @@ export default function setupExamples() {
             repeatedReminder: {
                 cycle: "EVERY_DAY",
                 remindAt: new Date(),
-                duration: 350,
+                duration: 20,
                 days: {
                     1: true,
                     2: true
@@ -104,20 +101,12 @@ export default function setupExamples() {
         }],
     }
 
-    let goal4 = Object.assign({}, goal1, {
-        id: 4,
-        name: "Kill a dog",
-        description: "Illegal stuffs",
-        img: placeholder
-    });
-
-    let goals = [goal1,goal2,goal3,goal4,goal5];
+    let goals = [goal1,goal2,goal3,goal5];
 
     /* ignore return val*/
     appStore.subscribe(() => {
         console.log(appStore.getState())
     })
     appStore.dispatch(ActionCreators.LOAD_GOALS(goals, new Date()));
-    appStore.dispatch(ActionCreators.FILTER_GOAL_BY_STATUSES(StatusFilter.IN_PROGESS));
     appStore.dispatch(ActionCreators.PREPROCESS_SCHEDULER(new Date()));
 }

@@ -86,7 +86,6 @@ export class SingleTaskEditor extends React.Component{
                         onSetReminder={this.onCreateReminder}
                         onSetRepeatedReminder={this.onCreateRepeatedReminder}
                         onCreate={this.acceptTask}
-
                         onCreateBtn={this.props.acceptBtn}
                         />
                     </CardText>

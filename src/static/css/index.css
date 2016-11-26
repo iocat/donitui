@@ -10,6 +10,17 @@ body {
 	box-sizing: border-box;
 }
 
+.app{
+	max-width: 1024px;
+	margin: auto auto;
+}
+
+.scheduler{
+	position: -webkit-sticky; /* for safari */
+	position: sticky;
+	top: 10px;
+}
+
 .goal-card{
 	width:"100%";
     min-width: 300px;

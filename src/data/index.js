@@ -41,7 +41,7 @@ export const StatusFilter:{[id:string]:Object}= {
     NOT_DONE : {
         [GoalStatus.NOT_DONE]: true,
     },
-    IN_PROGESS: {
+    IN_PROGRESS: {
         [GoalStatus.IN_PROGRESS]: true,
     },
 }

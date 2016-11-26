@@ -38,3 +38,8 @@ export const formatDateAndTime = (date: Date): string =>{
 export const formatDuration = (duration: number): string=>{
     return duration + " minutes";
 }
+
+// converts a duration in ms to a readable time from now
+export const readableDuration = (duration: number):string =>{
+    return moment.duration(duration).humanize();
+}

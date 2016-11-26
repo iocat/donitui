@@ -51,6 +51,8 @@ export type $ScheduledTaskEvent = {
 }
 
 export type $Scheduler = {
+    // the current time from Epoch in miliseconds
+    now: number,
     // the list of event coming up next
     eventHeap: $ScheduledTaskEvent[],
     // the time the scheduler is first booted up and tasks are loaded to the
@@ -68,7 +70,6 @@ export type $GoalTracking = {
     notDone: string[],
     // The list of goals which are in progress
     inProgress: string[],
-
     // A dictionary of goals with unique goals' id
     goals: {
         [id: string]: Goal

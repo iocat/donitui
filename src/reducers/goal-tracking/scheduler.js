@@ -15,9 +15,14 @@ export default function scheduler(state: ?$Scheduler, action : $Action): $Schedu
         return {
             eventHeap: [],
             preprocessTime: 0,
+            now: new Date().getTime(),
         }
     }
     switch(action.type) {
+        case ActionTypes.SET_CURRENT_TIME:
+            return Object.assign({},state, {
+                now: action.time,
+            });
         case ActionTypes.PREPROCESS_SCHEDULER:
             // build preprocess the scheduler to sort the handling events
             return Object.assign({}, state, {

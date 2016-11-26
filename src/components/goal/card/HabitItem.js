@@ -53,7 +53,7 @@ export default class HabitItem extends React.Component{
                         {cycleString} at {formatTime(reminder.remindAt)} on {join2(days, ", ", " and ")}
                     </div>
                 default:
-                    console.log("unexpected: description not returned in HabitItem");
+                    console.error("unexpected: description not returned in HabitItem");
             }
         }
         return "";

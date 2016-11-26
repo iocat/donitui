@@ -125,7 +125,7 @@ export default class EditModeTaskEditor extends React.Component{
                     errorText={nameError}
                     hintText="Do this and complete your goal!"
                     floatingLabelText="Task" floatingLabelFixed={true}
-                    multiLine={false} autoFocus/>
+                    multiLine={false}/>
                 <br/><br/>
                 <Checkbox label={taskType}
                     checkedIcon={habitIcon}

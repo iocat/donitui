@@ -4,26 +4,14 @@ import {ActionCreators} from '../../actions';
 import {getUserGoals, getGoalFilter} from '../../data/reducers';
 
 import {Responsive, WidthProvider} from 'react-grid-layout';
-const GoalTrackingLayout = WidthProvider(Responsive);
+const GoalListLayout = WidthProvider(Responsive);
 
 import {goalTracking, layouts, cols, breakpoints} from '../layout';
 import Filter from './filter/Filter';
 import GoalCardList from './card/GoalCardList';
 import GoalCreatorCard from './creator/GoalCreatorCard';
 
-class GoalTrackingController extends React.Component {
-    render() {
-        return (
-            <div style={{
-                textAlign: "right"
-            }}>
-                <Filter/>
-            </div>
-        )
-    }
-}
-
-class _GoalTracking extends React.Component {
+class _GoalFiltering extends React.Component {
     render() {
         let goals = this.props.goals;
         let gids = this.props.gids;
@@ -31,21 +19,25 @@ class _GoalTracking extends React.Component {
         let deleteGoal = this.props.deleteGoal;
         let deleteTask = this.props.deleteTaskFromGoal;
         return (
-            <GoalTrackingLayout rowHeight={70} layouts={layouts(goalTracking)} breakpoints={breakpoints(goalTracking)} cols={cols(goalTracking)}>
+            <GoalListLayout rowHeight={70} layouts={layouts(goalTracking)} breakpoints={breakpoints(goalTracking)} cols={cols(goalTracking)}>
                 <div key="filter">
-                    <GoalTrackingController/>
+                    <div style={{
+                        textAlign: "right"
+                    }}>
+                        <Filter/>
+                    </div>
                 </div>
                 <div key="goals">
                     <GoalCreatorCard/>
                     <br/>
                     <GoalCardList goals={goals} gids={gids} deleteGoal={deleteGoal} deleteTask={deleteTask} canUpdate={canUpdate}/>
                 </div>
-            </GoalTrackingLayout>
+            </GoalListLayout>
         )
     }
 }
 
-_GoalTracking.propTypes = {
+_GoalFiltering.propTypes = {
     // Dictionary of goals
     goals: React.PropTypes.object.isRequired,
     // A list of id to render
@@ -78,5 +70,5 @@ function mapDispatchToProps(dispatchfn) {
     }
 }
 
-let GoalTracking = connect(mapStateToProps, mapDispatchToProps)(_GoalTracking);
-export default GoalTracking;
+let GoalFiltering = connect(mapStateToProps, mapDispatchToProps)(_GoalFiltering);
+export default GoalFiltering;

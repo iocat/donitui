@@ -1,15 +1,20 @@
+// @flow
 import {
     StatusFilter
 } from '../../data/index';
 import {
     ActionTypes
 } from '../../actions';
+import type {
+    $Filter,
+    $Action
+} from '../../data/reducers';
 
-export default function filter(state, action) {
-    if (state === undefined) {
+export default function filter(state: ?$Filter, action: $Action): $Filter {
+    if (state === undefined || state === null) {
         return {
             gids: [], // the gids filtered based on byStatuses
-            byStatuses: StatusFilter.IN_PROGESS,
+            byStatuses: StatusFilter.IN_PROGRESS,
         };
     }
     switch (action.type) {

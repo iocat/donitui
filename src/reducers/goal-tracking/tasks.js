@@ -72,6 +72,7 @@ function task(state: Task, action: any):Task{
 
     switch (action.type){
     case ActionTypes.LOAD_GOAL:
+    case ActionTypes.CREATE_GOAL:
         return Object.assign({},state, {
             status: evaluateTaskStatus(state, action.now),
         })
@@ -90,6 +91,7 @@ export default function tasks(state: Task[], action: any): Task[] {
             // TODO
             return [];
         case ActionTypes.LOAD_GOAL:
+        case ActionTypes.CREATE_GOAL:
             let newTs: Task[] = state.slice(),
                 i = 0;
             while(i < newTs.length){

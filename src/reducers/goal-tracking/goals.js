@@ -24,6 +24,7 @@ export default function goals(state: ?{
             delete gs[action.id];
             return gs;
         // load the goal and categorize its current status
+        case ActionTypes.CREATE_GOAL:
         case ActionTypes.LOAD_GOAL:
             gs = Object.assign({}, state);
             gs[action.goal.id] = goal(action.goal, action);

@@ -55,6 +55,7 @@ export default function goal(state: Goal, action: any): Goal {
                 status: status,
             });
         case ActionTypes.LOAD_GOAL:
+        case ActionTypes.CREATE_GOAL:
             // evaluate tasks' statuses
             let reeval = tasks(state.tasks, action);
             return Object.assign({}, state, action.goal, {

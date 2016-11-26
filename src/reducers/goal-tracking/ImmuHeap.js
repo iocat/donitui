@@ -29,18 +29,20 @@ export default class ImmuHeap < T > {
         while (true) {
             let l: number = left(i),
                 r: number = right(i),
-                swapTo: number = 0;
+                smallest: number = i; // the smallest of the 3 numbers, left right parent
             if (l <= nh.length - 1 && this.lessThan(nh[l], nh[i])) {
-                swapTo = l;
-            } else if (r <= nh.length - 1 && this.lessThan(nh[r], nh[i])) {
-                swapTo = r;
-            } else {
+                smallest = l;
+            }
+            if (r <= nh.length - 1 && this.lessThan(nh[r], nh[i])) {
+                smallest = r;
+            }
+            if (smallest === i){
                 break;
             }
-            let temp: T = nh[swapTo];
-            nh[swapTo] = nh[i];
+            let temp: T = nh[smallest];
+            nh[smallest] = nh[i];
             nh[i] = temp;
-            i = swapTo;
+            i = smallest;
         }
         return {
             heap: nh,

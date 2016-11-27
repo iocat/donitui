@@ -6,7 +6,7 @@ import {ListItem} from 'material-ui';
 import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
 import type {Task, RepeatedReminder} from '../../../data/types';
 import {ReminderCycle} from '../../../data/index';
-import {formatTime} from '../../../timeutils';
+import {formatTime, readableDuration} from '../../../timeutils';
 
 const mapNumberToDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -17,7 +17,7 @@ export default class HabitItem extends React.Component{
 
     getHabitName = ():string => {
         let habit: Task = this.props.habit;
-        return habit.name;
+        return habit.name ;
     }
 
     getDescription = () =>{
@@ -26,12 +26,12 @@ export default class HabitItem extends React.Component{
         if (reminder != null){
             switch (reminder.cycle){
                 case ReminderCycle.EVERY_DAY:
-                    cycleString = "Daily";
+                    cycleString = "daily";
                     return <div>
-                        {cycleString} at {formatTime(reminder.remindAt)}
+                        For {readableDuration(reminder.duration*60000)}, {cycleString} at {formatTime(reminder.remindAt)}
                     </div>
                 case ReminderCycle.EVERY_WEEK:
-                    cycleString = "Weekly";
+                    cycleString = "weekly";
                     let days: string[]= [];
                     let habitDays: any= reminder.days;
                     if (habitDays != null){
@@ -41,16 +41,8 @@ export default class HabitItem extends React.Component{
                             }
                         })
                     }
-                    let join2 = function(oarr: string[], all, last):string {
-                        let arr = oarr.slice();
-                        let lastItem = arr.splice(-1);
-                        arr = arr.length ? [arr.join(all)] : [];
-                        arr.push(lastItem);
-                        return arr.join(last);
-                    }
-
                     return <div>
-                        {cycleString} at {formatTime(reminder.remindAt)} on {join2(days, ", ", " and ")}
+                        For {readableDuration(reminder.duration*60000)}, {cycleString} at {formatTime(reminder.remindAt)}
                     </div>
                 default:
                     console.error("unexpected: description not returned in HabitItem");

@@ -1,30 +1,25 @@
 // @flow
 
 var React = require("react");
-import {CardText} from 'material-ui';
-import FloatingCard from '../utils/FloatingCard';
-import {connect} from 'react-redux';
-import ToDoList from '../goal/card/ToDoList';
-import type {Goal, Task}
-from '../../data/types';
-import {TaskStatus} from '../../data/index';
-import type {$RootReducer}
-from '../../data/reducers';
 
-const activeTasks = (goals : Goal[]) : Task[] => {
-    let tasks : Task[] = [];
-    for (let goal of goals) {
-        for (let task of goal.tasks) {
-            if (task.status === TaskStatus.IN_PROGRESS) {
-                tasks.push(task);
-            }
-        }
-    }
-    return tasks;
+import FloatingCard from '../utils/FloatingCard';
+import { CardText, List, ListItem } from 'material-ui';
+import {connect} from 'react-redux';
+import ActionToday from 'material-ui/svg-icons/action/today';
+import type {$ActiveTask, $RootReducer}
+from '../../data/reducers';
+import moment from 'moment';
+
+type TaskWithEndTime = {
+    name: string,
+    goalId: string,
+    taskId: number,
+    endTime: number
 }
 
 type Props = {
-    inProgressGoals: Goal[]
+    tasks: TaskWithEndTime[],
+    now: number
 }
 
 class _ActiveTasks extends React.Component {
@@ -44,38 +39,56 @@ class _ActiveTasks extends React.Component {
     onMouseOut = () => {
         this.setState({depth: 1})
     }
-    render() {
-        let ipgs : Goal[] = this.props.inProgressGoals;
-        if (ipgs.length === 0) {
-            return <FloatingCard>
-                <CardText >
-                    {"What to do now:"}
-                </CardText>
-                <CardText style={{textAlign:"center"}}>
+    getTaskList = ()=>{
+        let tasks: TaskWithEndTime[] = this.props.tasks;
+        if (tasks.length === 0) {
+            return <div>
+                <CardText style={{
+                    textAlign: "center"
+                }}>
                     You are done for today. Have a cup of tea!
                 </CardText>
-            </FloatingCard>
+            </div>
+        } else {
+            let now: any = moment(this.props.now);
+            return <List>
+                {
+                    tasks.map((task: TaskWithEndTime, index: number)=>{
+                        return(
+                            <ListItem key={index} primaryText={""+task.name}
+                                secondaryText={"ends " + moment(now).to(task.endTime)}
+                                disabled/>
+                        )
+                    })
+                }
+            </List>
         }
-        return <FloatingCard >
-            <CardText >
-                {"What to do now:"}
-            </CardText>
-            <ToDoList tasks={activeTasks(ipgs)}/>
+    }
+    render() {
+        let title: string = "Active Tasks";
+        if (this.props.tasks.length === 1){
+            title = "Active Task"
+        }
+        return <FloatingCard iconHeader={< ActionToday />} iconTitle={title}>
+            {this.getTaskList()}
         </FloatingCard >
     }
 }
 
 _ActiveTasks.propTypes = {
-    inProgressGoals: React.PropTypes.arrayOf(React.PropTypes.object)
+    tasks: React.PropTypes.array.isRequired,
+    now: React.PropTypes.number.isRequired,
 }
 
 const mapStateToProps = (rootReducer : $RootReducer) : Props => {
-    let ipgids : string[] = rootReducer.goalTracking.inProgress,
-        goals : Goal[] = [];
-    for (let i of ipgids) {
-        goals.push(rootReducer.goalTracking.goals[i]);
+    let active : $ActiveTask[] = rootReducer.goalTracking.scheduler.activeTasks,
+        tasks : TaskWithEndTime[] = [];
+    for (let task of active) {
+        tasks.push(Object.assign({}, task, {
+            name: rootReducer.goalTracking.goals[task.goalId].tasks[task.taskId].name,
+        }));
     }
-    return {inProgressGoals: goals, nextEvent: null}
+    return {now: rootReducer.goalTracking.scheduler.now, tasks: tasks};
 }
 
 export default connect(mapStateToProps)(_ActiveTasks);

@@ -28,7 +28,7 @@ class _FilterTab extends React.Component {
     }
     filterByInProgress = () => {
         if (this.props.filter.byStatuses === StatusFilter.IN_PROGESS){return;}
-        this.props.filterBy(StatusFilter.IN_PROGESS);
+        this.props.filterBy(StatusFilter.IN_PROGRESS);
     }
     color = (status)=>{
         let currStat = this.props.filter.byStatuses;

@@ -18,9 +18,9 @@ export default class PersonalTracking extends React.Component {
                 </div>
                 <div key="scheduler">
                     <div className="scheduler">
-                        <ActiveTasks/>
-                        <br/>
                         <NextEvent/>
+                        <br/>
+                        <ActiveTasks/>
                         <br/>
                     </div>
                 </div>

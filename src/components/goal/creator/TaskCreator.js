@@ -34,7 +34,6 @@ export default class TaskCreator extends React.Component{
         this.state = {
             stagedTasks: tasks,
         }
-        console.log(this.state.stagedTasks);
     }
 
     stageFunc = (index: number) => {

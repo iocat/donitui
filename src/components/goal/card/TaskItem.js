@@ -5,7 +5,7 @@ import {ListItem} from 'material-ui';
 import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
 import {getTaskStatusColor} from '../../styles/colors';
 import type {Task, Reminder} from '../../../data/types';
-import {formatDateAndTime} from '../../../timeutils';
+import {formatDateAndTime, readableDuration} from '../../../timeutils';
 
 export default class TaskItem extends React.Component {
     getTaskDescription = ()=>{
@@ -13,7 +13,7 @@ export default class TaskItem extends React.Component {
         let reminder :?Reminder = task.reminder;
         if(reminder != null){
             return <p>
-                {formatDateAndTime(reminder.remindAt)}
+                For {readableDuration(reminder.duration*60000)}, {formatDateAndTime(reminder.remindAt)}
             </p>
         }
         return "";

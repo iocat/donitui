@@ -1,31 +1,28 @@
-/* some test code! */
-import {
-    ActionCreators
-} from './actions';
-import {
-    appStore
-} from './stores/appStore';
+// @flow
+import type {
+    Goal
+} from './data/types';
 
-export default function setupExamples() {
-    let placeholder = "https://unsplash.it/200/300/?blur";
+export default (): Goal[] => {
     let goal1 = {
         id: 1,
+        status: "NOT_DONE",
         name: "Have a dog",
         description: "Better be a Corgi",
         visibility: "PUBLIC",
-        //img: placeholder,
+        img: "https://unsplash.it/200/201",
         tasks: [{
             name: "Adopt one",
             reminder: {
-                remindAt: new Date((new Date().getTime() + 10*60000)),
-                duration: 5,
+                remindAt: new Date((new Date().getTime())),
+                duration: 0.5,
             },
         }, {
-            name: "sdfasdfasdf",
+            name: "Feed it",
             repeatedReminder: {
                 cycle: "EVERY_DAY",
-                remindAt:  new Date((new Date().getTime() + 10*60000)),
-                duration: 5,
+                remindAt:  new Date((new Date().getTime() + 30000)),
+                duration: 1,
             },
         }],
 
@@ -33,15 +30,16 @@ export default function setupExamples() {
 
     let goal2 = {
         id: 2,
+        status: "NOT_DONE",
         name: "Software Engineer!!",
         visibility: "PRIVATE",
-        img: placeholder,
+        img: "https://unsplash.it/200/202",
         description: "My career",
         tasks: [{
             name: "Code",
             reminder: {
-                remindAt: new Date((new Date().getTime())),
-                duration: 2,
+                remindAt: new Date((new Date().getTime())-2*60000),
+                duration: 3,
             },
         }, {
             name: "Read a lot",
@@ -50,6 +48,7 @@ export default function setupExamples() {
                 duration: 10,
                 cycle: "EVERY_WEEK",
                 days: {
+                    0: true,
                     1: true,
                     3: true,
                 }
@@ -58,7 +57,7 @@ export default function setupExamples() {
             name: "Read The Algorithms Design Manual",
             repeatedReminder: {
                 cycle: "EVERY_DAY",
-                remindAt: new Date(),
+                remindAt: new Date(new Date().getTime() + 2*1000),
                 duration: 20,
                 days: {
                     1: true,
@@ -71,8 +70,9 @@ export default function setupExamples() {
     let goal3 = {
         id: 3,
         name: "Get a cat",
+        status: "NOT_DONE",
         visibility: "FOR_FOLLOWERS",
-        // img: placeholder,
+        img: "https://unsplash.it/200/203",
         description: "LOLCAT",
         tasks: [{
             name: "Go to the vet",
@@ -86,7 +86,8 @@ export default function setupExamples() {
         id: 5,
         name: "Be busy",
         visibility: "PRIVATE",
-        img: placeholder,
+        status: "NOT_DONE",
+        img: "https://unsplash.it/200/204",
         tasks: [{
             name: "Be yourself",
             status:"DONE",
@@ -101,12 +102,5 @@ export default function setupExamples() {
         }],
     }
 
-    let goals = [goal1,goal2,goal3,goal5];
-
-    /* ignore return val*/
-    appStore.subscribe(() => {
-        console.log(appStore.getState())
-    })
-    appStore.dispatch(ActionCreators.LOAD_GOALS(goals, new Date()));
-    appStore.dispatch(ActionCreators.PREPROCESS_SCHEDULER(new Date()));
+    return [goal1,goal2,goal3,goal5];
 }

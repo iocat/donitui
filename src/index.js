@@ -14,11 +14,11 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {appStore} from './stores/appStore';
 import {App} from './components/app/App';
 import bootstrap from './bootstrap';
-import setupExamples from './setupExamples'; // Start some examples for debugging
+import goalsExample from './setupExamples'; // Start some examples for debugging
 import "./static/css/index.css";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-setupExamples();
+
 bootstrap();
 
 ReactDOM.render(
@@ -27,3 +27,10 @@ ReactDOM.render(
         <App/>
     </ReduxStoreProvider>
 </MuiThemeProvider>, document.getElementById('root'));
+
+
+import {
+    ActionCreators
+} from './actions';
+// appStore.subscribe(() => console.log(appStore.getState());
+appStore.dispatch(ActionCreators.LOAD_GOALS(goalsExample() ));

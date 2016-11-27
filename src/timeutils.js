@@ -32,7 +32,8 @@ export const formatTime = (date: Date): string => {
 }
 
 export const formatDateAndTime = (date: Date): string =>{
-    return moment(date).calendar();
+    let fmt: string = moment(date).calendar();
+    return fmt.charAt(0).toLowerCase() + fmt.slice(1);
 }
 
 export const formatDuration = (duration: number): string=>{

@@ -15,22 +15,22 @@ export const ActionTypes: {
     [id: string]: number
 } = {
     // goalTracking
-    DELETE_GOAL: 2,
-    FILTER_GOAL_BY_STATUSES: 3,
-    LOAD_GOALS: 4,
-    EVALUATE_GOAL_STATUS: 5,
-    LOAD_GOAL: 6, // push a goal to the end of the goal lists
-    CREATE_GOAL: 7, // create a goals and prepend to the front of the goal lists
+    DELETE_GOAL: 1,
+    FILTER_GOAL_BY_STATUSES: 2,
+    LOAD_GOALS: 3,
+    LOAD_GOAL: 4, // push a goal to the end of the goal lists
+    CREATE_GOAL: 5, // create a goals and prepend to the front of the goal lists
 
-    PREPROCESS_SCHEDULER: 10, // goalTracking + scheduler
-    SET_CURRENT_TIME: 11,
+    // goalTracking + scheduler
+    SET_CURRENT_TIME: 6,
+    RECEIVE_TASK: 7, // scheduler receives a task and evaluates its status
 
     // error handler
-    HANDLE_ERROR: 20,
+    HANDLE_ERROR: 100,
 
     // utilities
-    NORMALIZE: 21,
-    DENORMALIZE: 22,
+    NORMALIZE: 101,
+    DENORMALIZE: 102,
 }
 
 function assertUniqueActionValues() {
@@ -39,7 +39,7 @@ function assertUniqueActionValues() {
             [id: number]: boolean
         } = {};
     for (let k: string of keys) {
-        let hasSeen: ?boolean = seen[ActionTypes[k]];
+        let hasSeen: ? boolean = seen[ActionTypes[k]];
         if (hasSeen !== undefined && hasSeen === true) {
             console.error("Action type is duplicated, got: " + k + " with duplicated key: " + ActionTypes[k] +
                 ". Expect every action type to have a unique value.");
@@ -73,83 +73,74 @@ export const ActionCreators: {
             statuses: statuses,
         }
     },
-    // loadGoals with goal status according to the load time
-    LOAD_GOALS: (goals: Goal[], loadAt: Date): {
+    LOAD_GOALS: (goals: Goal[]): {
         type: number,
         goals: Goal[],
-        now: Date,
     } => {
         return {
             type: ActionTypes.LOAD_GOALS,
             goals: goals,
-            now: loadAt,
-        };
+        }
     },
-    // loadGoalWithId with the goal status according to the load time
-    LOAD_GOAL: (goal: Goal, loadAt: Date): {
+
+    LOAD_GOAL: (goal: Goal): {
         type: number,
         goal: Goal,
-        now: Date,
     } => {
         return {
             type: ActionTypes.LOAD_GOAL,
             goal: goal,
-            now: loadAt,
-        };
+        }
     },
-    CREATE_GOAL: (goal: Goal, createAt: Date):{
+
+    // loadGoalWithId with the goal status according to the load time
+    goals_LOAD_GOAL: (goal: Goal, now: number): {
         type: number,
         goal: Goal,
-        now: Date,
-    }=>{
+        now: number,
+    } => {
+        return {
+            type: ActionTypes.LOAD_GOAL,
+            goal: goal,
+            now: now,
+        };
+    },
+    CREATE_GOAL: (goal: Goal): {
+        type: number,
+        goal: Goal,
+    } => {
         return {
             type: ActionTypes.CREATE_GOAL,
             goal: goal,
-            now: createAt,
+        }
+    },
+    goals_CREATE_GOAL: (goal: Goal, now: number): {
+        type: number,
+        goal: Goal,
+        now: number,
+    } => {
+        return {
+            type: ActionTypes.CREATE_GOAL,
+            goal: goal,
+            now: now,
         }
     },
 
-    EVALUATE_GOAL_STATUS: (time: Date): {
+    SET_CURRENT_TIME: (time: number): {
         type: number,
-        time: Date
+        now: number
     } => {
         return {
-            type: ActionTypes.EVALUATE_GOAL_STATUS,
-            time: time,
-        }
-    },
-
-    PREPROCESS_SCHEDULER: (time: Date): {
-        type: number,
-        preprocessTime: number
-    } => {
-        return {
-            type: ActionTypes.PREPROCESS_SCHEDULER,
-            preprocessTime: time.getTime(),
-        }
-    },
-    // propagated by GoalTracking to the scheduler
-    _PREPROCESS_SCHEDULER: (time: number, inProgress: string[],
-            notDone: string[], goals: {[id:string]:Goal}) :{
-        type: number,
-        preprocessTime: number,
-        inProgress: string[],
-        notDone: string[],
-        goals: {[id:string]:Goal},
-    } => {
-        return {
-            type: ActionTypes.PREPROCESS_SCHEDULER,
-            preprocessTime: time,
-            inProgress: inProgress,
-            notDone: notDone,
-            goals: goals,
+            type: ActionTypes.SET_CURRENT_TIME,
+            now: time,
         };
     },
 
-    SET_CURRENT_TIME: (time: Date):{type: number, time: number} =>{
+    sched_RECEIVE_TASK: (goal: Goal, taskId: number):{type: number,goal: Goal,taskId: number} => {
         return {
-            type: ActionTypes.SET_CURRENT_TIME,
-            time: time.getTime(),
+            type: ActionTypes.RECEIVE_TASK,
+            goal: goal,
+            taskId: taskId,
         };
     },
 

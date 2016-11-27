@@ -20,6 +20,7 @@ import {
 
 import {
     ReminderCycle,
+    TaskStatus,
 } from '../../data/index';
 import ImmuHeap from './ImmuHeap';
 
@@ -75,8 +76,11 @@ function constructEvents(goalId: string, taskId: number, task: Task, evalAt: num
 
 function receiveTask(state: $Scheduler, goal: Goal, taskId: number):$Scheduler{
     //  evaluate the task and push it to the event heap
-    let task: Task = goal.tasks[taskId],
-        activeTasks: $ActiveTask[] = state.activeTasks.slice(),
+    let task: Task = goal.tasks[taskId];
+    if(task.status != null && task.status === TaskStatus.DONE){
+        return state;
+    }
+    let activeTasks: $ActiveTask[] = state.activeTasks.slice(),
         eventHeap: $ScheduledTaskEvent[] = state.eventHeap,
         events: $ScheduledTaskEvent[] = constructEvents(goal.id, taskId, task, state.now);
     if (events.length === 0){

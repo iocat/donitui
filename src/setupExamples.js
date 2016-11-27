@@ -14,8 +14,8 @@ export default (): Goal[] => {
         tasks: [{
             name: "Adopt one",
             reminder: {
-                remindAt: new Date((new Date().getTime())),
-                duration: 0.5,
+                remindAt: new Date((new Date().getTime() + 3000)),
+                duration: 2,
             },
         }, {
             name: "Feed it",

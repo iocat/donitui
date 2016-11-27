@@ -40,6 +40,7 @@ export type $Filter = {
 
 export type $ScheduledTaskEvent = {
     // the time to trigger the event
+    // in milliseconds in Epoch
     at: number,
     // false, if this task is ending
     // true, if this task is starting

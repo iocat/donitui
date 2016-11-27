@@ -21,20 +21,20 @@ function toStatus(start: number, end: number, now: number): TaskStatusEnum{
 
 // evaluateTaskStatus returns the status of the task with respect to the given
 // time
-function evaluateTaskStatus(task: Task, now: Date):TaskStatusEnum{
+function evaluateTaskStatus(task: Task, now: number):TaskStatusEnum{
     // Done task will never be evaluated at all
     if(task.status && task.status === TaskStatus.DONE){
         return TaskStatus.DONE;
     }
-    let nowEpch: number = now.getTime(); // in ms
     if (task.reminder != null){
         let reminder: Reminder = task.reminder,
             taskStartEpch: number = reminder.remindAt.getTime(),
             taskEndEpch: number = taskStartEpch + reminder.duration*60000;
-        return toStatus(taskStartEpch, taskEndEpch, nowEpch);
+        return toStatus(taskStartEpch, taskEndEpch, now);
     }else if (task.repeatedReminder != null) {
-        let rReminder: RepeatedReminder = task.repeatedReminder;
-        let cloneNow = new Date(now.getTime());
+        let rReminder: RepeatedReminder = task.repeatedReminder,
+        cloneNow: Date = new Date(now),
+        dayToday:number = cloneNow.getDay();
         // find start time and end time in day in Epoch
         cloneNow.setHours(rReminder.remindAt.getHours());
         cloneNow.setMinutes(rReminder.remindAt.getMinutes());
@@ -43,12 +43,12 @@ function evaluateTaskStatus(task: Task, now: Date):TaskStatusEnum{
             endTimeEpch = startTimeEpch + rReminder.duration*60000;
         switch(rReminder.cycle) {
             case ReminderCycle.EVERY_DAY:
-                return toStatus(startTimeEpch, endTimeEpch, nowEpch);
+                return toStatus(startTimeEpch, endTimeEpch, now);
             case ReminderCycle.EVERY_WEEK:
-                if(rReminder.cycle[now.getDay()] !== true){
+                if(rReminder.cycle[dayToday] !== true){
                     return TaskStatus.NOT_DONE;
                 }else{
-                    return toStatus(startTimeEpch, endTimeEpch, nowEpch);
+                    return toStatus(startTimeEpch, endTimeEpch, now);
                 }
             default:
                 console.log("unhandled case");
@@ -87,9 +87,6 @@ export default function tasks(state: Task[], action: any): Task[] {
         return [];
     }
     switch (action.type) {
-        case ActionTypes.EVALUATE_GOAL_STATUS:
-            // TODO
-            return [];
         case ActionTypes.LOAD_GOAL:
         case ActionTypes.CREATE_GOAL:
             let newTs: Task[] = state.slice(),

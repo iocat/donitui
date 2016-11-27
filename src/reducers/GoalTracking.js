@@ -64,7 +64,7 @@ function loadGoals(state: $GoalTracking, action: $Action): $GoalTracking {
     let gt: $GoalTracking = state;
     for (let goal of action.goals) {
         // load individual goal
-        gt = goalTracking(gt, ActionCreators.LOAD_GOAL(goal, action.now));
+        gt = goalTracking(gt, ActionCreators.LOAD_GOAL(goal));
     }
     return gt;
 }
@@ -72,7 +72,7 @@ function loadGoals(state: $GoalTracking, action: $Action): $GoalTracking {
 function loadGoal(state: $GoalTracking, action: $Action): $GoalTracking {
     let newGSet: {
             [id: string]: Goal
-        } = goals(state.goals, action),
+        } = goals(state.goals, ActionCreators.goals_LOAD_GOAL(action.goal, state.scheduler.now)),
         done = state.done.slice(),
         notDone = state.notDone.slice(),
         inProgress = state.inProgress.slice(),
@@ -84,6 +84,7 @@ function loadGoal(state: $GoalTracking, action: $Action): $GoalTracking {
         notDone: notDone,
         inProgress: inProgress,
         goals: newGSet,
+        scheduler: scheduler(state.scheduler, action),
     });
     // refilter
     return goalTracking(beforeFilter, ActionCreators.FILTER_GOAL_BY_STATUSES(beforeFilter.filter.byStatuses));
@@ -93,7 +94,7 @@ function loadGoal(state: $GoalTracking, action: $Action): $GoalTracking {
 function createGoal(state: $GoalTracking, action: $Action): $GoalTracking {
     let newGSet: {
             [id: string]: Goal
-        } = goals(state.goals, action),
+        } = goals(state.goals, ActionCreators.goals_CREATE_GOAL(action.goal, state.scheduler.now)),
         done = state.done.slice(),
         notDone = state.notDone.slice(),
         inProgress = state.inProgress.slice(),
@@ -105,31 +106,32 @@ function createGoal(state: $GoalTracking, action: $Action): $GoalTracking {
         notDone: notDone,
         inProgress: inProgress,
         goals: newGSet,
+        scheduler: scheduler(state.scheduler, action),
     });
     // refilter
     return goalTracking(beforeFilter, ActionCreators.FILTER_GOAL_BY_STATUSES(beforeFilter.filter.byStatuses));
 }
 
-function deleteGoal(state: $GoalTracking, action: $Action): $GoalTracking {
+function deleteGoal(state: $GoalTracking, id:string): $GoalTracking {
     let gs: {
             [id: string]: Goal
-        } = goals(state.goals, action),
-        delG: ? Goal = state.goals[action.id],
+        } = goals(state.goals, ActionCreators.DELETE_GOAL(id)),
+        delG: ? Goal = state.goals[id],
         gids : string[] = state.gids.slice(),
         done: string[] = state.done.slice(),
         notDone: string[] = state.notDone.slice(),
         inProgress: string[] = state.inProgress.slice();
-    gids.splice(gids.indexOf(action.id), 1);
+    gids.splice(gids.indexOf(id), 1);
     if (delG != null) {
         switch (delG.status) {
             case GoalStatus.DONE:
-                done.splice(done.indexOf(action.id), 1);
+                done.splice(done.indexOf(id), 1);
                 break;
             case GoalStatus.NOT_DONE:
-                notDone.splice(notDone.indexOf(action.id), 1);
+                notDone.splice(notDone.indexOf(id), 1);
                 break;
             case GoalStatus.IN_PROGRESS:
-                inProgress.splice(inProgress.indexOf(action.id), 1);
+                inProgress.splice(inProgress.indexOf(id), 1);
                 break;
             default:
                 console.log("unhanlded case");
@@ -145,7 +147,6 @@ function deleteGoal(state: $GoalTracking, action: $Action): $GoalTracking {
     });
     // refilter goals
     return goalTracking(editedGT, ActionCreators.FILTER_GOAL_BY_STATUSES(editedGT.filter.byStatuses));
-
 }
 
 export default function goalTracking(state: ? $GoalTracking, action : $Action): $GoalTracking {
@@ -170,13 +171,7 @@ export default function goalTracking(state: ? $GoalTracking, action : $Action): 
         case ActionTypes.LOAD_GOAL:
             return loadGoal(state, action);
         case ActionTypes.DELETE_GOAL:
-            return deleteGoal(state, action);
-        case ActionTypes.PREPROCESS_SCHEDULER:
-            return Object.assign({}, state, {
-                scheduler: scheduler(state.scheduler,
-                    ActionCreators._PREPROCESS_SCHEDULER(action.preprocessTime,
-                        state.inProgress, state.notDone, state.goals)),
-            })
+            return deleteGoal(state, action.id);
         case ActionTypes.SET_CURRENT_TIME:
             return Object.assign({}, state, {
                 scheduler: scheduler(state.scheduler, action),

@@ -34,7 +34,7 @@ export type $Filter = {
     byStatuses: {
         [id: GoalStatusEnum]: boolean
     },
-    gids: number[],
+    gids: string[],
 }
 
 
@@ -45,9 +45,19 @@ export type $ScheduledTaskEvent = {
     // true, if this task is starting
     toStart: boolean,
     // the index of the goal in the goal dictionary
-    goalIndex: string,
+    goalId: string,
     // the index the task belongs to in the goal
-    taskIndex: number,
+    taskId: number,
+    
+    endTime: number,
+}
+
+
+export type $ActiveTask = {
+    goalId: string,
+    taskId: number,
+    // in miliseconds
+    endTime: number,
 }
 
 export type $Scheduler = {
@@ -55,9 +65,8 @@ export type $Scheduler = {
     now: number,
     // the list of event coming up next
     eventHeap: $ScheduledTaskEvent[],
-    // the time the scheduler is first booted up and tasks are loaded to the
-    // upNext event
-    preprocessTime: number,
+    // the currently active tasks
+    activeTasks: $ActiveTask[],
 }
 
 export type $GoalTracking = {

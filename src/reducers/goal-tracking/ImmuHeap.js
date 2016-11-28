@@ -8,27 +8,17 @@ export default class ImmuHeap < T > {
     constructor(lessThan: (a: T, b: T) => boolean) {
         this.lessThan = lessThan;
     }
-    peek = (heap: T[]): any => {
-        return heap[0];
+
+    init(heap: T[]): T[]{
+        let nh: T[] = heap.slice();
+        for (let i: number = 0; i <= Math.floor(heap.length/2); i ++ ){
+            this.trippleDown(nh, i);
+        }
+        return nh;
     }
-    pop(heap: T[]): {
-        heap: T[],
-        item: T
-    } {
-        if (heap.length === 0) {
-            console.error("The heap is empty: cannot pop.");
-        }
-        let fst: T = heap[0],
-            nh: T[] = heap.slice(),
-            i: number = 0,
-            last: T = nh.pop(); // move the last to the head
-        if (nh.length === 0){
-            return {
-                heap: nh,
-                item: fst,
-            }
-        }
-        nh[0] = last;
+
+    // impure function that modify the heap starting from i
+    trippleDown(nh: T[], i: number){
         while (true) {
             let l: number = left(i),
                 r: number = right(i),
@@ -47,6 +37,31 @@ export default class ImmuHeap < T > {
             nh[i] = temp;
             i = smallest;
         }
+    }
+    peek(heap: T[]):T{
+        if (heap.length === 0) {
+            console.error("The heap is empty: cannot peek");
+        }
+        return heap[0];
+    }
+    pop(heap: T[]): {
+        heap: T[],
+        item: T
+    } {
+        if (heap.length === 0) {
+            console.error("The heap is empty: cannot pop.");
+        }
+        let fst: T = heap[0],
+            nh: T[] = heap.slice(),
+            last: T = nh.pop(); // move the last to the head
+        if (nh.length === 0){
+            return {
+                heap: nh,
+                item: fst,
+            }
+        }
+        nh[0] = last;
+        this.trippleDown(nh, 0);
         return {
             heap: nh,
             item: fst,

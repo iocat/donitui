@@ -110,10 +110,10 @@ function receiveTask(state: $Scheduler, goal: Goal, taskId: number): $Scheduler 
 function setCurrentTime(state: $Scheduler, now: number): $Scheduler {
     let eventHeap: $ScheduledTaskEvent[] = state.eventHeap,
         activeTasks: $ActiveTask[] = state.activeTasks.slice();
-    while (eventHeap.length > 0 && now >= eventHeap[0].at) {
-        let res = heapBuilder.pop(eventHeap);
+    while (eventHeap.length > 0 && now >= heapBuilder.peek(eventHeap).at) {
+        let res = heapBuilder.pop(eventHeap),
+            event: $ScheduledTaskEvent = res.item;
         eventHeap = res.heap;
-        let event: $ScheduledTaskEvent = res.item;
         if (event.toStart === true) {
             // add it to the active tasks
             activeTasks.push({
@@ -149,10 +149,13 @@ function loadGoal(state: $Scheduler, goal: Goal): $Scheduler {
 }
 
 function deleteGoal(state: $Scheduler, goalId: string): $Scheduler {
-    // TODO: edit the heap
-    let activeTasks: $ActiveTask[] = state.activeTasks.filter((task: $ActiveTask): boolean => (task.goalId !== goalId));
+
+    let activeTasks: $ActiveTask[] = state.activeTasks.filter((task: $ActiveTask): boolean => (task.goalId !== goalId)),
+        eventHeap: $ScheduledTaskEvent[] = state.eventHeap.filter( (event: $ScheduledTaskEvent): boolean=>(event.goalId !== goalId));
     return Object.assign({}, state, {
         activeTasks: activeTasks,
+        // rebuild the heap
+        eventHeap: heapBuilder.init(eventHeap),
     });
 }
 

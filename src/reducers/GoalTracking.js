@@ -144,6 +144,7 @@ function deleteGoal(state: $GoalTracking, id:string): $GoalTracking {
         done: done,
         notDone: notDone,
         inProgress: inProgress,
+        scheduler: scheduler(state.scheduler, ActionCreators.DELETE_GOAL(id)),
     });
     // refilter goals
     return goalTracking(editedGT, ActionCreators.FILTER_GOAL_BY_STATUSES(editedGT.filter.byStatuses));

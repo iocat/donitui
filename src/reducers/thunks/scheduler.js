@@ -1,5 +1,4 @@
 //@flow
-import {appStore} from '../../stores/appStore';
 import {ActionCreators} from '../../actions';
 
 // tickCycle is the number of seconds, this only needs to be set ONCE

@@ -74,26 +74,30 @@ function constructEvents(goalId: string, taskId: number, task: Task, evalAt: num
     return [];
 }
 
-function receiveTask(state: $Scheduler, goal: Goal, taskId: number):$Scheduler{
+function receiveTask(state: $Scheduler, goal: Goal, taskId: number): $Scheduler {
     //  evaluate the task and push it to the event heap
     let task: Task = goal.tasks[taskId];
-    if(task.status != null && task.status === TaskStatus.DONE){
+    if (task.status != null && task.status === TaskStatus.DONE) {
         return state;
     }
     let activeTasks: $ActiveTask[] = state.activeTasks.slice(),
         eventHeap: $ScheduledTaskEvent[] = state.eventHeap,
         events: $ScheduledTaskEvent[] = constructEvents(goal.id, taskId, task, state.now);
-    if (events.length === 0){
+    if (events.length === 0) {
         // the task would not start at all (could be "done" or do not start today)
-    }else if(events.length === 1){
+    } else if (events.length === 1) {
         // the task is active
-        activeTasks.push({goalId: goal.id, taskId: taskId, endTime: events[0].at });
+        activeTasks.push({
+            goalId: goal.id,
+            taskId: taskId,
+            endTime: events[0].at
+        });
         eventHeap = heapBuilder.push(eventHeap, events[0]);
-    }else if (events.length === 2){
+    } else if (events.length === 2) {
         // The task is not yet active
         eventHeap = heapBuilder.push(eventHeap, events[0]);
         eventHeap = heapBuilder.push(eventHeap, events[1]);
-    }else{
+    } else {
         console.error("there cannot be more than 2 events for a task");
     }
     return Object.assign({}, state, {
@@ -103,31 +107,31 @@ function receiveTask(state: $Scheduler, goal: Goal, taskId: number):$Scheduler{
 }
 
 
-function setCurrentTime(state: $Scheduler, now: number):$Scheduler{
-    // TODO: compare the time with the earliest event on heap and edit
-    // the active task if necessary
-    let eventHeap: $ScheduledTaskEvent[] = state.eventHeap;
-    let activeTasks: $ActiveTask[] = state.activeTasks.slice();
-    while (state.eventHeap.length > 0 && now >= eventHeap[0].at){
-         let res = heapBuilder.pop(eventHeap);
-         eventHeap = res.heap;
-         let event: ?$ScheduledTaskEvent = res.item;
-         if (event != null){
-             if( event.toStart === true){
-                 // add it to the active tasks
-                 activeTasks.push({goalId: event.goalId, taskId: event.taskId, endTime: event.endTime});
-             }else {
-                 // remove from the active tasks
-                 let i: number = 0;
-                 while(i < activeTasks.length){
-                     if(activeTasks[i].goalId === event.goalId && activeTasks[i].taskId === event.taskId){
-                         activeTasks.splice(i,1);
-                         break;
-                     }
-                     i++;
-                 }
-             }
-         }
+function setCurrentTime(state: $Scheduler, now: number): $Scheduler {
+    let eventHeap: $ScheduledTaskEvent[] = state.eventHeap,
+        activeTasks: $ActiveTask[] = state.activeTasks.slice();
+    while (eventHeap.length > 0 && now >= eventHeap[0].at) {
+        let res = heapBuilder.pop(eventHeap);
+        eventHeap = res.heap;
+        let event: $ScheduledTaskEvent = res.item;
+        if (event.toStart === true) {
+            // add it to the active tasks
+            activeTasks.push({
+                goalId: event.goalId,
+                taskId: event.taskId,
+                endTime: event.endTime
+            });
+        } else {
+            // remove from the active tasks
+            let i: number = 0;
+            while (i < activeTasks.length) {
+                if (activeTasks[i].goalId === event.goalId && activeTasks[i].taskId === event.taskId) {
+                    activeTasks.splice(i, 1);
+                    break;
+                }
+                i++;
+            }
+        }
     }
     return Object.assign({}, state, {
         now: now,
@@ -136,12 +140,20 @@ function setCurrentTime(state: $Scheduler, now: number):$Scheduler{
     });
 }
 
-function loadGoal(state: $Scheduler, goal: Goal):$Scheduler{
+function loadGoal(state: $Scheduler, goal: Goal): $Scheduler {
     let newState: $Scheduler = Object.assign({}, state);
-    goal.tasks.forEach((_: Task, taskId: number)=>{
+    goal.tasks.forEach((_: Task, taskId: number) => {
         newState = scheduler(newState, ActionCreators.sched_RECEIVE_TASK(goal, taskId));
     })
     return newState;
+}
+
+function deleteGoal(state: $Scheduler, goalId: string): $Scheduler {
+    // TODO: edit the heap
+    let activeTasks: $ActiveTask[] = state.activeTasks.filter((task: $ActiveTask): boolean => (task.goalId !== goalId));
+    return Object.assign({}, state, {
+        activeTasks: activeTasks,
+    });
 }
 
 export default function scheduler(state: ? $Scheduler, action : $Action): $Scheduler {
@@ -156,13 +168,15 @@ export default function scheduler(state: ? $Scheduler, action : $Action): $Sched
         // sets the global clock
         case ActionTypes.SET_CURRENT_TIME:
             return setCurrentTime(state, action.now);
-        // receives a task and put it on schedule
+            // receives a task and put it on schedule
         case ActionTypes.RECEIVE_TASK:
             return receiveTask(state, action.goal, action.taskId);
-        // load the goal into the scheduler
+            // load the goal into the scheduler
         case ActionTypes.LOAD_GOAL:
         case ActionTypes.CREATE_GOAL:
             return loadGoal(state, action.goal);
+        case ActionTypes.DELETE_GOAL:
+            return deleteGoal(state, action.id);
         default:
             return state;
     }

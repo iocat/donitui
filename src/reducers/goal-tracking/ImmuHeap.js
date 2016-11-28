@@ -13,27 +13,30 @@ export default class ImmuHeap < T > {
     }
     pop(heap: T[]): {
         heap: T[],
-        item: ? T
+        item: T
     } {
         if (heap.length === 0) {
             console.error("The heap is empty: cannot pop.");
-            return {
-                heap: heap,
-                item: null
-            };
         }
         let fst: T = heap[0],
             nh: T[] = heap.slice(),
-            i: number = 0;
-        nh[0] = nh.pop(); // move the last to the head
+            i: number = 0,
+            last: T = nh.pop(); // move the last to the head
+        if (nh.length === 0){
+            return {
+                heap: nh,
+                item: fst,
+            }
+        }
+        nh[0] = last;
         while (true) {
             let l: number = left(i),
                 r: number = right(i),
                 smallest: number = i; // the smallest of the 3 numbers, left right parent
-            if (l <= nh.length - 1 && this.lessThan(nh[l], nh[i])) {
+            if (l <= nh.length - 1 && this.lessThan(nh[l], nh[smallest])) {
                 smallest = l;
             }
-            if (r <= nh.length - 1 && this.lessThan(nh[r], nh[i])) {
+            if (r <= nh.length - 1 && this.lessThan(nh[r], nh[smallest])) {
                 smallest = r;
             }
             if (smallest === i){

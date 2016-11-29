@@ -11,12 +11,10 @@ import type {
 } from '../../data/types';
 
 function toStatus(start: number, end: number, now: number): TaskStatusEnum{
-    if (now < start){
-        return TaskStatus.NOT_DONE;
-    }else if (now < end) {
+    if ( start < now && now < end){
         return TaskStatus.IN_PROGRESS;
     }
-    return TaskStatus.DONE;
+    return TaskStatus.NOT_DONE;
 }
 
 // evaluateTaskStatus returns the status of the task with respect to the given

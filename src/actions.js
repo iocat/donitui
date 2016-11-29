@@ -26,6 +26,7 @@ export const ActionTypes: {
     SET_CURRENT_TIME: 7,
     RECEIVE_TASK: 8, // scheduler receives a task and evaluates its status
 
+    USER_LOGIN: 9,
     // error handler
     HANDLE_ERROR: 100,
 
@@ -157,6 +158,13 @@ export const ActionCreators: {
             goal: goal,
             taskId: taskId,
         };
+    },
+
+    USER_LOGIN: (userId: string):{type: number, userId: string} =>{
+        return {
+            type: ActionTypes.USER_LOGIN,
+            userId: userId,
+        }
     },
 
     HANDLE_ERROR: (error: string): {

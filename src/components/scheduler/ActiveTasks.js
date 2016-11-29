@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import ActionToday from 'material-ui/svg-icons/action/today';
 import type {$ActiveTask, $RootReducer}
 from '../../data/reducers';
-import moment from 'moment';
+import {readableDuration} from '../../timeutils';
 
 type TaskWithEndTime = {
     name: string,
@@ -46,17 +46,17 @@ class _ActiveTasks extends React.Component {
                 <CardText style={{
                     textAlign: "center"
                 }}>
-                    You are done for today. Have a cup of tea!
+                    You are done for now.
                 </CardText>
             </div>
         } else {
-            let now: any = moment(this.props.now);
+            let now: any = this.props.now;
             return <List>
                 {
                     tasks.map((task: TaskWithEndTime, index: number)=>{
                         return(
                             <ListItem key={index} primaryText={""+task.name}
-                                secondaryText={"ends " + moment(now).to(task.endTime)}
+                                secondaryText={"ends in " + readableDuration(task.endTime-now)}
                                 disabled/>
                         )
                     })

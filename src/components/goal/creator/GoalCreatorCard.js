@@ -1,33 +1,26 @@
-import {
-    connect
-} from 'react-redux';
+import type {Goal} from '../../../data/types';
 
-import {
-    GoalChanger,
-    Mode
-} from './GoalChanger';
-import {
-    ActionCreators
-} from '../../../actions';
-import type {
-    Goal
-} from '../../../data/types';
+
+import {connect} from 'react-redux';
+import GoalChanger from './GoalChanger';
+import { createGoal } from '../../../reducers/thunks/goalTracking';
+import initGoal from './initGoal';
 
 const mapStateToProps = (rootReducer) => {
     return {
-        mode: Mode.CREATE,
+        originalGoal: initGoal(null),
+        acceptLabel: "Create",
+        discardLabel: "Discard",
+        allowExpandHeader: true,
+        initiallyExpanded: false,
+        expandHeaderText: "Create an objective",
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onCreateGoal: (goal: Goal) => {
-            // TODO: change this to a callback to the network
-            // a promise.
-            let g = Object.assign({}, goal, {
-                id: 10
-            });
-            dispatch(ActionCreators.CREATE_GOAL(g, new Date()));
+        onGoalAccepted: (goal: Goal) => {
+            dispatch(createGoal(goal));
         },
     };
 }

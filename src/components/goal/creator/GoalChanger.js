@@ -1,40 +1,44 @@
+// @flow
 import React from 'react';
 
-import { GoalVisibility } from '../../../data/index';
-import { TextField, Divider,
-    CardHeader, CardText, CardActions, CardMedia, FlatButton} from 'material-ui';
+import { TextField, Divider, CardText, CardActions, CardMedia, FlatButton} from 'material-ui';
 import TaskCreator from './TaskCreator';
 import FloatingCard from '../../utils/FloatingCard';
+import HeaderWithIcon from '../../utils/HeaderWithIcon';
+import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import EditorInsertInvitation from 'material-ui/svg-icons/editor/insert-invitation';
 
-export const Mode = {
-    CREATE: "CREATE",
-    UPDATE: "UPDATE",
+import type {
+    Goal,
+    GoalVisibilityEnum,
+    Task,
+} from '../../../data/types';
+
+type Props = {
+    allowExpandHeader: boolean,
+    initiallyExpanded: boolean,
+    expandHeaderText: string,
+
+    onGoalAccepted: (goal: Goal)=> void,
+    onChangeDiscarded: () => void,
+    originalGoal: Goal,
+    acceptLabel: any,
+    discardLabel: any,
 }
 
-const EMPTY_GOAL = {
-    name:"",
-    description:"",
-    img:"",
-    visibility: GoalVisibility.PRIVATE,
-    tasks: [],
-}
+export default class GoalChanger extends React.Component{
+    state: {
+        goal: Goal,
+        expanded: boolean,
+        changedName: boolean,
+        changedDesc: boolean,
+        modifiedTasks: boolean,
+    }
 
-export class GoalChanger extends React.Component{
-    constructor(props){
+    constructor(props: Props ){
         super(props);
-        let initGoal: Goal = EMPTY_GOAL;
-        switch(props.mode){
-            case Mode.CREATE:
-                initGoal = EMPTY_GOAL;
-                break;
-            case Mode.UPDATE:
-                initGoal = props.originalGoal
-                break;
-            default:
-                console.error("unhandled case for GoalChanger constructor");
-        }
         this.state = {
-            goal: initGoal,
+            goal: props.originalGoal,
             expanded: props.initiallyExpanded,
             changedName: false,
             changedDesc: false,
@@ -45,12 +49,13 @@ export class GoalChanger extends React.Component{
     // onDiscard closes the GoalCreator tab
     onDiscard = ()=>{
         this.setState({
-            goal: EMPTY_GOAL,
+            goal: this.props.originalGoal,
             expanded: false,
             changedName: false,
             changedDesc: false,
             modifiedTasks: false,
         })
+        this.props.onChangeDiscarded();
     }
 
     // onExpand opens the GoalCreator tab
@@ -60,13 +65,13 @@ export class GoalChanger extends React.Component{
         })
     }
     // handleExpandChange opens and closes the GoalCreator
-    handleExpandChange = (expanded) => {
+    handleExpandChange = (expanded: boolean) => {
         this.setState({
             expanded: expanded,
         })
     }
 
-    onChangeDesc = (event: Event) =>{
+    onChangeDesc = (event: any) =>{
         let val = event.target.value;
         this.setState({
             goal: Object.assign({}, this.state.goal, {description: val}),
@@ -74,7 +79,7 @@ export class GoalChanger extends React.Component{
         })
     }
 
-    onChangeName = (event: Event) => {
+    onChangeName = (event: any) => {
         let val = event.target.value;
         this.setState({
             goal: Object.assign({}, this.state.goal, {name: val}),
@@ -82,25 +87,42 @@ export class GoalChanger extends React.Component{
         })
     }
 
-    changeVisibility = (event, index ,val)=>{
+    changeVisibility = (event: Event, index :number ,val: GoalVisibilityEnum )=>{
         this.setState({
             goal: Object.assign({}, this.state.goal, {visibility: val}),
         });
     }
 
-    replaceTask = (index, task)=>{
+    replaceTask = (index: number, task: Task)=>{
         let tasks = this.state.goal.tasks.slice();
         if (index < tasks.length) {
             tasks[index] = task;
         }else if (index === tasks.length){
             tasks.push(task)
         }else if (index > tasks.length){
-            console.log("error: index "+ index + "is out of bound");
+            console.error("error: index "+ index + "is out of bound");
         }
         this.setState({
             modifiedTasks: true,
             goal: Object.assign({}, this.state.goal, {tasks:tasks}),
         })
+    }
+
+    removeTask = (index: number) =>{
+        let tasks = this.state.goal.tasks.slice();
+        if (index < tasks.length){
+            tasks.splice(index, 1);
+        }else{
+            console.error("invalid task's index");
+        }
+        this.setState({
+            modifiedTasks: true,
+            goal: Object.assign({}, this.state.goal, {tasks: tasks}),
+        })
+    }
+
+    validTasks = ():boolean => {
+        return this.state.goal.tasks.length > 0;
     }
 
     validName = ():boolean =>{
@@ -109,8 +131,8 @@ export class GoalChanger extends React.Component{
     }
 
     validDesc = ():boolean => {
-        let desc: string = this.state.goal.description;
-        return desc.length <= 200;
+        let desc: ?string = this.state.goal.description;
+        return !desc || (desc && desc.length <= 200);
     }
 
     getNameError = () =>{
@@ -127,77 +149,60 @@ export class GoalChanger extends React.Component{
         return "";
     }
 
-    onCreateGoal = ()=>{
+    getTasksError = ()=>{
+        if(this.state.modifiedTasks && this.state.goal.tasks.length === 0){
+            return "There should be at least one task or habit for this objective";
+        }
+        return "";
+    }
+
+    onAcceptGoal = ()=>{
         this.setState({
-            goal: EMPTY_GOAL,
+            goal: this.props.originalGoal,
             expanded: this.props.initiallyExpanded,
             changedName: false,
             changedDesc: false,
             modifiedTasks: false,
         });
-        this.props.onCreateGoal(this.state.goal);
+        this.props.onGoalAccepted(this.state.goal);
     }
-
-    getButtonsForMode = (mode) =>{
+    getButtons = () =>{
         let isCreateDisable = () =>{
-            return !this.validName() || !this.validDesc();
+            return !this.validName() || !this.validDesc() || !this.validTasks();
         }
         let discardable = ()=>{
             return this.state.modifiedTasks || this.state.changedName || this.state.changedDesc;
         }
-        switch(mode){
-            case Mode.CREATE:
-                return [<FlatButton key="discard-btn"
-                                className="goal-control-action btn"
-                                onTouchTap={this.onDiscard}
-                                disabled={!discardable()}
-                                label="Discard"/>,
-                        <FlatButton key="create-btn"
-                            className="goal-control-action btn"
-                            onTouchTap={this.onCreateGoal}
-                            disabled={isCreateDisable()}
-                            primary={true} label="Create"/>
-                        ];
-            case Mode.UPDATE:
-                // TODO add callbacks
-                return [<FlatButton key="update-btn"
-                            className="goal-control-action btn"
-                            primary={true}  label="Update" />,
-                        <FlatButton key="discard-btn"
-                            className="goal-control-action btn"
-                            onTouchTap={this.onDiscard}
-                            disabled={!this.discardable()}
-                            secondary={true} label="Discard"/>];
-            default:
-                console.log("ERROR: unexpected Mode, got " + mode);
-        }
+        return [<FlatButton key="discard-btn"
+                        className="goal-control-action btn"
+                        onTouchTap={this.onDiscard}
+                        disabled={!discardable()}
+                        label={this.props.discardLabel}/>,
+                <FlatButton key="create-btn"
+                    className="goal-control-action btn"
+                    onTouchTap={this.onAcceptGoal}
+                    disabled={isCreateDisable()}
+                    primary={true} label={this.props.acceptLabel}/>
+                ];
     }
-    render(){
-        let mode = this.props.mode;
-        let goal = this.state.goal;
-        let buttons = this.getButtonsForMode(mode);
-        return (
-            <div className="goal-card goal-changer">
-            <FloatingCard expanded={this.state.expanded}
-                onExpandChange={this.handleExpandChange}>
-                <CardHeader actAsExpander={true}
-                    showExpandableButton={true}
-                    subtitle="Ready to be awesome? Create a goal..."/>
+    render() {
+    let goal = this.state.goal;
+    let buttons = this.getButtons();
+    let expandable = this.props.allowExpandHeader;
+    let taskErr = this.getTasksError(),
+        taskErrMsg = null;
+    if (taskErr !== ""){
+        taskErrMsg = <CardText style={{color:"red"}}> {taskErr} </CardText>;
+    }
+    return (
+        <div className="goal-card goal-changer">
+            <FloatingCard expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                <div actAsExpander={expandable} showExpandableButton={expandable}>
+                    <HeaderWithIcon icon={<EditorModeEdit/>} title={this.props.expandHeaderText}/></div>
                 <Divider/>
-                <CardText expandable={true}>
-                    <TextField
-                        hintText="What do you want to do?"
-                        floatingLabelText="Objective" floatingLabelFixed={true}
-                        fullWidth={true} value={goal.name}
-                        errorText={this.getNameError()}
-                        onChange={this.onChangeName} autoFocus/>
-                    <TextField
-                        hintText="Add some more details?" floatingLabelFixed={true}
-                        floatingLabelText="Description" fullWidth={true}
-                        errorText={this.getDescError()}
-                        multiLine={true} value={goal.description}
-                        onChange={this.onChangeDesc}/>
-                    {/*<SelectField
+                <CardText expandable={expandable}>
+                    <TextField hintText="What do you want to do?" floatingLabelText="Objective" floatingLabelFixed={true} fullWidth={true} value={goal.name} errorText={this.getNameError()} onChange={this.onChangeName} autoFocus/>
+                    <TextField hintText="Add some more details?" floatingLabelFixed={true} floatingLabelText="Description" fullWidth={true} errorText={this.getDescError()} multiLine={true} value={goal.description} onChange={this.onChangeDesc}/> {/*<SelectField
                         autoWidth={true}
                         floatingLabelText="Who can see it?"
                         value={goal.visibility}
@@ -215,33 +220,48 @@ export class GoalChanger extends React.Component{
                             label="Only You"
                             primaryText="You"/>
                     </SelectField>*/}
-                    </CardText>
-                <CardMedia expandable={true}>
-                    <TaskCreator tasks={this.state.goal.tasks}
-                        replaceTask={this.replaceTask}
-                        initTask={this.initTask}/>
-                    </CardMedia>
-                <CardActions className="goal-actions" expandable={true}>
+                </CardText>
+                <CardMedia expandable={expandable}>
+                    <div>
+                        <HeaderWithIcon icon={<EditorInsertInvitation/>} title={"Habits and Tasks"}/>
+                        {taskErrMsg}
+                        <Divider/>
+                    <TaskCreator tasks={this.state.goal.tasks} replaceTask={this.replaceTask} removeTask={this.removeTask}/>
+                    </div>
+                </CardMedia>
+                <CardActions className="goal-actions" expandable={expandable}>
                     {buttons}
-                    </CardActions>
-                </FloatingCard>
-            </div>
-        )
+                </CardActions>
+            </FloatingCard>
+        </div>);
+    }
+    props: Props
+    static defaultProps: {
+        discardLabel: any,
+        initiallyExpanded: boolean,
+        allowExpandHeader: boolean,
+        expandHeaderText: string,
     }
 }
 
 GoalChanger.defaultProps = {
+    discardLabel: "Discard",
     initiallyExpanded: false,
+    allowExpandHeader: false,
+    expandHeaderText: "Change your goal",
+    onChangeDiscarded: ()=>{}, // Do nothing when discarding changes
 }
 
 GoalChanger.propTypes = {
-    // the mode of the changer object
-    mode: React.PropTypes.oneOf([Mode.CREATE, Mode.UPDATE]).isRequired,
+    allowExpandHeader: React.PropTypes.bool.isRequired,
     initiallyExpanded: React.PropTypes.bool.isRequired,
+    expandHeaderText: React.PropTypes.string.isRequired,
 
-    onCreateGoal: React.PropTypes.func,
+    onGoalAccepted: React.PropTypes.func.isRequired,
+    onChangeDiscarded: React.PropTypes.func.isRequired,
 
-    originalGoal: React.PropTypes.object,
-    onDiscardChanges: React.PropTypes.func,
-    onUpdateChanges: React.PropTypes.func,
+    originalGoal: React.PropTypes.object.isRequired,
+
+    acceptLabel: React.PropTypes.node.isRequired,
+    discardLabel: React.PropTypes.node.isRequired,
 }

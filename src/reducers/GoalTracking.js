@@ -74,6 +74,7 @@ function loadGoals(state: $GoalTracking, action: $Action): $GoalTracking {
 }
 
 function loadGoal(state: $GoalTracking, action: $Action): $GoalTracking {
+    console.log(action)
     let newGSet: {
             [id: string]: Goal
         } = goals(state.goals, ActionCreators.goals_LOAD_GOAL(action.goal, state.scheduler.now)),
@@ -258,6 +259,7 @@ export default function goalTracking(state: ? $GoalTracking, action : $Action): 
             done: [],
             notDone: [],
             inProgress: [],
+            pageTitle: "Donit: Personal Goal Tracker",
         };
     }
     switch (action.type) {

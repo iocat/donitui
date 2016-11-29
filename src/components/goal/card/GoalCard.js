@@ -7,11 +7,16 @@ import GoalControlBlock from './GoalControlBlock';
 import FloatingCard from '../../utils/FloatingCard';
 
 export default class GoalCard extends React.Component {
+
     render() {
         let goal = this.props.goal;
         let controlBlock = null;
         if (this.props.canUpdate) {
-            controlBlock = <GoalControlBlock delete={this.props.deleteGoal} goalName={this.props.goal.name}/>
+            // TODO: USER ID is not handled
+            controlBlock = <GoalControlBlock
+                onEdit={ () => this.props.onEdit(goal.id)}
+                delete={this.props.deleteGoal}
+                goalName={goal.name}/>
         }
         return (
             <div className="goal-card">

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {CardActions} from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -21,8 +20,8 @@ export default class GoalControlBlock extends React.Component {
     }
 
     render() {
-        let deleteG = this.props.delete;
-        let dialogActions = [
+        let deleteG = this.props.delete,
+            dialogActions = [
             <FlatButton
                 label="CANCEL"
                 primary={true}
@@ -33,24 +32,26 @@ export default class GoalControlBlock extends React.Component {
                 secondary={true}
                 onTouchTap={()=>{this.handleClose(); deleteG();}}
             />
-        ]
+        ];
         return (
             <CardActions className="goal-actions">
-                <FlatButton 
-                    onTouchTap={this.handleOpen} 
-                    label="Delete" 
+                <FlatButton
+                    onTouchTap={this.handleOpen}
+                    label="Delete"
                     secondary={true}
                     className="goal-control-action btn"
                     />
-                <Dialog 
+                <Dialog
                     actions={dialogActions}
                     modal={false}
                     open={this.state.open}
                     onRequestClose={this.handleClose}
                 > Are you sure you want to delete "{this.props.goalName}"? </Dialog>
-                <FlatButton 
-                    label="Edit" 
-                    primary={true} 
+
+                <FlatButton
+                    label="Edit"
+                    onTouchTap={this.props.onEdit}
+                    primary={true}
                     className="goal-control-action btn"/>
             </CardActions>
         )
@@ -60,4 +61,5 @@ export default class GoalControlBlock extends React.Component {
 GoalControlBlock.defaultProps = {
     goalName: "",
     delete: function(){}, // call back function to delete a goal
+    onEdit: function(){},
 }

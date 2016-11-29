@@ -14,8 +14,9 @@ class EmptyCard extends React.Component{
         super();
         let getRandomQuote = ()=>{
             let quoteList = [
-                "You have no goal. Add one!",
-                "No goal? Enjoy a cup of tea!",
+                "Take a break!",
+                "Go for a walk!",
+                "You are being awesome."
             ]
             return quoteList[getRandomInt(0, quoteList.length)];
         }
@@ -61,7 +62,7 @@ export default class GoalCardList extends React.Component{
                     return (
                     <div key={gid}>
                         <GoalCard goal={goals[gid]}
-                            canUpdate={canUpdate}
+                            canUpdate={canUpdate} onEdit={ goalId => this.props.onEdit(goalId) }
                             deleteGoal={() => { deleteGoal(gid); } }
                             deleteTask={(tid) => { deleteTask(gid, tid) } } />
                         <br/>

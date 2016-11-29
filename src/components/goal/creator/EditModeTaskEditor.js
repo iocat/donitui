@@ -2,6 +2,7 @@
 import React from 'react';
 
 import {TextField, Checkbox} from 'material-ui';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 import {ActivatableButton} from '../../utils/Button';
 import ReminderCreator from './reminder/ReminderCreator';
 import RepeatedReminderCreator from './reminder/RepeatedReminderCreator';
@@ -9,7 +10,6 @@ import {taskIcon, habitIcon} from '../icons';
 
 import {ReminderCycle} from '../../../data/index';
 import type {Task, Reminder, RepeatedReminder} from '../../../data/types';
-
 
 // TODO: check valid range of value
 const validReminder = (r: Reminder)=>{
@@ -133,6 +133,13 @@ export default class EditModeTaskEditor extends React.Component{
                     checked={this.state.isHabit}
                     onCheck={this.onSwitchReminder}/>
                 {reminderCreator}
+                <div className="delete-btn btn">
+                    <ActivatableButton
+                        active={true}
+                        func={this.props.onDelete}>
+                        <ActionDelete/>
+                        </ActivatableButton>
+                    </div>
                 <div className="confirm-btn btn">
                     <ActivatableButton
                         active={this.isTaskCreatable()}
@@ -171,7 +178,7 @@ EditModeTaskEditor.propTypes = {
     onSetRepeatedReminder: React.PropTypes.func,
 
     onCreate: React.PropTypes.func.isRequired,
-
+    onDelete: React.PropTypes.func.isRequired,
     // the button that show up to accept this task
     onCreateBtn: React.PropTypes.object.isRequired,
 }

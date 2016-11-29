@@ -1,10 +1,7 @@
 // @flow
 var React = require("react");
-import {Card, ListItem, Avatar, Divider} from 'material-ui';
-import {
-  green500
-} from 'material-ui/styles/colors';
-
+import {Card, ListItem, Divider} from 'material-ui';
+import HeaderWithIcon from './HeaderWithIcon';
 type Props = {
     normal: number,
     shadow: number,
@@ -30,10 +27,8 @@ export default class FloatingCard extends React.Component{
     }
     getHeader = ()=>{
         if(this.props.iconHeader) {
-            return <div><ListItem disabled={true}
-                    leftAvatar={<Avatar icon={this.props.iconHeader} backgroundColor={green500} size={35} />} >
-                    {this.props.iconTitle}
-                </ListItem>
+            return <div>
+                <HeaderWithIcon icon={this.props.iconHeader} title={this.props.iconTitle}/>
                 <Divider/>
             </div>
         }else if (this.props.iconTitle){

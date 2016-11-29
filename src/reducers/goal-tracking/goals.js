@@ -23,7 +23,6 @@ export default function goals(state: ?{
             delete gs[action.id];
             return gs;
         case ActionTypes.SET_TASK_STATUS:
-            console.log(action);
             gs[action.goalId] = goal(gs[action.goalId], action);
             return gs;
         // load the goal and categorize its current status

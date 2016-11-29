@@ -6,20 +6,8 @@ import type {
     GoalStatusEnum
 } from './types';
 
-export type $NotificationSystem = {
-
-}
-
-export type $Socializing = {
-
-}
-
-export type $User = {
-    username: string,
-}
-
 export type $UserService = {
-    user: $User,
+    userId: string,
 }
 
 // generic action
@@ -76,6 +64,9 @@ export type $Scheduler = {
 }
 
 export type $GoalTracking = {
+    // the title of the web page
+    pageTitle: string,
+
     scheduler: $Scheduler,
     // the original goal list which is sorted by created time
     gids: string[],
@@ -95,8 +86,6 @@ export type $GoalTracking = {
 export type $RootReducer = {
     goalTracking: $GoalTracking,
     userService: $UserService,
-    socializing: $Socializing,
-    notificationSystem: $NotificationSystem,
 }
 
 // HELPER FUNCTION TO RETRIEVE THE CHILDREN REDUCERS' DATA

@@ -34,7 +34,7 @@ body {
 .goal-card .card-header .header-img{
 	background-size: cover;
     background-position: center top;
-   	height: 350px;
+   	height: 230px;
 }
 
 .goal-card .card-title{
@@ -66,10 +66,16 @@ body {
 	position: relative;
 }
 
+.task-creator .delete-btn.btn{
+	position: absolute;
+	top:20px;
+	right: 60px;
+}
+
 .task-creator .confirm-btn.btn{
 	position: absolute;
 	top:20px;
-	right: 20px;
+	right: 10px;
 }
 
 .time-picker-group{

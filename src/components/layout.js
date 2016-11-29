@@ -1,38 +1,77 @@
-export function layouts(component) {
+// @flow
+// contains layout object for react-grid-layout
+
+type ComponentLayout ={
+    i: string,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    static: boolean,
+}
+export type Layout = {
+    layouts: {
+        lg: ComponentLayout[],
+        md: ComponentLayout[],
+    },
+    cols: {
+        lg: number,
+        md: number,
+    },
+    breakPts: {
+        lg: number,
+        md: number,
+    }
+}
+
+
+export function layouts(component: Layout) {
     return component.layouts;
 }
 
-export function cols(component) {
+export function cols(component: Layout) {
     return component.cols;
 }
 
-export function breakpoints(component) {
-    return component.breakpoints;
+export function breakpoints(component: Layout) {
+    return component.breakPts;
 }
 
-const commonBreakpts = {
+const commonCols =  {
+    lg: 12,
+    md: 10,
+}
+
+const commonBreakPts = {
     lg: 1200,
     md: 996,
 }
-
-export const personalTracking = {
+export const goalEdit: Layout= {
     layouts: {
         lg: [{
-            i: "goalFilter",
+            i: "editorCard",
             x: 6,
             y: 0,
             w: 5,
             h: 1,
-            static: true
-        }, {
-            i: "scheduler",
-            x: 1,
-            y: 1,
+            static: true,
+        }],
+        md:[{
+            i: "editorCard",
+            x: 5,
+            y: 0,
             w: 4,
             h: 1,
-            static: true
-        }, ],
-        md: [{
+            static: true,
+        }]
+    },
+    cols: commonCols,
+    breakPts: commonBreakPts,
+}
+
+export const personalTracking: Layout = {
+    layouts: {
+        lg: [{
             i: "goalFilter",
             x: 5,
             y: 0,
@@ -43,7 +82,22 @@ export const personalTracking = {
             i: "scheduler",
             x: 1,
             y: 1,
-            w: 4,
+            w: 3,
+            h: 1,
+            static: true
+        }, ],
+        md: [{
+            i: "goalFilter",
+            x: 4,
+            y: 0,
+            w: 5,
+            h: 1,
+            static: true
+        }, {
+            i: "scheduler",
+            x: 1,
+            y: 1,
+            w: 3,
             h: 1,
             static: true
         }, ],
@@ -54,16 +108,11 @@ export const personalTracking = {
             {i:"goalTracking", x: 2, y: 0, w: 2, h:1, static:true}
         ], */
     },
-    cols: {
-        lg: 12,
-        md: 10,
-        /*sm: 6,
-        xs: 5, */
-    },
-    breakpoints: commonBreakpts,
+    cols: commonCols,
+    breakPts: commonBreakPts,
 }
 
-export const goalTracking = {
+export const goalTracking: Layout = {
     layouts: {
         lg: [{
             i: "filter",
@@ -104,9 +153,6 @@ export const goalTracking = {
             {i:"goals", x: 0, y: 1, w: 5, h: 1,  static: true}
         ],*/
     },
-    cols: {
-        lg: 12,
-        md: 10,
-    },
-    breakpoints: commonBreakpts,
+    cols: commonCols,
+    breakPts: commonBreakPts,
 }

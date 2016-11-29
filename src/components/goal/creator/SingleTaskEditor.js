@@ -85,7 +85,7 @@ export class SingleTaskEditor extends React.Component{
                         initRReminder={task.repeatedReminder}
                         onSetReminder={this.onCreateReminder}
                         onSetRepeatedReminder={this.onCreateRepeatedReminder}
-                        onCreate={this.acceptTask}
+                        onCreate={this.acceptTask} onDelete={this.props.deleteTask}
                         onCreateBtn={this.props.acceptBtn}
                         />
                     </CardText>
@@ -123,6 +123,7 @@ SingleTaskEditor.propTypes={
     stageTask: React.PropTypes.func.isRequired,
     // acceptTask is a callback to allow the task to be completed
     acceptTask: React.PropTypes.func.isRequired,
+    deleteTask: React.PropTypes.func.isRequired,
     initState: React.PropTypes.oneOf([TaskEditorState.EDITING, TaskEditorState.PREVIEW]),
 
     acceptBtn: React.PropTypes.object,

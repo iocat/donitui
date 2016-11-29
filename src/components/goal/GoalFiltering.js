@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 import {ActionCreators} from '../../actions';
 import {getUserGoals, getGoalFilter} from '../../data/reducers';
 
@@ -12,6 +13,9 @@ import GoalCardList from './card/GoalCardList';
 import GoalCreatorCard from './creator/GoalCreatorCard';
 
 class _GoalFiltering extends React.Component {
+    onEdit = (goalId) =>{
+        browserHistory.push("/"+this.props.userId+"/goals/"+goalId+"/edit");
+    }
     render() {
         let goals = this.props.goals;
         let gids = this.props.gids;
@@ -30,7 +34,7 @@ class _GoalFiltering extends React.Component {
                 <div key="goals">
                     <GoalCreatorCard/>
                     <br/>
-                    <GoalCardList goals={goals} gids={gids} deleteGoal={deleteGoal} deleteTask={deleteTask} canUpdate={canUpdate}/>
+                    <GoalCardList goals={goals} gids={gids} deleteGoal={deleteGoal} deleteTask={deleteTask} canUpdate={canUpdate} onEdit={this.onEdit}/>
                 </div>
             </GoalListLayout>
         )
@@ -53,10 +57,11 @@ _GoalFiltering.propTypes = {
 function mapStateToProps(root) {
     let goals = getUserGoals(root);
     let filter = getGoalFilter(root);
-    return Object.assign({}, {
+    return {
         goals: goals,
-        gids: filter.gids
-    })
+        gids: filter.gids,
+        userId: root.userService.userId,
+    };
 }
 
 function mapDispatchToProps(dispatchfn) {

@@ -109,11 +109,13 @@ function receiveTask(state: $Scheduler, goal: Goal, taskId: number): $Scheduler 
 
 function setCurrentTime(state: $Scheduler, now: number): $Scheduler {
     let eventHeap: $ScheduledTaskEvent[] = state.eventHeap,
-        activeTasks: $ActiveTask[] = state.activeTasks.slice();
+        activeTasks: $ActiveTask[] = state.activeTasks.slice(),
+        statusChange: $ScheduledTaskEvent[] = state.statusChange.slice();
     while (eventHeap.length > 0 && now >= heapBuilder.peek(eventHeap).at) {
         let res = heapBuilder.pop(eventHeap),
             event: $ScheduledTaskEvent = res.item;
         eventHeap = res.heap;
+        statusChange.push(event);
         if (event.toStart === true) {
             // add it to the active tasks
             activeTasks.push({
@@ -137,6 +139,7 @@ function setCurrentTime(state: $Scheduler, now: number): $Scheduler {
         now: now,
         eventHeap: eventHeap,
         activeTasks: activeTasks,
+        statusChange: statusChange,
     });
 }
 
@@ -165,6 +168,7 @@ export default function scheduler(state: ? $Scheduler, action : $Action): $Sched
             eventHeap: [],
             now: new Date().getTime(),
             activeTasks: [],
+            statusChange: [],
         }
     }
     switch (action.type) {

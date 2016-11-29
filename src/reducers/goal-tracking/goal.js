@@ -45,19 +45,15 @@ export default function goal(state: Goal, action: any): Goal {
             tasks: [],
         }
     }
+    let reeval = tasks(state.tasks, action);
     switch (action.type) {
-        // evaluate if this goal is done or not based on the tasks
-        case ActionTypes.EVALUATE_STATUS:
-            let ts: Task[] = tasks(state.tasks, action);
-            let status: GoalStatusEnum = goalStatusFromTasks(state.tasks);
+        case ActionTypes.SET_TASK_STATUS:
             return Object.assign({}, state, {
-                tasks: ts,
-                status: status,
+                tasks: reeval,
+                status: goalStatusFromTasks(reeval),
             });
         case ActionTypes.LOAD_GOAL:
         case ActionTypes.CREATE_GOAL:
-            // evaluate tasks' statuses
-            let reeval = tasks(state.tasks, action);
             return Object.assign({}, state, action.goal, {
                 tasks: reeval,
                 status: goalStatusFromTasks(reeval),

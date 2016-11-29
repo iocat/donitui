@@ -1,7 +1,8 @@
 // @flow
 import type {
     Goal,
-    GoalStatusEnum
+    GoalStatusEnum,
+    TaskStatusEnum,
 } from './data/types';
 
 import type {
@@ -20,10 +21,10 @@ export const ActionTypes: {
     LOAD_GOALS: 3,
     LOAD_GOAL: 4, // push a goal to the end of the goal lists
     CREATE_GOAL: 5, // create a goals and prepend to the front of the goal lists
-
+    SET_TASK_STATUS: 6, // set a task status
     // goalTracking + scheduler
-    SET_CURRENT_TIME: 6,
-    RECEIVE_TASK: 7, // scheduler receives a task and evaluates its status
+    SET_CURRENT_TIME: 7,
+    RECEIVE_TASK: 8, // scheduler receives a task and evaluates its status
 
     // error handler
     HANDLE_ERROR: 100,
@@ -123,6 +124,20 @@ export const ActionCreators: {
             type: ActionTypes.CREATE_GOAL,
             goal: goal,
             now: now,
+        }
+    },
+
+    SET_TASK_STATUS: (goalId: string, taskId: number, status: TaskStatusEnum ):{
+        type: number,
+        goalId: string,
+        taskId: number,
+        status: TaskStatusEnum,
+    }=>{
+        return {
+            type: ActionTypes.SET_TASK_STATUS,
+            goalId,
+            taskId,
+            status,
         }
     },
 

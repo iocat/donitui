@@ -71,6 +71,10 @@ function task(state: Task, action: any):Task{
     }
 
     switch (action.type){
+    case ActionTypes.SET_TASK_STATUS:
+        return Object.assign({},state, {
+            status: action.status,
+        });
     case ActionTypes.LOAD_GOAL:
     case ActionTypes.CREATE_GOAL:
         return Object.assign({},state, {
@@ -86,16 +90,19 @@ export default function tasks(state: Task[], action: any): Task[] {
     if (state === undefined) {
         return [];
     }
+    let newState: Task[] = state.slice();
     switch (action.type) {
+        case ActionTypes.SET_TASK_STATUS:
+            newState[action.taskId] = task(newState[action.taskId],action);
+            return newState;
         case ActionTypes.LOAD_GOAL:
         case ActionTypes.CREATE_GOAL:
-            let newTs: Task[] = state.slice(),
-                i = 0;
-            while(i < newTs.length){
-                newTs[i] = task(newTs[i], action);
+            let i = 0;
+            while(i < newState.length){
+                newState[i] = task(newState[i], action);
                 i++;
             }
-            return newTs;
+            return newState;
         default:
             return state;
     }

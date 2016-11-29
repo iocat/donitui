@@ -28,9 +28,9 @@ ReactDOM.render(
     </ReduxStoreProvider>
 </MuiThemeProvider>, document.getElementById('root'));
 
-
 import {
     ActionCreators
 } from './actions';
-// appStore.subscribe(() => console.log(appStore.getState());
+
+// appStore.subscribe(() => console.log(appStore.getState()));
 appStore.dispatch(ActionCreators.LOAD_GOALS(goalsExample() ));

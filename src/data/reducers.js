@@ -49,7 +49,7 @@ export type $ScheduledTaskEvent = {
     goalId: string,
     // the index the task belongs to in the goal
     taskId: number,
-    
+
     endTime: number,
 }
 
@@ -68,6 +68,11 @@ export type $Scheduler = {
     eventHeap: $ScheduledTaskEvent[],
     // the currently active tasks
     activeTasks: $ActiveTask[],
+
+    // the return values of set current time
+    // the list of tasks whose status needed to be changed
+    // events are pushed when the current time passed the scheduled time
+    statusChange: $ScheduledTaskEvent[],
 }
 
 export type $GoalTracking = {

@@ -42,5 +42,10 @@ export const formatDuration = (duration: number): string=>{
 
 // converts a duration in ms to a readable time from now
 export const readableDuration = (duration: number):string =>{
+    if (duration < 1000){
+        return Math.floor(duration/1000) + " second";
+    }else if (duration < 60000) {
+        return Math.floor(duration/1000)+ " seconds";
+    }
     return moment.duration(duration).humanize();
 }

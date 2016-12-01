@@ -8,26 +8,29 @@ import {personalTracking} from '../layout';
 import GoalFiltering from '../goal/GoalFiltering';
 import ActiveTasks from '../scheduler/ActiveTasks';
 import NextEvent from '../scheduler/NextEvent';
+import GoalHistory from '../history/History';
 
 import type { $RootReducer } from '../../data/reducers';
 
 // PersonalTracking is a division page for the app
 class _PersonalTracking extends React.Component {
     render() {
-        if (this.props.userId !== this.props.params.userId){
+        /*if (this.props.userId !== this.props.params.userId){
             return <div>404{this.props.params.userId}</div>
-        }
+        }*/
         return (
             <DocumentTitle title={this.props.title || "Donit"}>
                 <Layout layout={personalTracking}>
-                    <div key="goalFilter">
+                    <div key="filtering">
                         <GoalFiltering canUpdate={true}/>
                     </div>
-                    <div key="scheduler">
+                    <div key="scheduling">
                         <div className="scheduler">
                             <NextEvent/>
                             <br/>
                             <ActiveTasks/>
+                            <br/>
+                            <GoalHistory/>
                             <br/>
                         </div>
                     </div>

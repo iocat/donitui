@@ -72,14 +72,14 @@ export const goalEdit: Layout= {
 export const personalTracking: Layout = {
     layouts: {
         lg: [{
-            i: "goalFilter",
+            i: "filtering",
             x: 5,
             y: 0,
             w: 5,
             h: 1,
             static: true
         }, {
-            i: "scheduler",
+            i: "scheduling",
             x: 1,
             y: 1,
             w: 3,
@@ -87,14 +87,14 @@ export const personalTracking: Layout = {
             static: true
         }, ],
         md: [{
-            i: "goalFilter",
+            i: "filtering",
             x: 4,
             y: 0,
             w: 5,
             h: 1,
             static: true
         }, {
-            i: "scheduler",
+            i: "scheduling",
             x: 1,
             y: 1,
             w: 3,

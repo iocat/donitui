@@ -168,6 +168,9 @@ export default class GoalChanger extends React.Component{
     }
     getButtons = () =>{
         let isCreateDisable = () =>{
+            if (!this.state.changedName && !this.state.changedDesc && !this.state.modifiedTasks){
+                return true;
+            }
             return !this.validName() || !this.validDesc() || !this.validTasks();
         }
         let discardable = ()=>{

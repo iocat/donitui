@@ -7,6 +7,10 @@ import TaskItem from '../card/TaskItem';
 import EditModeTaskEditor from './EditModeTaskEditor';
 import {habitIcon, taskIcon} from '../icons';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+
+import taskReducer from '../../../reducers/goal-tracking/task';
+import {ActionCreators} from '../../../actions';
+
 export type TaskEditorStateEnum =
     | 1
     | 2;
@@ -49,12 +53,14 @@ export class SingleTaskEditor extends React.Component{
     onCreateReminder = (reminder:Reminder )=>{
         let newTask:Task= Object.assign({},this.props.task, {reminder: reminder});
         delete newTask["repeatedReminder"];
+        newTask = taskReducer(newTask, ActionCreators.goals_LOAD_GOAL(newTask, new Date().getTime()));
         this.props.stageTask(newTask);
     }
 
-    onCreateRepeatedReminder = (reReminder: RepeatedReminder)=>{
-        let newTask:Task= Object.assign({},this.props.task, {repeatedReminder: reReminder});
+    onCreateRepeatedReminder = (rReminder: RepeatedReminder)=>{
+        let newTask:Task= Object.assign({},this.props.task, {repeatedReminder: rReminder});
         delete newTask["reminder"];
+        newTask = taskReducer(newTask, ActionCreators.goals_LOAD_GOAL(newTask, new Date().getTime()));
         this.props.stageTask(newTask);
     }
 

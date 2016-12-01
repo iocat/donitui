@@ -3,6 +3,7 @@ import type {
     Goal,
     GoalStatusEnum,
     TaskStatusEnum,
+    HistoryElem,
 } from './data/types';
 
 import type {
@@ -25,8 +26,10 @@ export const ActionTypes: {
     // goalTracking + scheduler
     SET_CURRENT_TIME: 7,
     RECEIVE_TASK: 8, // scheduler receives a task and evaluates its status
+    // goalTracking + histories
+    NEW_HISTORY: 9,
 
-    USER_LOGIN: 9,
+    USER_LOGIN: 10,
     // error handler
     HANDLE_ERROR: 100,
 
@@ -157,6 +160,13 @@ export const ActionCreators: {
             type: ActionTypes.RECEIVE_TASK,
             goal: goal,
             taskId: taskId,
+        };
+    },
+
+    NEW_HISTORY: (helem: HistoryElem): {type: number, history: HistoryElem}=>{
+        return {
+            type: ActionTypes.NEW_HISTORY,
+            history: helem,
         };
     },
 

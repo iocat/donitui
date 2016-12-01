@@ -3,7 +3,8 @@
 
 import type {
     Goal,
-    GoalStatusEnum
+    GoalStatusEnum,
+    Histories
 } from './types';
 
 export type $UserService = {
@@ -80,6 +81,7 @@ export type $GoalTracking = {
     goals: {
         [id: string]: Goal
     },
+    histories: Histories,
     filter: $Filter,
 }
 

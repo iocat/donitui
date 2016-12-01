@@ -6,11 +6,13 @@ import {
 import {
     GoalStatus,
     TaskStatus,
-    StatusFilter
+    StatusFilter,
+    HistoryType
 } from '../data/index';
 import goals from './goal-tracking/goals';
 import filter from './goal-tracking/filter';
 import scheduler from './goal-tracking/scheduler';
+import histories from './goal-tracking/histories';
 import type {
     $GoalTracking,
     $Action,
@@ -74,7 +76,6 @@ function loadGoals(state: $GoalTracking, action: $Action): $GoalTracking {
 }
 
 function loadGoal(state: $GoalTracking, action: $Action): $GoalTracking {
-    console.log(action)
     let newGSet: {
             [id: string]: Goal
         } = goals(state.goals, ActionCreators.goals_LOAD_GOAL(action.goal, state.scheduler.now)),
@@ -173,12 +174,10 @@ function setCurrentTime(state: $GoalTracking, action: $Action): $GoalTracking {
     for (let event of statusChanges) {
         if (event.toStart === true) {
             newState = goalTracking(newState, ActionCreators.SET_TASK_STATUS(event.goalId, event.taskId, TaskStatus.IN_PROGRESS));
-        } else {
-            if (newState.goals[event.goalId].tasks[event.taskId].reminder) {
-                newState = goalTracking(newState, ActionCreators.SET_TASK_STATUS(event.goalId, event.taskId, TaskStatus.DONE));
-            } else if (newState.goals[event.goalId].tasks[event.taskId].repeatedReminder) {
-                newState = goalTracking(newState, ActionCreators.SET_TASK_STATUS(event.goalId, event.taskId, TaskStatus.NOT_DONE));
-            }
+        } else if (newState.goals[event.goalId].tasks[event.taskId].reminder) {
+            newState = goalTracking(newState, ActionCreators.SET_TASK_STATUS(event.goalId, event.taskId, TaskStatus.DONE));
+        } else if (newState.goals[event.goalId].tasks[event.taskId].repeatedReminder) {
+            newState = goalTracking(newState, ActionCreators.SET_TASK_STATUS(event.goalId, event.taskId, TaskStatus.NOT_DONE));
         }
     }
     return newState;
@@ -188,14 +187,45 @@ function setTaskStatus(state: $GoalTracking, action: $Action) :$GoalTracking{
     let newState: $GoalTracking = Object.assign({}, state, {
         goals: goals(state.goals, action),
     });
+    if (action.status === TaskStatus.IN_PROGRESS){
+        newState = goalTracking(newState, ActionCreators.NEW_HISTORY(
+            {
+                type: HistoryType.TASK_STARTED,
+                at: newState.scheduler.now,
+                taskName: newState.goals[action.goalId].tasks[action.taskId].name,
+                goalName: newState.goals[action.goalId].name,
+                goalId: action.goalId,
+            }
+        ));
+    }else{
+        newState = goalTracking(newState, ActionCreators.NEW_HISTORY(
+            {
+                type: HistoryType.TASK_ENDED,
+                at: newState.scheduler.now,
+                taskName: newState.goals[action.goalId].tasks[action.taskId].name,
+                goalName: newState.goals[action.goalId].name,
+                goalId: action.goalId,
+            }
+        ));
+    }
     let oldStatus: TaskStatusEnum = state.goals[action.goalId].status,
         newStatus: TaskStatusEnum = newState.goals[action.goalId].status;
     if (newStatus === oldStatus) {
         return newState;
     }
-    let done = state.done.slice(),
-        notDone = state.notDone.slice(),
-        inProgress = state.inProgress.slice();
+    if (newStatus === GoalStatus.DONE) {
+        newState = goalTracking(newState, ActionCreators.NEW_HISTORY(
+            {
+                type: HistoryType.GOAL_ACHIEVED,
+                at: newState.scheduler.now,
+                goalName: newState.goals[action.goalId].name,
+                goalId: action.goalId,
+            }
+        ))
+    }
+    let done = newState.done.slice(),
+        notDone = newState.notDone.slice(),
+        inProgress = newState.inProgress.slice();
     // remove the goal from the corresponding list
     switch (oldStatus){
         case GoalStatus.DONE:
@@ -230,6 +260,8 @@ function setTaskStatus(state: $GoalTracking, action: $Action) :$GoalTracking{
     for (let gid: string of newState.gids){
         if(insertPos < listToInsert.length){
             if(gid === action.goalId){
+                console.log(listToInsert);
+                console.log(gid);
                 listToInsert.splice(insertPos, 0, action.goalId);
                 break;
             }else if (gid === listToInsert[insertPos]){
@@ -238,6 +270,7 @@ function setTaskStatus(state: $GoalTracking, action: $Action) :$GoalTracking{
         }else{
             // insert to the end of the array
             listToInsert.splice(insertPos, 0, action.goalId);
+            break;
         }
     }
 
@@ -249,12 +282,19 @@ function setTaskStatus(state: $GoalTracking, action: $Action) :$GoalTracking{
     }), ActionCreators.FILTER_GOAL_BY_STATUSES(newState.filter.byStatuses));
 }
 
+function newHistory(state: $GoalTracking, action: $Action): $GoalTracking {
+    return Object.assign({}, state, {
+        histories: histories(state.histories, action),
+    });
+}
+
 export default function goalTracking(state: ? $GoalTracking, action : $Action): $GoalTracking {
     if (state === undefined || state === null) {
         return {
             goals: goals(undefined, action),
             filter: filter(undefined, action),
             scheduler: scheduler(undefined, action),
+            histories: histories(undefined, action),
             gids: [],
             done: [],
             notDone: [],
@@ -277,6 +317,8 @@ export default function goalTracking(state: ? $GoalTracking, action : $Action): 
             return setTaskStatus(state, action);
         case ActionTypes.SET_CURRENT_TIME:
             return setCurrentTime(state, action);
+        case ActionTypes.NEW_HISTORY:
+            return newHistory(state, action);
         case ActionTypes.FILTER_GOAL_BY_STATUSES:
             let filtered: string[] = [];
             if (action.statuses === StatusFilter.ALL) {

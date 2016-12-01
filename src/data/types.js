@@ -65,3 +65,35 @@ export type Task = {
     reminder?: Reminder,
     repeatedReminder?: RepeatedReminder,
 }
+
+export type HistoryTypeEnum =
+    | "TASK_STARTED"
+    | "TASK_ENDED"
+    | "GOAL_ACHIEVED"
+
+type TaskStarted = {
+    type: HistoryTypeEnum,
+    // the time when the event is triggered
+    at: number,
+    // the goal
+    taskName: string,
+    goalName: string,
+    goalId: string,
+}
+
+type TaskEnded = TaskStarted
+
+type GoalAchieved = {
+    type: HistoryTypeEnum,
+    // the time when the event is triggered
+    at: number,
+    goalName: string,
+    goalId: string,
+}
+
+export type HistoryElem =
+    | TaskStarted
+    | TaskEnded
+    | GoalAchieved
+
+export type Histories = HistoryElem[];

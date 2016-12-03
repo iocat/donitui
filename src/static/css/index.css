@@ -10,9 +10,18 @@ body {
 	box-sizing: border-box;
 }
 
-.app{
+.nav-bar{
+	z-index: 1;
+	position: fixed;
+	width: 100vw;
+}
+
+.main-app{
+	width: 100%;
+	padding-top: 60px;
 	max-width: 1024px;
-	margin: auto auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .scheduler{

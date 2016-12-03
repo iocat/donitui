@@ -13,7 +13,7 @@ const mapStateToProps = (rootReducer) => {
         discardLabel: "Discard",
         allowExpandHeader: true,
         initiallyExpanded: false,
-        expandHeaderText: "Create an objective",
+        expandHeaderText: "Create a goal",
     }
 }
 

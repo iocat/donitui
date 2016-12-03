@@ -204,7 +204,7 @@ export default class GoalChanger extends React.Component{
                     <HeaderWithIcon icon={<EditorModeEdit/>} title={this.props.expandHeaderText}/></div>
                 <Divider/>
                 <CardText expandable={expandable}>
-                    <TextField hintText="What do you want to do?" floatingLabelText="Objective" floatingLabelFixed={true} fullWidth={true} value={goal.name} errorText={this.getNameError()} onChange={this.onChangeName} autoFocus/>
+                    <TextField hintText="What do you want to do?" floatingLabelText="Goal" floatingLabelFixed={true} fullWidth={true} value={goal.name} errorText={this.getNameError()} onChange={this.onChangeName} autoFocus/>
                     <TextField hintText="Add some more details?" floatingLabelFixed={true} floatingLabelText="Description" fullWidth={true} errorText={this.getDescError()} multiLine={true} value={goal.description} onChange={this.onChangeDesc}/> {/*<SelectField
                         autoWidth={true}
                         floatingLabelText="Who can see it?"

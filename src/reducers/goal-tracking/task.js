@@ -13,7 +13,15 @@ import type {
     RepeatedReminder
 } from '../../data/types';
 
-function toStatus(start: number, end: number, now: number): TaskStatusEnum{
+
+function taskToStatus(start: number, end: number, now: number): TaskStatusEnum{
+    if ( start <= now && now <= end){
+        return TaskStatus.IN_PROGRESS;
+    }
+    return TaskStatus.DONE;
+}
+
+function habitToStatus(start: number, end: number, now: number): TaskStatusEnum{
     if ( start <= now && now <= end){
         return TaskStatus.IN_PROGRESS;
     }
@@ -31,7 +39,7 @@ function evaluateTaskStatus(task: Task, now: number):TaskStatusEnum{
         let reminder: Reminder = task.reminder,
             taskStartEpch: number = reminder.remindAt.getTime(),
             taskEndEpch: number = taskStartEpch + reminder.duration*60000;
-        return toStatus(taskStartEpch, taskEndEpch, now);
+        return taskToStatus(taskStartEpch, taskEndEpch, now);
     }else if (task.repeatedReminder != null) {
         let rReminder: RepeatedReminder = task.repeatedReminder,
         cloneNow: Date = new Date(now),
@@ -44,12 +52,12 @@ function evaluateTaskStatus(task: Task, now: number):TaskStatusEnum{
             endTimeEpch = startTimeEpch + rReminder.duration*60000;
         switch(rReminder.cycle) {
             case ReminderCycle.EVERY_DAY:
-                return toStatus(startTimeEpch, endTimeEpch, now);
+                return habitToStatus(startTimeEpch, endTimeEpch, now);
             case ReminderCycle.EVERY_WEEK:
                 if(rReminder.days[dayToday] !== true){
                     return TaskStatus.NOT_DONE;
                 }else{
-                    return toStatus(startTimeEpch, endTimeEpch, now);
+                    return habitToStatus(startTimeEpch, endTimeEpch, now);
                 }
             default:
                 console.log("unhandled case");

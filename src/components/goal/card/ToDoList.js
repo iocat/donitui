@@ -48,7 +48,7 @@ export default class ToDoList extends React.Component {
                     if (index === 0) {
                         leftIcon = taskIcon
                     }
-                    return (<TaskItem key={index} leftIcon={leftIcon} insetChildren={true} task={task}/>)
+                    return (<TaskItem className="todo-item" key={index} leftIcon={leftIcon} insetChildren={true} task={task}/>)
                 })
 }
                 {divider}
@@ -57,7 +57,7 @@ export default class ToDoList extends React.Component {
                     if (index === 0) {
                         leftIcon = habitIcon
                     }
-                    return (<HabitItem key={index} leftIcon={leftIcon} insetChildren={true} habit={habit}/>)
+                    return (<HabitItem className="todo-item" key={index} leftIcon={leftIcon} insetChildren={true} habit={habit}/>)
                 })
 }
                 {this.props.children}

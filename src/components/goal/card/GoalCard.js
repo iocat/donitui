@@ -3,7 +3,6 @@ import React from 'react';
 import ToDoList from './ToDoList';
 import GoalCardHeader from './GoalCardHeader';
 import GoalControlBlock from './GoalControlBlock';
-
 import FloatingCard from '../../utils/FloatingCard';
 
 export default class GoalCard extends React.Component {
@@ -12,7 +11,6 @@ export default class GoalCard extends React.Component {
         let goal = this.props.goal;
         let controlBlock = null;
         if (this.props.canUpdate) {
-            // TODO: USER ID is not handled
             controlBlock = <GoalControlBlock
                 onEdit={ () => this.props.onEdit(goal.id)}
                 delete={this.props.deleteGoal}

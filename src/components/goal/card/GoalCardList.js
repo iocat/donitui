@@ -14,9 +14,7 @@ class EmptyCard extends React.Component{
         super();
         let getRandomQuote = ()=>{
             let quoteList = [
-                "Take a break!",
-                "Go for a walk!",
-                "You are being awesome."
+                "Nothing to show."
             ]
             return quoteList[getRandomInt(0, quoteList.length)];
         }

@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
 
-import {getTaskStatusColor} from '../../styles/colors';
-import {ListItem} from 'material-ui';
-import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
+import { ListItem } from 'material-ui';
 import type {Task, RepeatedReminder} from '../../../data/types';
 import {ReminderCycle} from '../../../data/index';
 import {formatTime, readableDuration} from '../../../timeutils';
+import StatusNode from '../StatusNode';
 
 const mapNumberToDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -50,16 +49,12 @@ export default class HabitItem extends React.Component{
         }
         return "";
     }
+
     render(){
-        let statusCircle = null;
         let habit: Task = this.props.habit;
-        if (habit.status){
-            let statusColor = getTaskStatusColor(this.props.habit.status)
-            statusCircle = (<AvFiberManualRecord color={statusColor}/>)
-        }
         return <ListItem
             onTouchTap={this.props.onTouchTap}
-            rightIcon={statusCircle} leftIcon={this.props.leftIcon}
+            rightIconButton={<StatusNode status={habit.status}/>} leftIcon={this.props.leftIcon}
             insetChildren={this.props.insetChildren}
             primaryText={this.getHabitName()}
             secondaryText={this.getDescription()}/>

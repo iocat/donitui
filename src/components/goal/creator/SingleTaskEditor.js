@@ -1,6 +1,7 @@
 // @flow
 const React = require("react");
 import { CardText } from 'material-ui';
+import {TaskStatus} from '../../../data/index';
 import type {Task, Reminder, RepeatedReminder} from '../../../data/types';
 import HabitItem from '../card/HabitItem';
 import TaskItem from '../card/TaskItem';
@@ -51,14 +52,14 @@ export class SingleTaskEditor extends React.Component{
     }
 
     onCreateReminder = (reminder:Reminder )=>{
-        let newTask:Task= Object.assign({},this.props.task, {reminder: reminder});
+        let newTask:Task= Object.assign({},this.props.task, {status: TaskStatus.NOT_DONE, reminder: reminder});
         delete newTask["repeatedReminder"];
         newTask = taskReducer(newTask, ActionCreators.goals_LOAD_GOAL(newTask, new Date().getTime()));
         this.props.stageTask(newTask);
     }
 
     onCreateRepeatedReminder = (rReminder: RepeatedReminder)=>{
-        let newTask:Task= Object.assign({},this.props.task, {repeatedReminder: rReminder});
+        let newTask:Task= Object.assign({},this.props.task, {status: TaskStatus.NOT_DONE, repeatedReminder: rReminder});
         delete newTask["reminder"];
         newTask = taskReducer(newTask, ActionCreators.goals_LOAD_GOAL(newTask, new Date().getTime()));
         this.props.stageTask(newTask);

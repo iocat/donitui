@@ -42,26 +42,24 @@ class _FilterTab extends React.Component {
         return (
             <div>
                 <IconButton
+                    tooltip="Show all goals"
+                    onTouchTap={this.filterByAll}>
+                    <NavigationApps/>
+                    </IconButton>
+                <IconButton
                     tooltip="Show active goals"
                     onTouchTap={this.filterByInProgress}>
                     <AvPlayArrow color={this.color(GoalStatus.IN_PROGRESS)}/>
                     </IconButton>
-
                 <IconButton
-                    tooltip="Show on-going goals"
+                    tooltip="Show current goals"
                     onTouchTap={this.filterByNotDone}>
                     <AvPause color={this.color(GoalStatus.NOT_DONE)}/>
                     </IconButton>
-
                 <IconButton
-                    tooltip="Show achieved goals"
+                    tooltip="Show past goals"
                     onTouchTap={this.filterByDone}>
                     <AvStop color={this.color(GoalStatus.DONE)}/>
-                    </IconButton>
-                <IconButton
-                    tooltip="Show all goals"
-                    onTouchTap={this.filterByAll}>
-                    <NavigationApps/>
                     </IconButton>
             </div>
         )

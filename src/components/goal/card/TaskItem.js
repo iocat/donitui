@@ -2,10 +2,9 @@
 import React from 'react';
 
 import {ListItem} from 'material-ui';
-import AvFiberManualRecord from 'material-ui/svg-icons/av/fiber-manual-record';
-import {getTaskStatusColor} from '../../styles/colors';
 import type {Task, Reminder} from '../../../data/types';
 import {formatDateAndTime, readableDuration} from '../../../timeutils';
+import StatusNode from '../StatusNode';
 
 export default class TaskItem extends React.Component {
     getTaskDescription = ()=>{
@@ -18,19 +17,19 @@ export default class TaskItem extends React.Component {
         }
         return "";
     }
+
     render() {
         let task = this.props.task
-
-        let statusCircle = null;
-        if (task.status){
-            let statusColor = getTaskStatusColor(task.status)
-            statusCircle = (<AvFiberManualRecord color={statusColor}/>)
+        let disabled = true;
+        if (this.props.onTouchTap){
+            disabled = false;
         }
         return <ListItem
             onTouchTap={this.props.onTouchTap}
             leftIcon={this.props.leftIcon}
             insetChildren={this.props.insetChildren}
-            rightIcon={statusCircle}
+            rightIconButton={<StatusNode status={task.status}/>}
+            disabled={disabled}
             primaryText={task.name}
             secondaryText={this.getTaskDescription()}/>
     }

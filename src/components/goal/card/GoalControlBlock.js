@@ -38,7 +38,6 @@ export default class GoalControlBlock extends React.Component {
                 <FlatButton
                     onTouchTap={this.handleOpen}
                     label="Delete"
-                    secondary={true}
                     className="goal-control-action btn"
                     />
                 <Dialog

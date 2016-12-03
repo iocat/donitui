@@ -8,7 +8,6 @@ import {Responsive, WidthProvider} from 'react-grid-layout';
 const GoalListLayout = WidthProvider(Responsive);
 
 import {goalTracking, layouts, cols, breakpoints} from '../layout';
-import Filter from './filter/Filter';
 import GoalCardList from './card/GoalCardList';
 import GoalCreatorCard from './creator/GoalCreatorCard';
 
@@ -26,13 +25,6 @@ class _GoalFiltering extends React.Component {
         let deleteTask = this.props.deleteTaskFromGoal;
         return (
             <GoalListLayout rowHeight={70} layouts={layouts(goalTracking)} breakpoints={breakpoints(goalTracking)} cols={cols(goalTracking)}>
-                <div key="filter">
-                    <div style={{
-                        textAlign: "right"
-                    }}>
-                        <Filter/>
-                    </div>
-                </div>
                 <div key="goals">
                     <GoalCreatorCard/>
                     <br/>

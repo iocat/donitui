@@ -174,7 +174,7 @@ export default class GoalChanger extends React.Component{
             return !this.validName() || !this.validDesc() || !this.validTasks();
         }
         let discardable = ()=>{
-            return this.state.modifiedTasks || this.state.changedName || this.state.changedDesc;
+            return true;
         }
         return [<FlatButton key="discard-btn"
                         className="goal-control-action btn"
@@ -204,7 +204,7 @@ export default class GoalChanger extends React.Component{
                     <HeaderWithIcon icon={<EditorModeEdit/>} title={this.props.expandHeaderText}/></div>
                 <Divider/>
                 <CardText expandable={expandable}>
-                    <TextField hintText="What do you want to do?" floatingLabelText="Goal" floatingLabelFixed={true} fullWidth={true} value={goal.name} errorText={this.getNameError()} onChange={this.onChangeName} autoFocus/>
+                    <TextField hintText="What do you want to do?" floatingLabelText="Goal" floatingLabelFixed={true} fullWidth={true} value={goal.name} errorText={this.getNameError()} onChange={this.onChangeName} />
                     <TextField hintText="Add some more details?" floatingLabelFixed={true} floatingLabelText="Description" fullWidth={true} errorText={this.getDescError()} multiLine={true} value={goal.description} onChange={this.onChangeDesc}/> {/*<SelectField
                         autoWidth={true}
                         floatingLabelText="Who can see it?"

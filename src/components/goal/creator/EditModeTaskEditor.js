@@ -106,12 +106,12 @@ export default class EditModeTaskEditor extends React.Component{
         let reminderCreator: any
         let task: Task = this.props.task;
         if (this.state.isHabit){
-            taskType = "Repeatable"
+            taskType = "Habit"
             reminderCreator = <RepeatedReminderCreator
                 repeatedReminder={this.state.rReminder}
                 onSet={this.onSetRepeatedReminder}/>
         }else{
-            taskType = "Non-repeated";
+            taskType = "Task";
             reminderCreator = <ReminderCreator
                 reminder={this.state.reminder}
                 onSet={this.onSetReminder}/>

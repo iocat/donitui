@@ -23,13 +23,14 @@ import {
     ActionCreators
 } from './actions';
 
-bootstrap();
-appStore.subscribe(() => console.log(appStore.getState()));
 
+//appStore.subscribe(() => console.log(appStore.getState()));
 import goalsExample from './setupExamples'; // Start some examples for debugging
+appStore.dispatch(ActionCreators.LOAD_GOALS(goalsExample()));
 appStore.dispatch(ActionCreators.USER_LOGIN("felix"));
-appStore.dispatch(ActionCreators.LOAD_GOALS(goalsExample() ));
 
+//import {browserHistory} from 'react-router';
+//browserHistory.push('/felix');
 
 ReactDOM.render(
     <MuiThemeProvider muiTheme={getMuiTheme(mainTheme)}>
@@ -37,3 +38,5 @@ ReactDOM.render(
         <App/>
     </ReduxStoreProvider>
 </MuiThemeProvider>, document.getElementById('root'));
+
+bootstrap();

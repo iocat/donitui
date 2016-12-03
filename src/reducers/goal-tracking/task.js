@@ -15,7 +15,10 @@ import type {
 
 
 function taskToStatus(start: number, end: number, now: number): TaskStatusEnum{
-    if ( start <= now && now <= end){
+    if (now < start){
+        return TaskStatus.NOT_DONE;
+    }
+    if ( now < end){
         return TaskStatus.IN_PROGRESS;
     }
     return TaskStatus.DONE;

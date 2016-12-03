@@ -1,7 +1,7 @@
 // @flow
 // contains layout object for react-grid-layout
 
-type ComponentLayout ={
+type ComponentLayout = {
     i: string,
     x: number,
     y: number,
@@ -37,7 +37,7 @@ export function breakpoints(component: Layout) {
     return component.breakPts;
 }
 
-const commonCols =  {
+const commonCols = {
     lg: 12,
     md: 10,
 }
@@ -46,7 +46,7 @@ const commonBreakPts = {
     lg: 1200,
     md: 996,
 }
-export const goalEdit: Layout= {
+export const goalEdit: Layout = {
     layouts: {
         lg: [{
             i: "editorCard",
@@ -56,7 +56,7 @@ export const goalEdit: Layout= {
             h: 1,
             static: true,
         }],
-        md:[{
+        md: [{
             i: "editorCard",
             x: 5,
             y: 0,
@@ -72,35 +72,35 @@ export const goalEdit: Layout= {
 export const personalTracking: Layout = {
     layouts: {
         lg: [{
+            i: "scheduling",
+            x: 2,
+            y: 1,
+            w: 3,
+            h: 1,
+            static: true
+        }, {
             i: "filtering",
             x: 5,
             y: 0,
             w: 5,
             h: 1,
             static: true
-        }, {
+        }],
+        md: [{
             i: "scheduling",
             x: 1,
             y: 1,
             w: 3,
             h: 1,
             static: true
-        }, ],
-        md: [{
+        }, {
             i: "filtering",
             x: 4,
             y: 0,
             w: 5,
             h: 1,
             static: true
-        }, {
-            i: "scheduling",
-            x: 1,
-            y: 1,
-            w: 3,
-            h: 1,
-            static: true
-        }, ],
+        }],
         /*sm: [
             {i:"goalTracking", x: 3, y: 0, w: 2, h:1, static:true}
         ],

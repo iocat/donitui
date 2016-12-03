@@ -74,12 +74,12 @@ export const personalTracking: Layout = {
         lg: [{
             i: "scheduling",
             x: 2,
-            y: 1,
+            y: 0,
             w: 3,
             h: 1,
             static: true
         }, {
-            i: "filtering",
+            i: "listing",
             x: 5,
             y: 0,
             w: 5,
@@ -89,12 +89,12 @@ export const personalTracking: Layout = {
         md: [{
             i: "scheduling",
             x: 1,
-            y: 1,
+            y: 0,
             w: 3,
             h: 1,
             static: true
         }, {
-            i: "filtering",
+            i: "listing",
             x: 4,
             y: 0,
             w: 5,
@@ -115,31 +115,17 @@ export const personalTracking: Layout = {
 export const goalTracking: Layout = {
     layouts: {
         lg: [{
-            i: "filter",
+            i: "goals",
             x: 0,
             y: 0,
             w: 12,
             h: 1,
             static: true
-        }, {
+        }],
+        md: [ {
             i: "goals",
-            x: 0,
-            y: 1,
-            w: 12,
-            h: 1,
-            static: true
-        }, ],
-        md: [{
-            i: "filter",
             x: 0,
             y: 0,
-            w: 10,
-            h: 1,
-            static: true
-        }, {
-            i: "goals",
-            x: 0,
-            y: 1,
             w: 10,
             h: 1,
             static: true

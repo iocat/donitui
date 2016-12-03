@@ -34,9 +34,9 @@ appStore.dispatch(ActionCreators.USER_LOGIN("felix"));
 
 ReactDOM.render(
     <MuiThemeProvider muiTheme={getMuiTheme(mainTheme)}>
-    <ReduxStoreProvider store={appStore}>
-        <App/>
-    </ReduxStoreProvider>
-</MuiThemeProvider>, document.getElementById('root'));
+        <ReduxStoreProvider store={appStore}>
+            <App/>
+        </ReduxStoreProvider>
+    </MuiThemeProvider>, document.getElementById('root'));
 
 bootstrap();

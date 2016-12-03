@@ -16,18 +16,30 @@ body {
 	width: 100vw;
 }
 
+.nav-bar .nav-tools{
+
+}
+
 .main-app{
-	width: 100%;
-	padding-top: 60px;
+	padding-top: 100px;
+	width:100vw;
+	min-width: 800px;
 	max-width: 1024px;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto;
+}
+
+body{
+	position: relative;
+}
+
+.scheduler-container{
+	position: fixed!important;
+	width: 100%;
+	height: 100vh;
+
 }
 
 .scheduler{
-	position: -webkit-sticky; /* for safari */
-	position: sticky;
-	top: 10px;
 }
 
 .goal-card{
@@ -55,6 +67,11 @@ body {
 	top: 16px;
 	right: 0px;
 }
+
+.goal-card .todo-item{
+
+}
+
 
 .goal-card .goal-actions{
 	text-align: right ;

@@ -1,8 +1,7 @@
 // @flow
 import React from 'react';
-import { IconMenu, IconButton, ListItem } from 'material-ui';
+import { IconMenu, IconButton, ListItem} from 'material-ui';
 import { connect } from 'react-redux';
-
 
 import type { $RootReducer }from '../../data/reducers';
 import type {HistoryElem }from '../../data/types';
@@ -16,7 +15,7 @@ function getHistoryMessage(history: HistoryElem): string{
         case HistoryType.TASK_ENDED:
             return "Task \""+ history.taskName +"\" has ended."
         case HistoryType.GOAL_ACHIEVED:
-            return "Goal \""+ history.goalName +"\" has been achieved."
+            return "Goal \""+ history.goalName +"\" has been completed."
         default:
             console.error("history is unhandled")
     }
@@ -24,10 +23,10 @@ function getHistoryMessage(history: HistoryElem): string{
 }
 
 
-import ActionHistory from 'material-ui/svg-icons/action/history';
-const HISTORY_ICON = <ActionHistory/>
+import HistoryIcon from 'material-ui/svg-icons/action/announcement';
 
 // TODO: add pagination
+// TODO: add "new notification" with badge
 class _HistoryController extends React.Component{
     getHistoryList = ()=>{
         let historyList: any = null;
@@ -43,10 +42,14 @@ class _HistoryController extends React.Component{
         return historyList
     }
 
+
     render(){
+        let historyIcon = <IconButton tooltip={"History"}>
+                            <HistoryIcon color="white"/>
+                        </IconButton>
         return <IconMenu
             maxHeight={350} menuStyle={{width:"400px"}}
-            iconButtonElement={<IconButton tooltip={"History"}> {HISTORY_ICON} </IconButton>}>
+            iconButtonElement={historyIcon}>
             {this.getHistoryList()}
         </IconMenu>;
     }
@@ -55,6 +58,7 @@ class _HistoryController extends React.Component{
 
 const mapStateToProps = (root: $RootReducer)=>{
     return {
+        newHistory: true,
         histories: root.goalTracking.histories,
         now: root.goalTracking.scheduler.now,
     }

@@ -14,7 +14,7 @@ class _NavigationBar extends React.Component {
     props: Props
     render(){
         return <AppBar title={this.props.appName} onTitleTouchTap={this.props.toHomePage()}>
-            <ToolbarGroup>
+            <ToolbarGroup className="nav-tools">
                 <HistoryController/>
             </ToolbarGroup>
         </AppBar>

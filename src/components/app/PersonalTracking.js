@@ -6,6 +6,7 @@ import Layout from '../utils/CustomResponsiveLayout';
 import {personalTracking} from '../layout';
 
 import GoalFiltering from '../goal/GoalFiltering';
+import Filter from '../goal/filter/Filter';
 import ActiveTasks from '../scheduler/ActiveTasks';
 import NextEvent from '../scheduler/NextEvent';
 
@@ -20,14 +21,17 @@ class _PersonalTracking extends React.Component {
         return (
             <DocumentTitle title={this.props.title || "Donit"}>
                 <Layout layout={personalTracking}>
-                    <div key="filtering">
+                    <div key="listing">
                         <GoalFiltering canUpdate={true}/>
                     </div>
-                    <div key="scheduling">
+                    <div key="scheduling" className="scheduler-container">
                         <div className="scheduler">
-                            <NextEvent/>
+                            <Filter/>
                             <br/>
                             <ActiveTasks/>
+                            <br/>
+                            <br/>
+                            <NextEvent/>
                             <br/>
                         </div>
                     </div>

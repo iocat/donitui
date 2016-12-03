@@ -8,7 +8,7 @@ import {
 import {GoalStatus, UserStatus} from '../../data/index';
 
 
-export let getTaskStatusColor = (status)=> {
+export let getStatusColor = (status)=> {
     switch(status){
         case GoalStatus.DONE:
             return red;
@@ -20,7 +20,6 @@ export let getTaskStatusColor = (status)=> {
             console.log("task status "+status+"not supported");
     }
 }
-export let getGoalStatusColor = getTaskStatusColor;
 
 export let getUserStatusColor = (status) =>{
     switch(status){
@@ -34,4 +33,3 @@ export let getUserStatusColor = (status) =>{
             console.log("task status "+status+"not supported");
     }
 }
-

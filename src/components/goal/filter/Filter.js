@@ -8,7 +8,7 @@ import AvPause from 'material-ui/svg-icons/av/pause';
 import AvStop from 'material-ui/svg-icons/av/stop';
 import NavigationApps from 'material-ui/svg-icons/navigation/apps';
 import IconButton from 'material-ui/IconButton';
-import {getGoalStatusColor} from '../../styles/colors';
+import {getStatusColor} from '../../styles/colors';
 import {GoalStatus, StatusFilter} from '../../../data/index';
 
 import {grey500 as grey} from 'material-ui/styles/colors';
@@ -33,7 +33,7 @@ class _FilterTab extends React.Component {
     color = (status)=>{
         let currStat = this.props.filter.byStatuses;
         if (currStat[status]){
-            return getGoalStatusColor(status);
+            return getStatusColor(status);
         }
         return grey;
     }

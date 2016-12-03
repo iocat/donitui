@@ -13,6 +13,8 @@ import GoalCardList from './card/GoalCardList';
 import GoalCreatorCard from './creator/GoalCreatorCard';
 
 class _GoalFiltering extends React.Component {
+    // TODO move this call back upward the component tree
+    // REASON: it's non of this component's business
     onEdit = (goalId) =>{
         browserHistory.push("/"+this.props.userId+"/goals/"+goalId+"/edit");
     }

@@ -8,7 +8,6 @@ import {personalTracking} from '../layout';
 import GoalFiltering from '../goal/GoalFiltering';
 import ActiveTasks from '../scheduler/ActiveTasks';
 import NextEvent from '../scheduler/NextEvent';
-import GoalHistory from '../history/History';
 
 import type { $RootReducer } from '../../data/reducers';
 
@@ -29,8 +28,6 @@ class _PersonalTracking extends React.Component {
                             <NextEvent/>
                             <br/>
                             <ActiveTasks/>
-                            <br/>
-                            <GoalHistory/>
                             <br/>
                         </div>
                     </div>

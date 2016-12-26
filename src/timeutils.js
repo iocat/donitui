@@ -49,3 +49,62 @@ export const readableDuration = (duration: number):string =>{
     }
     return moment.duration(duration).humanize();
 }
+
+import type { StatusEnum, Task, Habit} from './data/types';
+import { Status } from './data/index';
+
+// returns the task status according to the current time
+export const getTaskStatus = (task: Task, now: number):StatusEnum =>{
+    if (task.status === Status.DONE){
+        return Status.DONE;
+    }
+    let timing = taskTiming(task),
+        [start,end] = timing;
+    if (now < start){
+        return Status.INACTIVE;
+    }
+    if(now < end){
+        return Status.ACTIVE;
+    }
+    return Status.DONE;
+}
+
+export const taskTiming = (task: Task):[number,number] =>{
+    let start: number = task.remindAt.getTime(),
+        end: number = start + task.duration*1000;
+    return [start,end]
+}
+
+// returns the habit status according to the current time
+// return the same status if the status is done
+// TODO: the status is limited to the scope of the current day?
+export const getHabitStatus = (habit: Habit, now: number):StatusEnum => {
+    if (habit.status === Status.DONE){
+        return Status.DONE;
+    }
+    let timing = habitTiming(habit, now);
+    if (timing == null) {
+        return Status.INACTIVE;
+    }
+    let [start, end] = timing;
+    if (now < start || now > end){
+        return Status.INACTIVE;
+    }
+    return Status.ACTIVE;
+}
+
+// get the habit timing for today
+// returns null if this habit does not start today
+export const habitTiming = (habit: Habit, now: number): ?[number, number] =>{
+    let nowDate: Date = new Date(now),
+        nowDay: number = nowDate.getDay();
+    // inactive for habits not to do today
+    if (habit.days[nowDay] !== true){
+        return null;
+    }
+    // set to start of now (today)
+    nowDate.setHours(0,0,0,0);
+    let start: number = nowDate.getTime() + habit.offset * 1000,
+        end: number = start + habit.duration * 1000;
+    return [start,end]
+}

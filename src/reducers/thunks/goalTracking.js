@@ -1,18 +1,21 @@
 // @flow
 import type {Goal} from '../../data/types';
-
+import router from '../../routing/router';
 import {ActionCreators} from '../../actions';
 
 type DispatchFunc = (dispatch: any) => void;
 
-export function createGoal(goal: Goal): DispatchFunc {
+export function createGoal(userId: string, goal: Goal): DispatchFunc {
     return dispatch => {
-        console.log("Create goal: ");
-        // TODO: contact the server or whatever
-        let g = Object.assign({}, goal, {
-            id: Math.floor(Math.random() * 100000)
-        });
-        dispatch(ActionCreators.CREATE_GOAL(g));
+        dispatch(ActionCreators.SET_CREATE_GOAL(true));
+        /*fetch(router.users(userId).goals(), {
+            method:'POST',
+            body: goal,
+        })*/
+        dispatch(ActionCreators.CREATE_GOAL(Object.assign({}, goal, {
+            id: Math.random(),
+        })));
+        dispatch(ActionCreators.SET_CREATE_GOAL(false));
     }
 }
 

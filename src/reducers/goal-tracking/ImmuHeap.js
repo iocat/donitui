@@ -67,6 +67,26 @@ export default class ImmuHeap < T > {
             item: fst,
         };
     }
+
+    pushMany(heap: T[], items: T[]): T[]{
+        let nh: T[] = heap.slice();
+        for (let item of items){
+            nh.push(item);
+            let i: number = nh.length - 1;
+            while (parent(i) >= 0) {
+                if (this.lessThan(nh[i], nh[parent(i)])) {
+                    let temp: T = nh[i];
+                    nh[i] = nh[parent(i)];
+                    nh[parent(i)] = temp;
+                    i = parent(i);
+                } else {
+                    break;
+                }
+            }
+        }
+        return nh;
+    }
+
     push(heap: T[], item: T): T[] {
         let nh: T[] = heap.slice();
         nh.push(item);

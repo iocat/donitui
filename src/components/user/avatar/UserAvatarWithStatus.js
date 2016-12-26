@@ -1,6 +1,6 @@
 import React from 'react';
 import UserAvatar from './UserAvatar';
-import StatusNode from './StatusNode';
+import StatusNode from '../../goal/StatusNode';
 import {greenA200} from 'material-ui/styles/colors';
 
 export default class UserAvatarWithStatus extends React.Component{
@@ -22,11 +22,11 @@ export default class UserAvatarWithStatus extends React.Component{
         let styles = this.styles();
         return (
         <div className="user-avatar" style={styles.root}>
-            <UserAvatar 
-                avatar={this.props.avatar} 
+            <UserAvatar
+                avatar={this.props.avatar}
                 size={this.props.size}  />
             <StatusNode className="status-node"
-                status={this.props.status} 
+                status={this.props.status}
                 radius={this.props.radius}
                 style={styles.status}
                 color={this.props.color} />

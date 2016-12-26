@@ -13,4 +13,4 @@ class Router {
     }
 }
 
-export var router = new Router(DOMAIN);
+export default  new Router(DOMAIN);

@@ -5,11 +5,11 @@
 import {ActionTypes} from '../actions';
 
 import type {
-    $UserService,
-    $Action
+    UserService,
+    Action
 }from '../data/reducers';
 
-export default function(state: $UserService, action: $Action) : $UserService {
+export default function(state: UserService, action: Action) : UserService {
     if (state === null || state === undefined){
         return {
             userId: "",

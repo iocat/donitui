@@ -10,16 +10,10 @@ export default class GoalCard extends React.Component {
     render() {
         let goal = this.props.goal;
         let controlBlock = null;
-        if (this.props.canUpdate) {
-            controlBlock = <GoalControlBlock
-                onEdit={ () => this.props.onEdit(goal.id)}
-                delete={this.props.deleteGoal}
-                goalName={goal.name}/>
-        }
         return (
             <div className="goal-card">
                 <FloatingCard>
-                    <GoalCardHeader canUpdate={this.props.canUpdate} goal={goal}/>
+                    <GoalCardHeader canUpdate={this.props.canUpdate} goal={goal} edit={this.props.onEdit} delete={this.props.deleteGoal}/>
                     <ToDoList tasks={goal.tasks}/> {controlBlock}
                 </FloatingCard>
             </div>

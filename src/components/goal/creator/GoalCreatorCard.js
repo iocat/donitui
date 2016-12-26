@@ -1,12 +1,13 @@
+// GoalCreatorCard creates a new goal based on the current userid
+// and the received goal
 import type {Goal} from '../../../data/types';
-
 
 import {connect} from 'react-redux';
 import GoalChanger from './GoalChanger';
 import { createGoal } from '../../../reducers/thunks/goalTracking';
 import initGoal from './initGoal';
 
-const mapStateToProps = (rootReducer) => {
+const mapStateToProps = (root) => {
     return {
         originalGoal: initGoal(null),
         acceptLabel: "Create",
@@ -14,15 +15,20 @@ const mapStateToProps = (rootReducer) => {
         allowExpandHeader: true,
         initiallyExpanded: false,
         expandHeaderText: "Create a goal",
+        userId: root.userService.userId,
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps= (dispatch) =>{
     return {
-        onGoalAccepted: (goal: Goal) => {
-            dispatch(createGoal(goal));
-        },
-    };
+        onGoalAccepted:(userId, goal)=> dispatch(createGoal(userId, goal)),
+    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GoalChanger);
+const mergeProps = (stateP, dispaP, ownProps) =>{
+    return Object.assign({}, ownProps, stateP,{
+        onGoalAccepted:(goal: Goal) => dispaP.onGoalAccepted(stateP.userId, goal),
+    })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(GoalChanger);

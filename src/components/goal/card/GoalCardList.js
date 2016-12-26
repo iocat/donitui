@@ -60,9 +60,9 @@ export default class GoalCardList extends React.Component{
                     return (
                     <div key={gid}>
                         <GoalCard goal={goals[gid]}
-                            canUpdate={canUpdate} onEdit={ goalId => this.props.onEdit(goalId) }
-                            deleteGoal={() => { deleteGoal(gid); } }
-                            deleteTask={(tid) => { deleteTask(gid, tid) } } />
+                            canUpdate={canUpdate} onEdit={ () => this.props.onEdit(gid) }
+                            deleteGoal={() => deleteGoal(gid) }
+                            deleteTask={(tid) => deleteTask(gid, tid) } />
                         <br/>
                         </div>
                     )

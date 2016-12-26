@@ -3,7 +3,7 @@ import React from 'react';
 import Divider from 'material-ui/Divider';
 import TaskItem from './TaskItem';
 import HabitItem from './HabitItem';
-import {List} from 'material-ui/List';
+import {List} from 'material-ui';
 import {taskIcon, habitIcon} from '../icons';
 
 export default class ToDoList extends React.Component {
@@ -49,8 +49,7 @@ export default class ToDoList extends React.Component {
                         leftIcon = taskIcon
                     }
                     return (<TaskItem className="todo-item" key={index} leftIcon={leftIcon} insetChildren={true} task={task}/>)
-                })
-}
+                })}
                 {divider}
                 {habits.map(function(habit, index) {
                     let leftIcon = null
@@ -58,8 +57,7 @@ export default class ToDoList extends React.Component {
                         leftIcon = habitIcon
                     }
                     return (<HabitItem className="todo-item" key={index} leftIcon={leftIcon} insetChildren={true} habit={habit}/>)
-                })
-}
+                })}
                 {this.props.children}
             </List>
         )

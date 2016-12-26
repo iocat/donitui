@@ -58,13 +58,9 @@ body{
    	height: 230px;
 }
 
-.goal-card .card-title{
-	text-align: center;
-}
-
-.goal-card .card-header .visibility-checkbox {
+.goal-card .card-header .settings-menu {
 	position: absolute;
-	top: 16px;
+	top: 0px;
 	right: 0px;
 }
 

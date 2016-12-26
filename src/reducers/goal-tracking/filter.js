@@ -6,15 +6,15 @@ import {
     ActionTypes
 } from '../../actions';
 import type {
-    $Filter,
-    $Action
+    Filter,
+    Action
 } from '../../data/reducers';
 
-export default function filter(state: ?$Filter, action: $Action): $Filter {
+export default function filter(state: ?Filter, action: Action): Filter {
     if (state === undefined || state === null) {
         return {
             gids: [], // the gids filtered based on byStatuses
-            byStatuses: StatusFilter.IN_PROGRESS,
+            byStatuses: StatusFilter.ACTIVE,
         };
     }
     switch (action.type) {
@@ -22,7 +22,6 @@ export default function filter(state: ?$Filter, action: $Action): $Filter {
             return Object.assign({}, state, {
                 byStatuses: action.statuses,
             })
-
         default:
             return state;
     }

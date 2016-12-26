@@ -1,48 +1,52 @@
 // @flow
 import {ActionTypes} from '../../actions';
-import type { Task, StatusEnum } from '../../data/types';
-import { Status } from '../../data/index';
-import { getTaskStatus }from '../../timeutils';
+import type { Habit, StatusEnum } from '../../data/types';
+import { Status, EVERYDAY } from '../../data/index';
+import { getHabitStatus }from '../../timeutils';
+import type {Action} from '../../data/reducers';
 
-export function task(state: Task, action: any): Task{
+export function habit(state: Habit, action: Action): Habit{
     if(state === undefined) {
         return {
             name: "",
             status: Status.INACTIVE,
             duration: 0,
-            remindAt: new Date()
+            days: EVERYDAY,
+            offset: 0,
         }
     }
     switch (action.type){
     case ActionTypes.SET_TASK_STATUS:
+        // TODO: ??
         return Object.assign({},state, {
             status: action.status,
         });
     case ActionTypes.LOAD_GOAL:
     case ActionTypes.CREATE_GOAL:
         return Object.assign({},state, {
-            status: getTaskStatus(state, action.now),
-        })
+            status: getHabitStatus(state, action.now),
+        });
     default:
         return state;
     }
 }
 
 // reducer that creates task data in terms of normalized key collection
-export function tasks(state: Task[], action: any): Task[] {
+export function habits(state: Habit[], action: Action): Habit[] {
     if (state === undefined) {
         return [];
     }
-    let newState: Task[] = state.slice();
+    let newState: Habit[] = state.slice();
     switch (action.type) {
         case ActionTypes.SET_TASK_STATUS:
-            newState[action.taskId] = task(newState[action.taskId],action);
+            // TODO?
+            newState[action.taskId] = habit(newState[action.taskId],action);
             return newState;
         case ActionTypes.LOAD_GOAL:
         case ActionTypes.CREATE_GOAL:
             let i = 0;
             while(i < newState.length){
-                newState[i] = task(newState[i], action);
+                newState[i] = habit(newState[i], action);
                 i++;
             }
             return newState;

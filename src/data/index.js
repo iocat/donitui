@@ -1,33 +1,39 @@
 // @flow
 
-import type {
-    GoalStatusEnum,
-    GoalVisibilityEnum,
-    TaskStatusEnum,
-    UserStatusEnum,
-    ReminderCycleEnum,
-    HistoryTypeEnum
-} from './types';
+import type {VisibilityEnum, StatusEnum, UserStatusEnum,
+    HabitDays, HistoryTypeEnum } from './types';
 
-export const GoalStatus: {
-    [id: string]: GoalStatusEnum
-} = {
+export const Status: {[id: string]: StatusEnum} = {
     DONE: "DONE",
-    NOT_DONE: "NOT_DONE",
-    IN_PROGRESS: "IN_PROGRESS",
+    NOT_DONE: "INACTIVE",
+    IN_PROGRESS: "ACTIVE",
 }
 
-export const GoalVisibility: {
-    [id: string]: GoalVisibilityEnum
-} = {
+export const Visibility: {[id: string]: VisibilityEnum} = {
     PRIVATE: "PRIVATE",
-    FOR_FOLLOWERS: "FOR_FOLLOWERS",
+    FOR_FOLLOWERS: "FOLLOWERS",
     PUBLIC: "PUBLIC",
 }
 
-export const TaskStatus: {
-    [id: string]: TaskStatusEnum
-} = GoalStatus
+export const DaysInWeek: {[id:string]:number} = {
+    Sunday: 0,
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6
+}
+
+export const EVERYDAY = {
+    0: true,
+    1: true,
+    2: true,
+    3: true,
+    4: true,
+    5: true,
+    6: true
+}
 
 export const UserStatus: {
     [id: string]: UserStatusEnum
@@ -37,30 +43,22 @@ export const UserStatus: {
     BUSY: "BUSY",
 }
 
-export const ReminderCycle: {
-    [id: string]: ReminderCycleEnum
-} = {
-    EVERY_DAY: "EVERY_DAY",
-    EVERY_WEEK: "EVERY_WEEK",
-    EVERY_MONTH: "EVERY_MONTH",
-}
-
 export const StatusFilter: {
     [id: string]: Object
 } = {
     ALL: {
-        [GoalStatus.DONE]: true,
-        [GoalStatus.NOT_DONE]: true,
-        [GoalStatus.IN_PROGRESS]: true,
+        [Status.ACTIVE]: true,
+        [Status.INACTIVE]: true,
+        [Status.DONE]: true,
     },
     DONE: {
-        [GoalStatus.DONE]: true,
+        [Status.DONE]: true,
     },
-    NOT_DONE: {
-        [GoalStatus.NOT_DONE]: true,
+    INACTIVE: {
+        [Status.INACTIVE]: true,
     },
-    IN_PROGRESS: {
-        [GoalStatus.IN_PROGRESS]: true,
+    ACTIVE: {
+        [Status.ACTIVE]: true,
     },
 }
 

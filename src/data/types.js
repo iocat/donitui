@@ -1,21 +1,14 @@
 // @flow
 
-export type TaskStatusEnum =
+export type StatusEnum =
     | "DONE"
-    | "NOT_DONE"
-    | "IN_PROGRESS";
+    | "INACTIVE"
+    | "ACTIVE";
 
-export type GoalStatusEnum = TaskStatusEnum;
-
-export type GoalVisibilityEnum =
+export type VisibilityEnum =
     | "PRIVATE"
     | "PUBLIC"
-    | "FOR_FOLLOWERS";
-
-export type ReminderCycleEnum =
-    | "EVERY_DAY"
-    | "EVERY_WEEK"
-    | "EVERY_MONTH";
+    | "FOLLOWERS";
 
 export type DaysInWeekEnum =
     | 1
@@ -31,44 +24,39 @@ export type UserStatusEnum =
     | "OFFLINE"
     | "BUSY";
 
-// Duration in minutes!
-export type Duration = number;
-
-export type Reminder = {
-    remindAt: Date,
-    duration: Duration,
-}
-
 export type HabitDays = {[id:number]:boolean}
 
-
-export type RepeatedReminder = {
-    cycle: ReminderCycleEnum,
-    remindAt: Date,
-    days: HabitDays,
-    duration: Duration,
-}
-
 export type Goal = {
-    id: string,
-    visibility: GoalVisibilityEnum,
-    status: GoalStatusEnum,
+    id: number,
+    visibility: VisibilityEnum,
+    status: StatusEnum,
     name: string,
     description: string,
     img: string,
     tasks: Task[],
+    habits: Habit[],
 }
 
 export type Task = {
     name: string,
-    status: TaskStatusEnum,
-    reminder?: Reminder,
-    repeatedReminder?: RepeatedReminder,
+    status: StatusEnum,
+    duration: number,
+    remindAt: Date,
+}
+
+export type Habit = {
+    name: string,
+    status: StatusEnum,
+    duration: number,
+    days: HabitDays,
+    offset: number,
 }
 
 export type HistoryTypeEnum =
     | "TASK_STARTED"
     | "TASK_ENDED"
+    | "HABIT_STARTED"
+    | "HABIT_ENDED"
     | "GOAL_ACHIEVED"
 
 type TaskStarted = {
@@ -78,7 +66,7 @@ type TaskStarted = {
     // the goal
     taskName: string,
     goalName: string,
-    goalId: string,
+    goalId: number,
 }
 
 type TaskEnded = TaskStarted
@@ -88,7 +76,7 @@ type GoalAchieved = {
     // the time when the event is triggered
     at: number,
     goalName: string,
-    goalId: string,
+    goalId: number,
 }
 
 export type HistoryElem =

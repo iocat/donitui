@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {ActionCreators} from '../../actions';
-import {getUserGoals, getGoalFilter} from '../../data/reducers';
 
 import {Responsive, WidthProvider} from 'react-grid-layout';
 const GoalListLayout = WidthProvider(Responsive);
@@ -11,22 +10,39 @@ import {goalTracking, layouts, cols, breakpoints} from '../layout';
 import GoalCardList from './card/GoalCardList';
 import GoalCreatorCard from './creator/GoalCreatorCard';
 
+import { RaisedButton } from 'material-ui';
+
 class _GoalFiltering extends React.Component {
     // TODO move this call back upward the component tree
     // REASON: it's non of this component's business
     onEdit = (goalId) =>{
         browserHistory.push("/"+this.props.userId+"/goals/"+goalId+"/edit");
     }
+
+    constructor(){
+        super()
+        this.state = {
+            createGoalDialog: false
+        }
+    }
+
     render() {
         let goals = this.props.goals;
         let gids = this.props.gids;
         let canUpdate = this.props.canUpdate;
         let deleteGoal = this.props.deleteGoal;
         let deleteTask = this.props.deleteTaskFromGoal;
+        let creator = null;
+        if(this.state.createGoalDialog){
+            creator = <GoalCreatorCard discard={()=>this.setState({createGoalDialog:false})} acceptCallback={()=>this.setState({createGoalDialog:false})}/>
+        }else{
+            creator = <RaisedButton fullWidth={true} label="Create A Goal" onTouchTap={()=>this.setState({createGoalDialog:true})}></RaisedButton>
+        }
         return (
             <GoalListLayout rowHeight={70} layouts={layouts(goalTracking)} breakpoints={breakpoints(goalTracking)} cols={cols(goalTracking)}>
                 <div key="goals">
-                    <GoalCreatorCard/>
+                    {creator}
+                    <br/>
                     <br/>
                     <GoalCardList goals={goals} gids={gids} deleteGoal={deleteGoal} deleteTask={deleteTask} canUpdate={canUpdate} onEdit={this.onEdit}/>
                 </div>
@@ -49,11 +65,9 @@ _GoalFiltering.propTypes = {
 }
 
 function mapStateToProps(root) {
-    let goals = getUserGoals(root);
-    let filter = getGoalFilter(root);
     return {
-        goals: goals,
-        gids: filter.gids,
+        goals: root.goalTracking.goals,
+        gids: root.goalTracking.filter.gids,
         userId: root.userService.userId,
     };
 }

@@ -32,8 +32,8 @@ export default class DurationPicker extends React.Component{
             <TimePicker format="24hr"
                 onChange={this.onDurationChange} fullWidth={this.props.fullWidth}
                 value={durationToDate(duration)}
-                hintText="in hour:minute" autoOk={true}
-                floatingLabelText="Duration (in hours and mins)" floatingLabelFixed={true}
+                hintText="Duration hh:mm" autoOk={true}
+                floatingLabelText="For" floatingLabelFixed={true}
                 errorText={errorTxt} />
         )
     }

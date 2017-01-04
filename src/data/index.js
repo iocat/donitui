@@ -1,21 +1,33 @@
 // @flow
 
 import type {VisibilityEnum, StatusEnum, UserStatusEnum,
-    HabitDays, HistoryTypeEnum } from './types';
+    HistoryTypeEnum, DaysInWeekEnum } from './types';
 
-export const Status: {[id: string]: StatusEnum} = {
+export const Status: {DONE: StatusEnum, ACTIVE: StatusEnum, INACTIVE: StatusEnum} = {
     DONE: "DONE",
-    NOT_DONE: "INACTIVE",
-    IN_PROGRESS: "ACTIVE",
+    INACTIVE: "INACTIVE",
+    ACTIVE: "ACTIVE",
 }
 
-export const Visibility: {[id: string]: VisibilityEnum} = {
+export const Visibility: {
+    PRIVATE: VisibilityEnum,
+    FOLLOWERS: VisibilityEnum,
+    PUBLIC: VisibilityEnum
+} = {
     PRIVATE: "PRIVATE",
-    FOR_FOLLOWERS: "FOLLOWERS",
+    FOLLOWERS: "FOLLOWERS",
     PUBLIC: "PUBLIC",
 }
 
-export const DaysInWeek: {[id:string]:number} = {
+export const DaysInWeek: {
+    Sunday: DaysInWeekEnum,
+    Monday: DaysInWeekEnum,
+    Tuesday: DaysInWeekEnum,
+    Wednesday: DaysInWeekEnum,
+    Thursday: DaysInWeekEnum,
+    Friday: DaysInWeekEnum,
+    Saturday: DaysInWeekEnum,
+} = {
     Sunday: 0,
     Monday: 1,
     Tuesday: 2,
@@ -44,7 +56,10 @@ export const UserStatus: {
 }
 
 export const StatusFilter: {
-    [id: string]: Object
+    ALL: {[id:StatusEnum]:boolean},
+    DONE: {[id:StatusEnum]:boolean},
+    INACTIVE: {[id:StatusEnum]:boolean},
+    ACTIVE: {[id:StatusEnum]:boolean}
 } = {
     ALL: {
         [Status.ACTIVE]: true,
@@ -63,9 +78,15 @@ export const StatusFilter: {
 }
 
 export const HistoryType: {
-    [id: string]: HistoryTypeEnum
+    TASK_STARTED: HistoryTypeEnum,
+    TASK_ENDED: HistoryTypeEnum,
+    GOAL_ACHIEVED: HistoryTypeEnum,
+    HABIT_STARTED: HistoryTypeEnum,
+    HABIT_ENDED: HistoryTypeEnum
 } = {
     TASK_STARTED: "TASK_STARTED",
     TASK_ENDED: "TASK_ENDED",
     GOAL_ACHIEVED: "GOAL_ACHIEVED",
+    HABIT_STARTED: "HABIT_STARTED",
+    HABIT_ENDED: "HABIT_ENDED"
 }

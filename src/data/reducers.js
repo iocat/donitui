@@ -20,9 +20,7 @@ export type Action = {
 }
 
 export type Filter = {
-    byStatuses: {
-        [id: StatusEnum]: boolean
-    },
+    byStatuses: {[id: StatusEnum]: boolean},
     gids: number[],
 }
 

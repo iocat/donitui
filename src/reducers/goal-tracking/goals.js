@@ -13,7 +13,7 @@ export function goals(state: ?{[id: number]: Goal}, action : any): {[id: number]
     let gs = Object.assign({}, state);
     switch (action.type) {
         case ActionTypes.DELETE_GOAL:
-            delete gs[action.id];
+            delete gs[action.goalId];
             return gs;
         case ActionTypes.SET_TASK_STATUS:
             gs[action.goalId] = goal(gs[action.goalId], action);
@@ -40,7 +40,7 @@ const statusFrom = (tasks: Task[], habits: Habit[]): StatusEnum => {
         }
     }
     for (let th of ths) {
-        if (th.status === Status.NOT_DONE) {
+        if (th.status === Status.INACTIVE) {
             return Status.INACTIVE;
         }
     }
@@ -48,7 +48,7 @@ const statusFrom = (tasks: Task[], habits: Habit[]): StatusEnum => {
 }
 
 
-export function goal(state: Goal, action: any): Goal {
+export function goal(state: ?Goal, action: any): Goal {
     if (state === undefined || state == null) {
         return {
             id: 0,

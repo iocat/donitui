@@ -25,7 +25,7 @@ function addToGidLists(goal: Goal,
                 addFunc(inProgress, goal.id)
                 break;
             default:
-                console.log("unhandled case  " + goal.status);
+                console.error("unhandled case  " + goal.status);
         }
     }
 }
@@ -42,7 +42,7 @@ function loadGoals(state:  GoalTracking, action:  Action):  GoalTracking {
     return gt;
 }
 
-function loadGoal(state:  GoalTracking, action:  Action):  GoalTracking {
+function loadGoal(state:  GoalTracking, action: Action):  GoalTracking {
     let newGSet: {[id: number]: Goal} = goals(state.goals, ActionCreators.goals_LOAD_GOAL(action.goal, state.scheduler.now)),
         done = state.done.slice(),
         notDone = state.notDone.slice(),
@@ -81,27 +81,27 @@ function createGoal(state:  GoalTracking, action:  Action):  GoalTracking {
     return goalTracking(beforeFilter, ActionCreators.FILTER_GOAL_BY_STATUSES(beforeFilter.filter.byStatuses));
 }
 
-function deleteGoal(state:  GoalTracking, action:  Action):  GoalTracking {
+function deleteGoal(state:  GoalTracking, action:  Action): GoalTracking {
     let gs: {[id: number]: Goal} = goals(state.goals, action),
-        delG: ? Goal = state.goals[action.id],
+        delG: ? Goal = state.goals[action.goalId],
         gids : number[] = state.gids.slice(),
         done: number[] = state.done.slice(),
         notDone: number[] = state.notDone.slice(),
         inProgress: number[] = state.inProgress.slice();
-    gids.splice(gids.indexOf(action.id), 1);
+    gids.splice(gids.indexOf(action.goalId), 1);
     if (delG != null) {
         switch (delG.status) {
             case Status.DONE:
-                done.splice(done.indexOf(action.id), 1);
+                done.splice(done.indexOf(action.goalId), 1);
                 break;
             case Status.INACTIVE:
-                notDone.splice(notDone.indexOf(action.id), 1);
+                notDone.splice(notDone.indexOf(action.goalId), 1);
                 break;
             case Status.ACTIVE:
-                inProgress.splice(inProgress.indexOf(action.id), 1);
+                inProgress.splice(inProgress.indexOf(action.goalId), 1);
                 break;
             default:
-                console.log("unhanlded case");
+                console.error("unhanlded case");
         }
     }
 
@@ -112,6 +112,7 @@ function deleteGoal(state:  GoalTracking, action:  Action):  GoalTracking {
         notDone: notDone,
         inProgress: inProgress,
         scheduler: scheduler(state.scheduler, action),
+        histories: histories(state.histories, action),
     });
     // refilter goals
     return goalTracking(editedGT, ActionCreators.FILTER_GOAL_BY_STATUSES(editedGT.filter.byStatuses));
@@ -131,18 +132,18 @@ function setCurrentTime(state:  GoalTracking, action:  Action):  GoalTracking {
             statusChange: [],
         }),
     });
-    // for each event reevaluate the corresponding goal and task statuses
+    // for each event reevaluate the corresponding goal and task/habit statuses
     for (let event of statusChanges) {
         if (event.isHabit){
-            newState = goalTracking(newState, ActionCreators.SET_HABIT_STATUS(event.goalId, event.id, event.nextStatus));
+            newState = goalTracking(newState, ActionCreators.SET_HABIT_STATUS(event.goalId, event.id, event.nextStatus,event.at));
         }else{
-            newState = goalTracking(newState, ActionCreators.SET_TASK_STATUS(event.goalId, event.id, event.nextStatus));
+            newState = goalTracking(newState, ActionCreators.SET_TASK_STATUS(event.goalId, event.id, event.nextStatus, event.at));
         }
     }
     return newState;
 }
 
-function goalStatusChange(state: GoalTracking, goalId: number, from: StatusEnum): GoalTracking{
+function goalStatusChange(state: GoalTracking, goalId: number, from: StatusEnum, when: number): GoalTracking{
     let newState: GoalTracking = Object.assign({}, state),
         to: StatusEnum = newState.goals[goalId].status;
     if (to === from) {
@@ -153,9 +154,9 @@ function goalStatusChange(state: GoalTracking, goalId: number, from: StatusEnum)
         newState = goalTracking(newState, ActionCreators.NEW_HISTORY(
             {
                 type: HistoryType.GOAL_ACHIEVED,
-                at: newState.scheduler.now,
-                goalName: newState.goals[goalId].name,
                 goalId: goalId,
+                torhId: 0,
+                at: when,
             }
         ))
     }
@@ -174,7 +175,7 @@ function goalStatusChange(state: GoalTracking, goalId: number, from: StatusEnum)
             inProgress.splice(inProgress.indexOf(goalId), 1);
             break;
         default:
-            console.log("error: unhandled goal status");
+            console.error("error: unhandled goal status");
     }
     // add the goal to the corresponding list
     let insertPos: number = 0,// the insert position
@@ -190,14 +191,12 @@ function goalStatusChange(state: GoalTracking, goalId: number, from: StatusEnum)
             listToInsert = inProgress;
             break;
         default:
-            console.log("error: unhandled goal status");
+            console.error("error: unhandled goal status");
     }
     // insert to the correct position that maintains the original order of loaded goals
     for (let gid of newState.gids){
         if(insertPos < listToInsert.length){
             if(gid === goalId){
-                console.log(listToInsert);
-                console.log(gid);
                 listToInsert.splice(insertPos, 0, goalId);
                 break;
             }else if (gid === listToInsert[insertPos]){
@@ -218,7 +217,7 @@ function goalStatusChange(state: GoalTracking, goalId: number, from: StatusEnum)
 }
 
 
-function setTaskStatus(state:  GoalTracking, action:  Action) : GoalTracking{
+function setTaskStatus(state:  GoalTracking, action: Action) : GoalTracking{
     let newState:  GoalTracking = Object.assign({}, state, {
         goals: goals(state.goals, action),
     });
@@ -226,27 +225,25 @@ function setTaskStatus(state:  GoalTracking, action:  Action) : GoalTracking{
         newState = goalTracking(newState, ActionCreators.NEW_HISTORY(
             {
                 type: HistoryType.TASK_STARTED,
-                at: newState.scheduler.now,
-                taskName: newState.goals[action.goalId].tasks[action.taskId].name,
-                goalName: newState.goals[action.goalId].name,
+                at: action.when,
                 goalId: action.goalId,
+                torhId: action.taskId
             }
         ));
     }else{
         newState = goalTracking(newState, ActionCreators.NEW_HISTORY(
-        {
-            type: HistoryType.TASK_ENDED,
-            at: newState.scheduler.now,
-            taskName: newState.goals[action.goalId].tasks[action.taskId].name,
-            goalName: newState.goals[action.goalId].name,
-            goalId: action.goalId,
-        }
+            {
+                type: HistoryType.TASK_ENDED,
+                at: action.when,
+                goalId: action.goalId,
+                torhId: action.taskId
+            }
         ));
     }
     let oldStat: StatusEnum = state.goals[action.goalId].status,
         newStat: StatusEnum = newState.goals[action.goalId].status;
     if(newStat !== oldStat) {
-        return Object.assign({},newState, goalStatusChange(newState, action.goalId, oldStat))
+        return Object.assign({},newState, goalStatusChange(newState, action.goalId, oldStat, action.when))
     }
     return newState;
 }
@@ -259,27 +256,25 @@ function setHabitStatus(state: GoalTracking, action: Action): GoalTracking{
         newState = goalTracking(newState, ActionCreators.NEW_HISTORY(
             {
                 type: HistoryType.HABIT_STARTED,
-                at: newState.scheduler.now,
-                taskName: newState.goals[action.goalId].habits[action.habitId].name,
-                goalName: newState.goals[action.goalId].name,
+                at: action.when,
                 goalId: action.goalId,
+                torhId: action.habitId
             }
         ));
     }else{
         newState = goalTracking(newState, ActionCreators.NEW_HISTORY(
             {
                 type: HistoryType.HABIT_ENDED,
-                at: newState.scheduler.now,
-                taskName: newState.goals[action.goalId].habits[action.habitId].name,
-                goalName: newState.goals[action.goalId].name,
+                at: action.when,
                 goalId: action.goalId,
+                torhId: action.habitId
             }
         ));
     }
     let oldStat: StatusEnum = state.goals[action.goalId].status,
         newStat: StatusEnum = newState.goals[action.goalId].status;
     if ( newStat !== oldStat) {
-        return Object.assign({},newState, goalStatusChange(newState, action.goalId, oldStat))
+        return Object.assign({},newState, goalStatusChange(newState, action.goalId, oldStat, action.when))
     }
     return newState;
 }
@@ -329,9 +324,9 @@ export default function goalTracking(state: ?  GoalTracking, action:Action):  Go
                 filtered = state.gids;
             } else if (action.statuses === StatusFilter.DONE) {
                 filtered = state.done;
-            } else if (action.statuses === StatusFilter.NOT_DONE) {
+            } else if (action.statuses === StatusFilter.INACTIVE) {
                 filtered = state.notDone;
-            } else if (action.statuses === StatusFilter.IN_PROGRESS) {
+            } else if (action.statuses === StatusFilter.ACTIVE) {
                 filtered = state.inProgress;
             } else {
                 console.error("does not allow manual filtering, got ", action.statuses);

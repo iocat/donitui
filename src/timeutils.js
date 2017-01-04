@@ -2,18 +2,20 @@
 // contains utitility functions that deal with time
 import moment from 'moment';
 
-// converts from hh:mm to minutes
+// converts from hh:mm to seconds
 export const timeToDuration = (time: Date):number =>{
-    return time.getHours()*60 + time.getMinutes();
+    return time.getHours()*3600 + time.getMinutes()*60 + time.getSeconds();
 }
-// converts from minutes to date type
-export const durationToDate = (duration: number ):?Date =>{
-    if (duration === 0){
-        return null;
-    }
-    let time: Date = new Date();
-    time.setHours(Math.floor(duration/60), duration%60)
-    return time
+// converts from seconds to date type
+export const durationToDate = (duration: number):Date =>{
+    let left = duration,
+        hours = Math.floor(left/3600);
+    left %= 3600;
+    let minutes = Math.floor(left/60);
+    let seconds = left % 60;
+    let date: Date = new Date();
+    date.setHours(hours, minutes, seconds);
+    return date;
 }
 
 const thisYear = (new Date()).getFullYear();
@@ -53,6 +55,29 @@ export const readableDuration = (duration: number):string =>{
 import type { StatusEnum, Task, Habit} from './data/types';
 import { Status } from './data/index';
 
+
+export const taskTiming = (task: Task):[number,number] =>{
+    let start: number = task.remindAt.getTime(),
+        end: number = start + task.duration*1000;
+    return [start,end]
+}
+
+// get the habit timing for today
+// returns null if this habit does not start today
+export const habitTiming = (habit: Habit, now: number): ?[number, number] =>{
+    let nowDate: Date = new Date(now),
+        nowDay: number = nowDate.getDay();
+    // inactive for habits not to do today
+    if (habit.days[nowDay] !== true){
+        return null;
+    }
+    // set to start of now (today)
+    nowDate.setHours(0,0,0,0);
+    let start: number = nowDate.getTime() + habit.offset * 1000,
+        end: number = start + habit.duration * 1000;
+    return [start,end]
+}
+
 // returns the task status according to the current time
 export const getTaskStatus = (task: Task, now: number):StatusEnum =>{
     if (task.status === Status.DONE){
@@ -69,11 +94,6 @@ export const getTaskStatus = (task: Task, now: number):StatusEnum =>{
     return Status.DONE;
 }
 
-export const taskTiming = (task: Task):[number,number] =>{
-    let start: number = task.remindAt.getTime(),
-        end: number = start + task.duration*1000;
-    return [start,end]
-}
 
 // returns the habit status according to the current time
 // return the same status if the status is done
@@ -91,20 +111,4 @@ export const getHabitStatus = (habit: Habit, now: number):StatusEnum => {
         return Status.INACTIVE;
     }
     return Status.ACTIVE;
-}
-
-// get the habit timing for today
-// returns null if this habit does not start today
-export const habitTiming = (habit: Habit, now: number): ?[number, number] =>{
-    let nowDate: Date = new Date(now),
-        nowDay: number = nowDate.getDay();
-    // inactive for habits not to do today
-    if (habit.days[nowDay] !== true){
-        return null;
-    }
-    // set to start of now (today)
-    nowDate.setHours(0,0,0,0);
-    let start: number = nowDate.getTime() + habit.offset * 1000,
-        end: number = start + habit.duration * 1000;
-    return [start,end]
 }

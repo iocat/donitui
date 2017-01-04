@@ -5,14 +5,14 @@ import FloatingCard from '../utils/FloatingCard';
 import {connect} from 'react-redux';
 import type {Goal, Task}
 from '../../data/types';
-import type {$ScheduledTaskEvent, $RootReducer}
+import type {Event, RootReducer}
 from '../../data/reducers';
 import AvSkipNext from 'material-ui/svg-icons/av/skip-next';
 import {readableDuration} from '../../timeutils';
 
 type Props = {
     nextEvent:
-        ? $ScheduledTaskEvent,
+        ? Event,
     goal:
         ? Goal,
     task:
@@ -32,7 +32,7 @@ class _NextEvent extends React.Component {
     }
 
     render() {
-        let nextEvent :?$ScheduledTaskEvent = this.props.nextEvent,
+        let nextEvent :?Event = this.props.nextEvent,
             task :?Task = this.props.task,
             taskNotice : string = "",
             duration : string = readableDuration(this.getDeltaTime());
@@ -60,7 +60,7 @@ _NextEvent.propTypes = {
     now: React.PropTypes.number.isRequired
 }
 
-const mapStateToProps = (root : $RootReducer) : Props => {
+const mapStateToProps = (root : RootReducer) : Props => {
     if (root.goalTracking.scheduler.eventHeap.length === 0) {
         return {nextEvent: null, goal: null, task: null, now: 0}; // nothing on the event queue
     }

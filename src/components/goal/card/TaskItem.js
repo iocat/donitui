@@ -2,20 +2,16 @@
 import React from 'react';
 
 import {ListItem} from 'material-ui';
-import type {Task, Reminder} from '../../../data/types';
+import type { Task } from '../../../data/types';
 import {formatDateAndTime, readableDuration} from '../../../timeutils';
 import StatusNode from '../StatusNode';
 
 export default class TaskItem extends React.Component {
     getTaskDescription = ()=>{
         let task: Task = this.props.task;
-        let reminder :?Reminder = task.reminder;
-        if(reminder != null){
-            return <p>
-                For {readableDuration(reminder.duration*60000)}, {formatDateAndTime(reminder.remindAt)}
-            </p>
-        }
-        return "";
+        return <p>
+            For {readableDuration(task.duration*1000)}, {formatDateAndTime(task.remindAt)}
+        </p>
     }
 
     render() {

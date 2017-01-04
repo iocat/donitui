@@ -50,17 +50,31 @@ export const goalEdit: Layout = {
     layouts: {
         lg: [{
             i: "editorCard",
-            x: 6,
+            x: 5,
             y: 0,
-            w: 5,
+            w: 7,
             h: 1,
+            static: true,
+        },{
+            i:"scheduler",
+            x:1,
+            y:0,
+            w: 4,
+            h:1,
             static: true,
         }],
         md: [{
             i: "editorCard",
-            x: 5,
+            x: 4,
             y: 0,
-            w: 4,
+            w: 6,
+            h: 1,
+            static: true,
+        },{
+            i:"scheduler",
+            x: 1,
+            y: 0,
+            w: 3,
             h: 1,
             static: true,
         }]
@@ -82,7 +96,7 @@ export const personalTracking: Layout = {
             i: "listing",
             x: 5,
             y: 0,
-            w: 5,
+            w: 6,
             h: 1,
             static: true
         }],

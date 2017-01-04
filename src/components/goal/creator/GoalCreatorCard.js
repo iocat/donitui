@@ -3,32 +3,29 @@
 import type {Goal} from '../../../data/types';
 
 import {connect} from 'react-redux';
-import GoalChanger from './GoalChanger';
+import GoalEditor from './GoalEditor';
 import { createGoal } from '../../../reducers/thunks/goalTracking';
 import initGoal from './initGoal';
 
 const mapStateToProps = (root) => {
     return {
-        originalGoal: initGoal(null),
+        initGoal: initGoal(null),
         acceptLabel: "Create",
-        discardLabel: "Discard",
-        allowExpandHeader: true,
-        initiallyExpanded: false,
-        expandHeaderText: "Create a goal",
+        title: "Create a goal",
         userId: root.userService.userId,
     }
 }
 
 const mapDispatchToProps= (dispatch) =>{
     return {
-        onGoalAccepted:(userId, goal)=> dispatch(createGoal(userId, goal)),
+        accept:(userId, goal)=> dispatch(createGoal(userId, goal)),
     }
 }
 
 const mergeProps = (stateP, dispaP, ownProps) =>{
     return Object.assign({}, ownProps, stateP,{
-        onGoalAccepted:(goal: Goal) => dispaP.onGoalAccepted(stateP.userId, goal),
+        accept:(goal: Goal) => {dispaP.accept(stateP.userId, goal); ownProps.acceptCallback()},
     })
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(GoalChanger);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(GoalEditor);

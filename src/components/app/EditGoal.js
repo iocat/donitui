@@ -6,6 +6,7 @@ import DocumentTitle from 'react-document-title';
 import { browserHistory } from 'react-router';
 
 import Layout from '../utils/CustomResponsiveLayout'
+import ActiveTasks from '../scheduler/ActiveTasks';
 import {goalEdit} from '../layout';
 
 import GoalEditorCard from '../goal/creator/GoalEditorCard';
@@ -22,6 +23,9 @@ class _EditGoal extends React.Component{
             <Layout layout={goalEdit}>
                 <div key="editorCard">
                     <GoalEditorCard originalGoal={this.props.goal} navigate={this.onEdit}/>
+                </div>
+                <div key="scheduler">
+                    <ActiveTasks/>
                 </div>
             </Layout>
         </DocumentTitle>

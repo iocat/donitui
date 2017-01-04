@@ -48,7 +48,7 @@ function constructHabitEvents(goalId: number, habitId: number, habit: Habit, now
         endTime: endTime
     })
     events.push({
-        at:startTime,
+        at: endTime,
         nextStatus: Status.INACTIVE,
         goalId: goalId,
         isHabit: true,
@@ -163,7 +163,7 @@ export default function scheduler(state:?Scheduler, action:Action):Scheduler {
         case ActionTypes.CREATE_GOAL:
             return loadGoal(state, action.goal);
         case ActionTypes.DELETE_GOAL:
-            return deleteGoal(state, action.id);
+            return deleteGoal(state, action.goalId);
         default:
             return state;
     }

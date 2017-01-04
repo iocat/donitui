@@ -2,7 +2,6 @@ import React from 'react';
 
 import ToDoList from './ToDoList';
 import GoalCardHeader from './GoalCardHeader';
-import GoalControlBlock from './GoalControlBlock';
 import FloatingCard from '../../utils/FloatingCard';
 
 export default class GoalCard extends React.Component {
@@ -14,7 +13,7 @@ export default class GoalCard extends React.Component {
             <div className="goal-card">
                 <FloatingCard>
                     <GoalCardHeader canUpdate={this.props.canUpdate} goal={goal} edit={this.props.onEdit} delete={this.props.deleteGoal}/>
-                    <ToDoList tasks={goal.tasks}/> {controlBlock}
+                    <ToDoList tasks={goal.tasks} habits={goal.habits}/> {controlBlock}
                 </FloatingCard>
             </div>
         )

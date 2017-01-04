@@ -2,7 +2,10 @@
 const React = require("react");
 import DurationPicker from './DurationPicker';
 import DateTimePicker from '../../../utils/DateTimePicker';
-import type { Reminder } from '../../../../data/types';
+export type Reminder = {
+    remindAt: Date,
+    duration: number
+}
 
 const getStartDate = (reminder:Reminder):Date => {
     return reminder.remindAt;
@@ -35,19 +38,18 @@ export default class ReminderCreator extends React.Component{
     render(){
         let reminder: Reminder = this.props.reminder,
             startTimeChange = this.onStartDateTimeChange;
-
         return (
             <div>
                 <DateTimePicker
                     dateTime={getStartDate(reminder)}
                     onChange={startTimeChange}
-                    dateLabel="Start Date" timeLabel="Start Time"/>
-                <div className="time-picker-group">
-                    <div className="time-picker">
+                    dateLabel="On" timeLabel="At"/>
+                <div className="col-2">
+                    <div className="left">
                         <DurationPicker onChange={this.onDurationChange}
                             duration={reminder.duration}/>
                         </div>
-                    <div className="time-picker"/> </div>
+                    <div className="right"/> </div>
                     </div>
         );
     }

@@ -2,14 +2,15 @@
 import React from 'react';
 import {IconButton, SvgIcon} from 'material-ui';
 import {getStatusColor} from '../styles/colors';
-import {TaskStatus} from '../../data/index';
+import {Status} from '../../data/index';
+
 const getReadableStatus = (status)=>{
     switch (status) {
-        case TaskStatus.DONE:
+        case Status.DONE:
             return "done";
-        case TaskStatus.NOT_DONE:
+        case Status.INACTIVE:
             return "inactive";
-        case TaskStatus.IN_PROGRESS:
+        case Status.ACTIVE:
             return "active"
         default:
             console.log("unhandled case");

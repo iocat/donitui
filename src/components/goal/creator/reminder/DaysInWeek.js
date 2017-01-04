@@ -16,7 +16,6 @@ const mapDayToNumber = {
 const displayDays = ["Sunday","Monday", "Tuesday","Wednesday","Thursday", "Friday", "Saturday"];
 
 export default class DaysInWeek extends React.Component{
-
     render (){
         let days: HabitDays = this.props.days;
         let addDay = this.props.addDay;
@@ -47,13 +46,13 @@ export default class DaysInWeek extends React.Component{
         }
 
         return (
-            <div className="time-picker-group">
-                <div className="time-picker">
+            <div className="col-2">
+                <div className="left">
                 {
                     slice(displayDays.slice(0, 4))
                 }
                 </div>
-                <div className="time-picker">
+                <div className="right">
                 {
                     slice(displayDays.slice(4,displayDays.length))
                 }

@@ -18,18 +18,30 @@ export default (): Goal[] => {
             img: "http://seo3.techdegreelink.com/sites/techdegreelink.com/files/styles/large/public/field/image/shutterstock_154519763.jpg?itok=XO3Vyt1F",
             tasks: [{
                 name: "Code",
-                repeatedReminder: {
-                    cycle: "EVERY_DAY",
-                    remindAt: getDateWithTime(10, 17),
-                    duration: 30,
-                },
-            }, {
+                remindAt: getDateWithTime(10, 17),
+                duration: 3000,
+            },{
+                name: "Read",
+                remindAt: getDateWithTime(23,50),
+                duration: 80,
+            }],
+            habits:[{
                 name: "Think",
-                repeatedReminder: {
-                    cycle: "EVERY_DAY",
-                    remindAt: new Date(new Date().getTime() + 60000),
-                    duration: .5,
+                days: {
+                    1: true,
+                    2: true,
                 },
+                offset: 10000,
+                duration: 1000,
+            },{
+                name:"Stretch",
+                days:{
+                    1: true,
+                    2: true,
+                    6: true
+                },
+                offset: 4800,
+                duration: 60
             }]
         },
         {
@@ -39,11 +51,14 @@ export default (): Goal[] => {
             img: "http://faculty.ycp.edu/~dhovemey/spring2011/cs320/lecture/figures/compileAndLink.png",
             tasks: [{
                 name: "Compile",
-                reminder: {
-                    remindAt: new Date(new Date().getTime()-1000),
-                    duration: .5,
-                },
+                remindAt: new Date(new Date().getTime()-1000),
+                duration: 1300
+            },{
+                name: "Think",
+                remindAt: new Date(new Date().getTime() - 3000),
+                duration: 40
             }],
+            habits: []
         },{
             id: "4",
             name: "Make friend with stranger",
@@ -51,23 +66,22 @@ export default (): Goal[] => {
             img: "http://cdnimg.in/wp-content/uploads/2015/06/dancing_baby_bears.jpg?cfaea8",
             tasks: [{
                 name: "Hello World",
-                reminder: {
-                    remindAt: new Date(new Date().getTime()+ 30000),
-                    duration: 1,
-                },
-            },{
+                remindAt: new Date(new Date().getTime()+ 30000),
+                duration: 40,
+            }],
+            habits:[{
                 name: "Say Thank You",
-                repeatedReminder: {
-                    cycle: "EVERY_WEEK",
-                    days: {
-                        0: true,
-                        2: true,
-                        3: true,
-                        4: true,
-                    },
-                    remindAt: new Date(new Date().getTime()+ 60000),
-                    duration: 1.5,
-                }
+                days: {
+                    0: true,
+                    1: true,
+                    2: true,
+                    3: true,
+                    4: true,
+                    5: true,
+                    6: true
+                },
+                offset: 350000,
+                duration: 423,
             }],
         }
     ];

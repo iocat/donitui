@@ -1,15 +1,15 @@
 // @flow
 import {ActionTypes} from '../../actions';
-import type { Task, StatusEnum } from '../../data/types';
+import type { Task } from '../../data/types';
 import { Status } from '../../data/index';
 import { getTaskStatus }from '../../timeutils';
 
-export function task(state: Task, action: any): Task{
-    if(state === undefined) {
+export function task(state: ?Task, action: any): Task{
+    if(state === undefined || state === null) {
         return {
             name: "",
             status: Status.INACTIVE,
-            duration: 0,
+            duration: 60,
             remindAt: new Date()
         }
     }

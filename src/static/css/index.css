@@ -32,6 +32,13 @@ body{
 	position: relative;
 }
 
+.test-unit{
+	width: 800px;
+	border-style: dotted;
+	border-width: thin;
+	margin: 10px 2px;
+}
+
 .scheduler-container{
 	position: fixed!important;
 	width: 100%;
@@ -84,17 +91,33 @@ body{
 	text-align: center;
 }
 
-.task-creator{
+.col-2:after{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.col-2 .left{
+	float: left;
+	width: 50%;
+}
+
+.col-2 .right{
+	float: right;
+	width: 50%;
+}
+
+.todo-editor{
 	position: relative;
 }
 
-.task-creator .delete-btn.btn{
+.todo-editor .delete-btn.btn{
 	position: absolute;
 	top:20px;
 	right: 60px;
 }
 
-.task-creator .confirm-btn.btn{
+.todo-editor .confirm-btn.btn{
 	position: absolute;
 	top:20px;
 	right: 10px;

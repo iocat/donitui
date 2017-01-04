@@ -11,13 +11,13 @@ export type VisibilityEnum =
     | "FOLLOWERS";
 
 export type DaysInWeekEnum =
+    | 0
     | 1
     | 2
     | 3
     | 4
     | 5
-    | 6
-    | 7;
+    | 6;
 
 export type UserStatusEnum =
     | "ONLINE"
@@ -59,29 +59,12 @@ export type HistoryTypeEnum =
     | "HABIT_ENDED"
     | "GOAL_ACHIEVED"
 
-type TaskStarted = {
+export type HistoryElem ={
     type: HistoryTypeEnum,
-    // the time when the event is triggered
     at: number,
-    // the goal
-    taskName: string,
-    goalName: string,
     goalId: number,
+    // the task or the habit's id
+    torhId: number
 }
-
-type TaskEnded = TaskStarted
-
-type GoalAchieved = {
-    type: HistoryTypeEnum,
-    // the time when the event is triggered
-    at: number,
-    goalName: string,
-    goalId: number,
-}
-
-export type HistoryElem =
-    | TaskStarted
-    | TaskEnded
-    | GoalAchieved
 
 export type Histories = HistoryElem[];

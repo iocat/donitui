@@ -16,6 +16,10 @@ export default function(state: ?Histories, action: Action): Histories{
             state = state.slice();
             state.unshift(action.history);
             return state;
+        case ActionTypes.DELETE_GOAL:
+            state = state.slice();
+            state = state.filter((history) => history.goalId !== action.goalId)
+            return state;
         default:
             return state;
     }

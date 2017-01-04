@@ -1,22 +1,22 @@
 // @flow
 import {ActionTypes} from '../../actions';
-import type { Habit, StatusEnum } from '../../data/types';
+import type { Habit } from '../../data/types';
 import { Status, EVERYDAY } from '../../data/index';
 import { getHabitStatus }from '../../timeutils';
 import type {Action} from '../../data/reducers';
 
-export function habit(state: Habit, action: Action): Habit{
-    if(state === undefined) {
+export function habit(state: ?Habit, action: ?Action): Habit{
+    if(state === undefined || state === null || action == null) {
         return {
             name: "",
             status: Status.INACTIVE,
-            duration: 0,
+            duration: 60,
             days: EVERYDAY,
             offset: 0,
         }
     }
     switch (action.type){
-    case ActionTypes.SET_TASK_STATUS:
+    case ActionTypes.SET_HABIT_STATUS:
         // TODO: ??
         return Object.assign({},state, {
             status: action.status,
@@ -38,7 +38,7 @@ export function habits(state: Habit[], action: Action): Habit[] {
     }
     let newState: Habit[] = state.slice();
     switch (action.type) {
-        case ActionTypes.SET_TASK_STATUS:
+        case ActionTypes.SET_HABIT_STATUS:
             // TODO?
             newState[action.taskId] = habit(newState[action.taskId],action);
             return newState;

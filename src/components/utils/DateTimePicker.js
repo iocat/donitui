@@ -36,21 +36,20 @@ export default class DateTimePicker extends React.Component {
 
     render() {
         return (
-            <div className="time-picker-group">
-                <div className="date-picker">
+            <div className="col-2">
+                <div className="left">
                     <DatePicker
                         shouldDisableDate={this.props.disableDate}
                         floatingLabelText={this.props.dateLabel}
-                        floatingLabelFixed={true} 
-                        textFieldStyle={{ width: '100%' }} container="inline"
+                        floatingLabelFixed={true} container="inline"
                         formatDate={formatDate} value={this.props.dateTime}
                         onChange={this.onDateChange}/>
                 </div>
-                <div className="time-picker">
+                <div className="right">
                     <TimePicker
                         format='ampm' floatingLabelText={this.props.timeLabel}
                         floatingLabelFixed={true} autoOk={true}
-                        pedantic={true} textFieldStyle={{ width: '100%' }}
+                        pedantic={true} 
                         value={this.props.dateTime}
                         onChange={this.onTimeChange}/>
                 </div>

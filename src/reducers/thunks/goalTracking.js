@@ -1,6 +1,5 @@
 // @flow
 import type {Goal} from '../../data/types';
-import router from '../../routing/router';
 import {ActionCreators} from '../../actions';
 
 type DispatchFunc = (dispatch: any) => void;
@@ -19,7 +18,7 @@ export function createGoal(userId: string, goal: Goal): DispatchFunc {
     }
 }
 
-export function replaceGoal(goalId: Goal, goal: Goal): DispatchFunc {
+export function replaceGoal(goalId: number, goal: Goal): DispatchFunc {
     return dispatch => {
         // TODO: contact the server or whatever
         dispatch(ActionCreators.DELETE_GOAL(goalId));

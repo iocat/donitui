@@ -1,18 +1,24 @@
 // @flow
-import type {
-    Goal,
-    StatusEnum,
-    HistoryElem,
-} from './data/types';
-
-import type {
-    Action
-} from './data/reducers';
-
-type ActionCreator = (...x: any) => Action;
-
+import type { Goal, StatusEnum, HistoryElem,} from './data/types';
 // The registry of actions
-export const ActionTypes: {[id: string]: number} = {
+export const ActionTypes: {
+    DELETE_GOAL: number,
+    FILTER_GOAL_BY_STATUSES: number,
+    LOAD_GOALS: number,
+    LOAD_GOAL: number,
+    CREATE_GOAL: number,
+    SET_TASK_STATUS: number,
+    SET_HABIT_STATUS: number,
+    SET_CURRENT_TIME: number,
+    RECEIVE_TASK: number,
+    RECEIVE_HABIT:  number,
+    NEW_HISTORY: number,
+    USER_LOGIN: number,
+    SET_CREATE_GOAL: number,
+    HANDLE_ERROR: number,
+    NORMALIZE: number,
+    DENORMALIZE: number,
+} = {
     // goalTracking
     DELETE_GOAL: 1,
     FILTER_GOAL_BY_STATUSES: 2,
@@ -56,16 +62,34 @@ function assertUniqueActionValues() {
 };
 assertUniqueActionValues();
 
-
 // The registry of action creator
-export const ActionCreators: {[id: string]: ActionCreator} = {
-    DELETE_GOAL: (id: string): {type: number,id: string} => {
+export const ActionCreators: {
+    DELETE_GOAL: (goalId: number) => {type: number, goalId: number},
+    FILTER_GOAL_BY_STATUSES: (s: {[id: StatusEnum]: boolean} ) => {type: number, statuses: {[id: StatusEnum]: boolean}},
+    LOAD_GOALS: (goals: Goal[]) => {type: number, goals: Goal[]},
+    LOAD_GOAL: (goal: Goal) => {type: number, goal: Goal},
+    goals_LOAD_GOAL: (goal: Goal, now: number) =>{type: number, goal: Goal, now: number},
+    goals_CREATE_GOAL: (goal: Goal, now: number) => {type: number, goal: Goal, now: number} ,
+    CREATE_GOAL: (goal: Goal) => {type: number, goal: Goal},
+    SET_TASK_STATUS: (goalId: number, taskId: number, status: StatusEnum, when:number ) => {type: number,goalId: number,taskId: number,status: StatusEnum, when: number },
+    SET_HABIT_STATUS: (goalId: number, habitId: number, status: StatusEnum, when:number) => {type: number, goalId: number, habitId: number, status: StatusEnum, when: number},
+    SET_CURRENT_TIME: (time: number) => {type: number,now: number},
+    sched_RECEIVE_TASK: (goal: Goal, taskId: number) => {type: number,goal: Goal,taskId: number},
+    sched_RECEIVE_HABIT: (goal: Goal, habitId: number)=>{type: number, goal: Goal, habitId: number},
+    NEW_HISTORY: (helem: HistoryElem)=>{type: number, history: HistoryElem},
+    USER_LOGIN: (userId: string) => {type: number, userId: string},
+    SET_CREATE_GOAL: (isCreating: boolean) => {type: number, creatingGoal:boolean},
+    HANDLE_ERROR: (error: string) => {type: number,error: string},
+    NORMALIZE: (field: string) => {type: number,byField: string},
+    DENORMALIZE: (field: string) => {type: number, byField: string},
+} = {
+    DELETE_GOAL: (goalId: number): {type: number,goalId: number} => {
         return {
             type: ActionTypes.DELETE_GOAL,
-            id
+            goalId
         }
     },
-    FILTER_GOAL_BY_STATUSES: (statuses: StatusEnum): {type: number,statuses: StatusEnum} => {
+    FILTER_GOAL_BY_STATUSES: (statuses: {[id: StatusEnum]: boolean}): {type: number, statuses: {[id: StatusEnum]: boolean}} => {
         return {
             type: ActionTypes.FILTER_GOAL_BY_STATUSES,
             statuses: statuses,
@@ -107,21 +131,23 @@ export const ActionCreators: {[id: string]: ActionCreator} = {
         }
     },
 
-    SET_TASK_STATUS: (goalId: number, taskId: number, status: StatusEnum ):{type: number,goalId: number,taskId: number,status: StatusEnum}=>{
+    SET_TASK_STATUS: (goalId: number, taskId: number, status: StatusEnum, when: number ):{type: number,goalId: number,taskId: number,status: StatusEnum, when: number}=>{
         return {
             type: ActionTypes.SET_TASK_STATUS,
             goalId,
             taskId,
-            status
+            status,
+            when
         }
     },
 
-    SET_HABIT_STATUS: (goalId: number, habitId: number, status: StatusEnum):{type: number, goalId: number, habitId: number, status: StatusEnum}=>{
+    SET_HABIT_STATUS: (goalId: number, habitId: number, status: StatusEnum, when: number):{type: number, goalId: number, habitId: number, status: StatusEnum, when: number}=>{
         return {
             type: ActionTypes.SET_HABIT_STATUS,
             goalId,
             habitId,
-            status
+            status,
+            when
         }
     },
 

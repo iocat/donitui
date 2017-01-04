@@ -1,15 +1,15 @@
+// @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import {getGoalFilter} from '../../../data/reducers';
 import {ActionCreators} from '../../../actions';
 
 import AvPlayArrow from 'material-ui/svg-icons/av/play-arrow';
 import AvPause from 'material-ui/svg-icons/av/pause';
 import AvStop from 'material-ui/svg-icons/av/stop';
 import NavigationApps from 'material-ui/svg-icons/navigation/apps';
-import IconButton from 'material-ui/IconButton';
+import { IconButton }from 'material-ui';
 import {getStatusColor} from '../../styles/colors';
-import {GoalStatus, StatusFilter} from '../../../data/index';
+import {Status, StatusFilter} from '../../../data/index';
 
 import {grey500 as grey} from 'material-ui/styles/colors';
 
@@ -23,12 +23,12 @@ class _FilterTab extends React.Component {
         this.props.filterBy(StatusFilter.DONE);
     }
     filterByNotDone = () => {
-        if (this.props.filter.byStatuses === StatusFilter.NOT_DONE){return;}
-        this.props.filterBy(StatusFilter.NOT_DONE);
+        if (this.props.filter.byStatuses === StatusFilter.INACTIVE){return;}
+        this.props.filterBy(StatusFilter.INACTIVE);
     }
     filterByInProgress = () => {
-        if (this.props.filter.byStatuses === StatusFilter.IN_PROGESS){return;}
-        this.props.filterBy(StatusFilter.IN_PROGRESS);
+        if (this.props.filter.byStatuses === StatusFilter.ACTIVE){return;}
+        this.props.filterBy(StatusFilter.ACTIVE);
     }
     color = (status)=>{
         let currStat = this.props.filter.byStatuses;
@@ -49,24 +49,23 @@ class _FilterTab extends React.Component {
                 <IconButton
                     tooltip="Show active goals"
                     onTouchTap={this.filterByInProgress}>
-                    <AvPlayArrow color={this.color(GoalStatus.IN_PROGRESS)}/>
+                    <AvPlayArrow color={this.color(Status.ACTIVE)}/>
                     </IconButton>
                 <IconButton
                     tooltip="Show current goals"
                     onTouchTap={this.filterByNotDone}>
-                    <AvPause color={this.color(GoalStatus.NOT_DONE)}/>
+                    <AvPause color={this.color(Status.INACTIVE)}/>
                     </IconButton>
                 <IconButton
                     tooltip="Show past goals"
                     onTouchTap={this.filterByDone}>
-                    <AvStop color={this.color(GoalStatus.DONE)}/>
+                    <AvStop color={this.color(Status.DONE)}/>
                     </IconButton>
             </div>
         )
     }
 }
 
-_FilterTab.defaultProps = {}
 _FilterTab.propTypes = {
     // The status filter objectOf
     filter: React.PropTypes.shape(
@@ -80,7 +79,7 @@ _FilterTab.propTypes = {
 
 function mapStateToProps(root){
     return Object.assign({},{
-            filter: getGoalFilter(root),
+            filter: root.goalTracking.filter,
         })
 }
 
@@ -92,5 +91,4 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-const Filter = connect(mapStateToProps, mapDispatchToProps)(_FilterTab);
-export default Filter;
+export default connect(mapStateToProps, mapDispatchToProps)(_FilterTab);

@@ -1,16 +1,8 @@
 // @flow
-import { GoalVisibility, GoalStatus } from '../../../data/index';
 import type {Goal} from '../../../data/types';
+import {goal} from '../../../reducers/goal-tracking/goals';
 
-const EMPTY_GOAL = {
-    id: "not_created",
-    name:"",
-    description:"",
-    img:"",
-    status: GoalStatus.NOT_DONE,
-    visibility: GoalVisibility.PRIVATE,
-    tasks: [],
-}
+const EMPTY_GOAL: Goal =  goal(undefined, null);
 
 // making sure that the goal has all valid fields
 export default (goal:?Goal): Goal => {

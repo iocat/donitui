@@ -209,7 +209,7 @@ function goalStatusChange(state: GoalTracking, goalId: number, from: StatusEnum,
         }
     }
     // refilter
-    return goalTracking(Object.assign({}, state, {
+    return goalTracking(Object.assign({}, newState, {
         done: done,
         notDone: notDone,
         inProgress: inProgress,
@@ -296,7 +296,7 @@ export default function goalTracking(state: ?  GoalTracking, action:Action):  Go
             done: [],
             notDone: [],
             inProgress: [],
-            pageTitle: "Donit: Personal Goal Tracker",
+            pageTitle: "Donit: Goal Tracker",
         };
     }
     switch (action.type) {

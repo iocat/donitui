@@ -15,7 +15,7 @@ export default (): Goal[] => {
             name: "Add image uploader to DONIT",
             description: "UNIMPLEMENTED",
             visibility: "PUBLIC",
-            img: "http://seo3.techdegreelink.com/sites/techdegreelink.com/files/styles/large/public/field/image/shutterstock_154519763.jpg?itok=XO3Vyt1F",
+            img: "https://unsplash.it/200/300/?random",
             tasks: [{
                 name: "Code",
                 remindAt: getDateWithTime(10, 17),
@@ -48,7 +48,7 @@ export default (): Goal[] => {
             id: "3",
             name: "Deploy the static app",
             visibility: "PUBLIC",
-            img: "http://faculty.ycp.edu/~dhovemey/spring2011/cs320/lecture/figures/compileAndLink.png",
+            img: "https://unsplash.it/200/300/?random",
             tasks: [{
                 name: "Compile",
                 remindAt: new Date(new Date().getTime()-1000),
@@ -63,7 +63,7 @@ export default (): Goal[] => {
             id: "4",
             name: "Make friend with stranger",
             visibility: "The one who is visiting this page",
-            img: "http://cdnimg.in/wp-content/uploads/2015/06/dancing_baby_bears.jpg?cfaea8",
+            img: "https://unsplash.it/200/300/?random",
             tasks: [{
                 name: "Hello World",
                 remindAt: new Date(new Date().getTime()+ 30000),

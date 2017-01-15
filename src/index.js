@@ -14,7 +14,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {appStore} from './stores/appStore';
 import App from './components/app/App';
 import bootstrap from './bootstrap';
-import "./static/css/index.css";
+import "./static/css/index.css"
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
@@ -27,10 +27,8 @@ import {
 //appStore.subscribe(() => console.log(appStore.getState()));
 import goalsExample from './setupExamples'; // Start some examples for debugging
 appStore.dispatch(ActionCreators.LOAD_GOALS(goalsExample()));
-appStore.dispatch(ActionCreators.USER_LOGIN("felix"));
+appStore.dispatch(ActionCreators.USER_LOGIN("felix", 204481006746468353));
 
-//import {browserHistory} from 'react-router';
-//browserHistory.push('/felix');
 
 ReactDOM.render(
     <MuiThemeProvider muiTheme={getMuiTheme(mainTheme)}>

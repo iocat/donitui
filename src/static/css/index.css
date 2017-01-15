@@ -62,17 +62,13 @@ body{
 .goal-card .card-header .header-img{
 	background-size: cover;
     background-position: center top;
-   	height: 230px;
+   	height: 300px;
 }
 
 .goal-card .card-header .settings-menu {
 	position: absolute;
 	top: 0px;
 	right: 0px;
-}
-
-.goal-card .todo-item{
-
 }
 
 

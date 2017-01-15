@@ -23,7 +23,6 @@ export default class GoalCard extends React.Component {
 GoalCard.defaultProps = {
     canUpdate: false,
     deleteGoal: null, // callback to delete the goal
-    deleteTask: null, // callback to delete the task
     goal: {
         name: null,
         description: null,
@@ -35,5 +34,5 @@ GoalCard.defaultProps = {
 GoalCard.propTypes = {
     canUpdate: React.PropTypes.bool.isRequired,
     deleteGoal: React.PropTypes.func.isRequired,
-    deleteTask: React.PropTypes.func.isRequired
+    onEdit: React.PropTypes.func.isRequired,
 };

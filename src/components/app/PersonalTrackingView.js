@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import {connect} from 'react-redux';
 import DocumentTitle from 'react-document-title';
@@ -10,7 +11,7 @@ import Filter from '../goal/filter/Filter';
 import ActiveTasks from '../scheduler/ActiveTasks';
 import NextEvent from '../scheduler/NextEvent';
 
-import type { $RootReducer } from '../../data/reducers';
+import type { RootReducer } from '../../data/reducers';
 
 // PersonalTracking is a division page for the app
 class _PersonalTracking extends React.Component {
@@ -41,7 +42,7 @@ class _PersonalTracking extends React.Component {
     }
 }
 
-const mapStateToProps = (rootReducer: $RootReducer) => {
+const mapStateToProps = (rootReducer: RootReducer) => {
     return {
         title: rootReducer.goalTracking.pageTitle,
         userId: rootReducer.userService.userId,

@@ -8,7 +8,9 @@ import type {
 } from './types';
 
 export type UserService = {
-    userId: string,
+    userId: number,
+    username: string,
+    signedIn: boolean,
 }
 
 // generic action

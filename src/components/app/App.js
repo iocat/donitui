@@ -2,8 +2,11 @@ import React from 'react';
 import {Router, Route, browserHistory} from 'react-router';
 import DocumentTitle from 'react-document-title';
 
-import PersonalTracking from './PersonalTracking';
-import EditGoal from './EditGoal';
+import PersonalTrackingView from './PersonalTrackingView';
+import EditGoalView from './EditGoalView';
+import GoalView from './GoalView';
+import ResourceNotFound from './ResourceNotFound';
+
 import NavigationBar from '../nav/NavigationBar';
 
 import Testing from '../test/Testing'
@@ -18,12 +21,12 @@ export default class App extends React.Component {
                         </div>
                     <div className="main-app">
                         <Router history={browserHistory}>
-                            <Route path="/" component={PersonalTracking}/>
                             <Route path="/tests" component={Testing}/>
-                            <Route path="/:userId" component={PersonalTracking}/>
-                            <Route path="/:userId/goals" component={PersonalTracking}/>
-                            <Route path="/:userId/goals/:goalId/edit" component={EditGoal}/>
-
+                            <Route path="/404" component={ResourceNotFound}/>
+                            <Route path="/:userId" component={PersonalTrackingView}/>
+                            <Route path="/:userId/goals" component={PersonalTrackingView}/>
+                            <Route path="/:userId/goals/:goalId" component={GoalView}/>
+                            <Route path="/:userId/goals/:goalId/edit" component={EditGoalView}/>
                         </Router>
                     </div>
                 </div>

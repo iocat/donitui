@@ -4,6 +4,7 @@ import React from 'react';
 import { AppBar, ToolbarGroup } from 'material-ui';
 import {connect} from 'react-redux';
 import HistoryController from '../history/HistoryController';
+import linkTo from '../../routing/linkTo';
 
 type Props = {
     appName: string,
@@ -13,7 +14,7 @@ type Props = {
 class _NavigationBar extends React.Component {
     props: Props
     render(){
-        return <AppBar title={this.props.appName} onTitleTouchTap={this.props.toHomePage()}>
+        return <AppBar title={this.props.appName} onTitleTouchTap={this.props.toHomePage}>
             <ToolbarGroup className="nav-tools">
                 <HistoryController/>
             </ToolbarGroup>
@@ -31,16 +32,16 @@ _NavigationBar.propTypes = {
 }
 
 const mapStateToProps = (root) =>{
+    let tohp = null;
+    if (root.userService.signedIn){
+        tohp = linkTo.PERSONAL_TRACKING_VIEW(root.userService.username,true)
+    }else{
+        tohp = linkTo.APP_ROOT(true)
+    }
     return {
+        toHomePage: tohp,
         appName: "Donit",
-
     }
 }
 
-const mapDispatchToProps = (root) => {
-    return {
-        // TODO
-        toHomePage: () => console.error("return to homepage"),
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(_NavigationBar)
+export default connect(mapStateToProps)(_NavigationBar)

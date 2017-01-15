@@ -156,3 +156,26 @@ export const goalTracking: Layout = {
     cols: commonCols,
     breakPts: commonBreakPts,
 }
+
+export const goalView: Layout = {
+    layouts: {
+        lg:[{
+            i: "goal",
+            x:4,
+            w:6,
+            y:0,
+            h:1,
+            static: true,
+        }],
+        md:[{
+            i: "goal",
+            x:3,
+            w:5,
+            y:0,
+            h:1,
+            static: true,
+        }],
+    },
+    cols: commonCols,
+    breakPts: commonBreakPts,
+}

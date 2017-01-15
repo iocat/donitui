@@ -77,7 +77,7 @@ export const ActionCreators: {
     sched_RECEIVE_TASK: (goal: Goal, taskId: number) => {type: number,goal: Goal,taskId: number},
     sched_RECEIVE_HABIT: (goal: Goal, habitId: number)=>{type: number, goal: Goal, habitId: number},
     NEW_HISTORY: (helem: HistoryElem)=>{type: number, history: HistoryElem},
-    USER_LOGIN: (userId: string) => {type: number, userId: string},
+    USER_LOGIN: (username: string, userId: number) => {type: number, username: string, userId: number},
     SET_CREATE_GOAL: (isCreating: boolean) => {type: number, creatingGoal:boolean},
     HANDLE_ERROR: (error: string) => {type: number,error: string},
     NORMALIZE: (field: string) => {type: number,byField: string},
@@ -181,9 +181,10 @@ export const ActionCreators: {
         };
     },
 
-    USER_LOGIN: (userId: string):{type: number, userId: string} =>{
+    USER_LOGIN: (username, userId):{type: number, username: string, userId: number} =>{
         return {
             type: ActionTypes.USER_LOGIN,
+            username: username,
             userId: userId,
         }
     },

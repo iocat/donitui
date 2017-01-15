@@ -127,8 +127,14 @@ export default class HabitEditor extends React.Component{
             deleteFn = ()=>{
                 this.props.onDelete();
                 modeSwch();
+            },
+            habitName = ()=>{
+                if(this.state.habit.name !== null && this.state.habit.name.length > 0){
+                    return "\""+this.state.habit.name+"\"";
+                }
+                return ""
             }
-        return <Dialog className="todo-editor" title={"Edit \"" + this.state.habit.name +"\""} open={true}>
+        return <Dialog className="todo-editor" title={"Edit "+habitName()} open={true}>
             <TextField multiLine={false} errorText={this.getNameError()}
                 onChange={this.onSetName} defaultValue={habit.name}
                 hintText="Habit" floatingLabelText="Habit" floatingLabelFixed={true}/>

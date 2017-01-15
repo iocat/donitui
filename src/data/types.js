@@ -6,9 +6,9 @@ export type StatusEnum =
     | "ACTIVE";
 
 export type VisibilityEnum =
-    | "PRIVATE"
-    | "PUBLIC"
-    | "FOLLOWERS";
+    | 0
+    | 1
+    | 2;
 
 export type DaysInWeekEnum =
     | 0

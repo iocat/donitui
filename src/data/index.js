@@ -14,9 +14,9 @@ export const Visibility: {
     FOLLOWERS: VisibilityEnum,
     PUBLIC: VisibilityEnum
 } = {
-    PRIVATE: "PRIVATE",
-    FOLLOWERS: "FOLLOWERS",
-    PUBLIC: "PUBLIC",
+    PRIVATE: 0,
+    FOLLOWERS: 1,
+    PUBLIC: 2,
 }
 
 export const DaysInWeek: {
@@ -38,13 +38,13 @@ export const DaysInWeek: {
 }
 
 export const EVERYDAY = {
-    0: true,
-    1: true,
-    2: true,
-    3: true,
-    4: true,
-    5: true,
-    6: true
+    "0": true,
+    "1": true,
+    "2": true,
+    "3": true,
+    "4": true,
+    "5": true,
+    "6": true
 }
 
 export const UserStatus: {

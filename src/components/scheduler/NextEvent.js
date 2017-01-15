@@ -66,7 +66,7 @@ const mapStateToProps = (root : RootReducer) : Props => {
     }
     let nextE = root.goalTracking.scheduler.eventHeap[0],
         goal = root.goalTracking.goals[nextE.goalId],
-        task = goal.tasks[nextE.taskId],
+        task = goal.tasks[nextE.id],
         now = root.goalTracking.scheduler.now;
 
     return {nextEvent: nextE, now: now, goal: goal, task: task}

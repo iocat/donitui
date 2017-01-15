@@ -10,7 +10,7 @@ export default <HabitEditor initHabit={
         {
             status: Status.ACTIVE,
             name: "test",
-            days: {1:true, 2:true},
+            days: {"1":true, "2":true},
             offset: 10000,
             duration: 20000,
         }}

@@ -41,8 +41,8 @@ function invalidName(name: string): boolean{
     return name.length === 0 || name.length > 60
 }
 
-function invalidDuration(habit: Habit):boolean{
-    return habit.duration === 0 || habit.duration > 86400
+function invalidDuration(task: Task):boolean{
+    return task.duration === 0 || task.duration > 86400
 }
 
 export default class TaskEditor extends React.Component{
@@ -69,7 +69,7 @@ export default class TaskEditor extends React.Component{
 
     getNameError = ():?string=>{
         if(this.state.nameChanged && invalidName(this.state.task.name)){
-            return "Invalid name (should be between 0 and 60 characters)"
+            return "Your task should be between 0 and 60 characters"
         }
         return null;
     }
@@ -80,7 +80,13 @@ export default class TaskEditor extends React.Component{
             this.props.onCommit(this.state.task);
             modeSwitcher();
         }
-        return <Dialog className="todo-editor" title={"Edit \""+ this.state.task.name+"\""} modal={true} open={true}>
+        let taskName = ()=>{
+            if(this.state.task.name !== null && this.state.task.name.length !== 0 ){
+                return "\""+this.state.task.name+"\"";
+            }
+            return ""
+        }
+        return <Dialog className="todo-editor" title={"Edit "+taskName()} modal={true} open={true}>
             <TextField multiLine={false} errorText={this.getNameError()}
                 onChange={this.onSetName} defaultValue={task.name}
                 hintText="Task" floatingLabelText="Task" floatingLabelFixed={true}/>

@@ -1,4 +1,4 @@
-import { DOMAIN } from '../global';
+import { API_DOMAIN } from '../global';
 import {Users} from './user';
 
 class Router {
@@ -13,4 +13,4 @@ class Router {
     }
 }
 
-export default  new Router(DOMAIN);
+export default  new Router(API_DOMAIN);

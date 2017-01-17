@@ -5,28 +5,38 @@ import { AppBar, ToolbarGroup } from 'material-ui';
 import {connect} from 'react-redux';
 import HistoryController from '../history/HistoryController';
 import linkTo from '../../routing/linkTo';
+import GOOGLE_SIGNIN_BUTTON from './GoogleSignInButton';
 
 type Props = {
     appName: string,
+    signedIn: boolean,
     toHomePage: ()=> void,
 }
 
 class _NavigationBar extends React.Component {
     props: Props
-    render(){
-        return <AppBar title={this.props.appName} onTitleTouchTap={this.props.toHomePage}>
-            <ToolbarGroup className="nav-tools">
+    getToolbar = ()=>{
+        if (this.props.signedIn){
+            return <ToolbarGroup className="nav-tools">
                 <HistoryController/>
             </ToolbarGroup>
+        }else{
+            return <ToolbarGroup className="nav-tools">
+                {GOOGLE_SIGNIN_BUTTON}
+            </ToolbarGroup>;
+        }
+    }
+
+    render(){
+        return <AppBar showMenuIconButton={false}
+            title={this.props.appName} onTitleTouchTap={this.props.toHomePage}>
+            {this.getToolbar()}
         </AppBar>
     }
 }
 
-_NavigationBar.contextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
-
 _NavigationBar.propTypes = {
+    signedIn: React.PropTypes.bool.isRequired,
     appName: React.PropTypes.string.isRequired,
     toHomePage: React.PropTypes.func.isRequired,
 }
@@ -39,6 +49,7 @@ const mapStateToProps = (root) =>{
         tohp = linkTo.APP_ROOT(true)
     }
     return {
+        signedIn: root.userService.signedIn,
         toHomePage: tohp,
         appName: "Donit",
     }

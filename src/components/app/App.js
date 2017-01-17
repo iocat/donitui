@@ -6,7 +6,7 @@ import PersonalTrackingView from './PersonalTrackingView';
 import EditGoalView from './EditGoalView';
 import GoalView from './GoalView';
 import ResourceNotFound from './ResourceNotFound';
-
+import HomePage from './HomePage';
 import NavigationBar from '../nav/NavigationBar';
 
 import Testing from '../test/Testing'
@@ -23,6 +23,7 @@ export default class App extends React.Component {
                         <Router history={browserHistory}>
                             <Route path="/tests" component={Testing}/>
                             <Route path="/404" component={ResourceNotFound}/>
+                            <Route path="/" component={HomePage}/>
                             <Route path="/:userId" component={PersonalTrackingView}/>
                             <Route path="/:userId/goals" component={PersonalTrackingView}/>
                             <Route path="/:userId/goals/:goalId" component={GoalView}/>

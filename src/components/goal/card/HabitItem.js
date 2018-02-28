@@ -28,7 +28,7 @@ export default class HabitItem extends React.Component{
         t = new Date(t.getTime() + habit.offset * 1000);
 
         for ( let i = 0; i < 7; i ++){
-            if (days[i] === true){
+            if (days[i.toString()] === true){
                 count ++
             }
         }

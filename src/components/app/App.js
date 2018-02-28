@@ -26,7 +26,6 @@ export default class App extends React.Component {
                             <Route path="/" component={HomePage}/>
                             <Route path="/:userId" component={PersonalTrackingView}/>
                             <Route path="/:userId/goals" component={PersonalTrackingView}/>
-                            <Route path="/:userId/goals/:goalId" component={GoalView}/>
                             <Route path="/:userId/goals/:goalId/edit" component={EditGoalView}/>
                         </Router>
                     </div>

@@ -5,7 +5,7 @@ import { AppBar, ToolbarGroup } from 'material-ui';
 import {connect} from 'react-redux';
 import HistoryController from '../history/HistoryController';
 import linkTo from '../../routing/linkTo';
-import GOOGLE_SIGNIN_BUTTON from './GoogleSignInButton';
+import LoginButton from '../user/GoogleSignInButton';
 
 type Props = {
     appName: string,
@@ -22,7 +22,7 @@ class _NavigationBar extends React.Component {
             </ToolbarGroup>
         }else{
             return <ToolbarGroup className="nav-tools">
-                {GOOGLE_SIGNIN_BUTTON}
+                <LoginButton/>
             </ToolbarGroup>;
         }
     }

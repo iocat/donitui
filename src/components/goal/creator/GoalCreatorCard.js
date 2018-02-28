@@ -4,7 +4,7 @@ import type {Goal} from '../../../data/types';
 
 import {connect} from 'react-redux';
 import GoalEditor from './GoalEditor';
-import { createGoal } from '../../../reducers/thunks/goalTracking';
+import {createGoal} from '../../../reducers/thunks';
 import initGoal from './initGoal';
 
 const mapStateToProps = (root) => {
@@ -18,14 +18,8 @@ const mapStateToProps = (root) => {
 
 const mapDispatchToProps= (dispatch) =>{
     return {
-        accept:(userId, goal)=> dispatch(createGoal(userId, goal)),
+        accept: (goal) => {dispatch(createGoal(goal))},
     }
 }
 
-const mergeProps = (stateP, dispaP, ownProps) =>{
-    return Object.assign({}, ownProps, stateP,{
-        accept:(goal: Goal) => {dispaP.accept(stateP.userId, goal); ownProps.acceptCallback()},
-    })
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(GoalEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(GoalEditor);

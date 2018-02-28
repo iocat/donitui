@@ -31,7 +31,7 @@ export default (): Goal[] => {
                     1: true,
                     2: true,
                 },
-                offset: 10000,
+                offset: 1000,
                 duration: 1000,
             },{
                 name:"Stretch",
@@ -51,12 +51,12 @@ export default (): Goal[] => {
             img: "https://unsplash.it/200/300/?random",
             tasks: [{
                 name: "Compile",
-                remindAt: new Date(new Date().getTime()-1000),
+                remindAt: new Date(new Date().getTime()),
                 duration: 1300
             },{
                 name: "Think",
-                remindAt: new Date(new Date().getTime() - 3000),
-                duration: 40
+                remindAt: new Date(new Date().getTime() ),
+                duration: 4000
             }],
             habits: []
         },{

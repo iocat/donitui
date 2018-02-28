@@ -24,7 +24,7 @@ export type UserStatusEnum =
     | "OFFLINE"
     | "BUSY";
 
-export type HabitDays = {[id:number]:boolean}
+export type HabitDays = {[id:string]:boolean}
 
 export type Goal = {
     id: number,

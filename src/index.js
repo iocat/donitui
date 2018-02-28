@@ -21,12 +21,8 @@ import { ActionCreators } from './actions';
 import {DOMAIN} from './global';
 
 import goalsExample from './setupExamples'; // Start some examples for debugging
-appStore.dispatch(ActionCreators.LOAD_GOALS(goalsExample()));
+bootstrap();
 
-if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1"){
-    document.domain = DOMAIN;
-}
-// appStore.dispatch(ActionCreators.USER_LOGIN("felix", 204481006746468353));
 ReactDOM.render(
     <MuiThemeProvider muiTheme={getMuiTheme(mainTheme)}>
         <ReduxStoreProvider store={appStore}>

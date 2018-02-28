@@ -11,7 +11,7 @@ import type { Goal } from '../../data/types';
 import type { RootReducer } from '../../data/reducers';
 
 import { userCheck } from './proxyDecorator';
-import { deleteGoal } from '../../reducers/thunks/goalTracking';
+import { deleteGoal } from '../../reducers/thunks';
 
 
 class _GoalView extends React.Component{

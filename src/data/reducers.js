@@ -9,8 +9,8 @@ import type {
 
 export type UserService = {
     userId: number,
-    username: string,
     signedIn: boolean,
+    googleUser: any,
 }
 
 // generic action

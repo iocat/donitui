@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import type {Goal} from '../../../data/types';
 
 import GoalEditor from './GoalEditor';
-import { replaceGoal } from '../../../reducers/thunks/goalTracking';
+import * as thunks from '../../../reducers/thunks';
 import initGoal from './initGoal';
 
 const mapStateToProps = (rootReducer, props) =>{
@@ -17,7 +17,7 @@ const mapStateToProps = (rootReducer, props) =>{
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         accept: (goal: Goal) => {
-            dispatch(replaceGoal(goal.id, goal));
+            dispatch(thunks.replaceGoal(goal.id, goal));
             ownProps.navigate();
         },
         discard: () =>{

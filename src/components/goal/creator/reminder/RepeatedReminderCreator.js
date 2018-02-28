@@ -46,13 +46,13 @@ export default class RepeatedReminderCreator extends React.Component{
                     days={rReminder.days}
                     addDay={(day: number)=>{
                             let days: HabitDays = Object.assign({}, rReminder.days);
-                            days[day] = true;
+                            days[day.toString()] = true;
                             this.onDaysChange(days);
                         }
                     }
                     rmDay={(day: number) => {
                             let days: HabitDays = Object.assign({}, rReminder.days);
-                            delete days[day];
+                            delete days[day.toString()];
                             this.onDaysChange(days);
                     }}/>
                 <br/>

@@ -5,6 +5,7 @@ import type{
     Action
 } from '../data/reducers';
 import {ActionTypes} from '../actions';
+
 export default function (state: ?Networking, action: Action): Networking{
     if(state ==  null || state == undefined){
         return {

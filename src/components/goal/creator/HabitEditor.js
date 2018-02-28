@@ -58,7 +58,7 @@ function invalidDuration(habit: Habit):boolean{
 
 function validDays(habit: Habit): boolean{
     for (let i = 0; i < 7; i ++ ){
-        if (habit.days[i] === true){
+        if (habit.days[i.toString()] === true){
             return true;
         }
     }

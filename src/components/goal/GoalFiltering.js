@@ -9,14 +9,14 @@ const GoalListLayout = WidthProvider(Responsive);
 import {goalTracking, layouts, cols, breakpoints} from '../layout';
 import GoalCardList from './card/GoalCardList';
 import GoalCreatorCard from './creator/GoalCreatorCard';
-
+import linkTo from '../../routing/linkTo';
 import { RaisedButton } from 'material-ui';
 
 class _GoalFiltering extends React.Component {
     // TODO move this call back upward the component tree
     // REASON: it's non of this component's business
     onEdit = (goalId) =>{
-        browserHistory.push("/"+this.props.userId+"/goals/"+goalId+"/edit");
+        linkTo.EDIT_GOAL_VIEW(this.props.userId, goalId, false)();
     }
 
     constructor(){

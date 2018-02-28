@@ -15,6 +15,8 @@ export const ActionTypes: {
     NEW_HISTORY: number,
     USER_LOGIN: number,
     SET_CREATE_GOAL: number,
+    GOOGLE_USER_SIGN_IN: number,
+    GOOGLE_USER_SIGN_OUT:number,
     HANDLE_ERROR: number,
     NORMALIZE: number,
     DENORMALIZE: number,
@@ -37,6 +39,8 @@ export const ActionTypes: {
     USER_LOGIN: 12,
 
     SET_CREATE_GOAL: 50,
+    GOOGLE_USER_SIGN_IN: 51,
+    GOOGLE_USER_SIGN_OUT: 52,
     // error handler
     HANDLE_ERROR: 100,
 
@@ -82,6 +86,8 @@ export const ActionCreators: {
     HANDLE_ERROR: (error: string) => {type: number,error: string},
     NORMALIZE: (field: string) => {type: number,byField: string},
     DENORMALIZE: (field: string) => {type: number, byField: string},
+    GOOGLE_USER_SIGN_IN: (googleUser: any, userId: string)=> {type: number, userId:string, googleUser: any},
+    GOOGLE_USER_SIGN_OUT: ()=>{type: number},
 } = {
     DELETE_GOAL: (goalId: number): {type: number,goalId: number} => {
         return {
@@ -215,5 +221,16 @@ export const ActionCreators: {
             byField: field
         }
     },
-
+    GOOGLE_USER_SIGN_IN:(googleUser: any, userId: string) =>{
+        return {
+            type: ActionTypes.GOOGLE_USER_SIGN_IN,
+            userId,
+            googleUser
+        }
+    },
+    GOOGLE_USER_SIGN_OUT:()=>{
+        return {
+            type: ActionTypes.GOOGLE_USER_SIGN_OUT,
+        }
+    }
 }

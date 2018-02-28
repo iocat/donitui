@@ -68,7 +68,7 @@ export const habitTiming = (habit: Habit, now: number): ?[number, number] =>{
     let nowDate: Date = new Date(now),
         nowDay: number = nowDate.getDay();
     // inactive for habits not to do today
-    if (habit.days[nowDay] !== true){
+    if (habit.days[nowDay.toString()] !== true){
         return null;
     }
     // set to start of now (today)

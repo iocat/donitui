@@ -8,6 +8,12 @@ class Router {
     users(username){
         return new Users(this.url(),username);
     }
+    login(){
+        let urlFunc = ()=> encodeURI(this.prefix+"/login");
+        return {
+            url: urlFunc,
+        }
+    }
     url(){
         return encodeURI(this.prefix);
     }
